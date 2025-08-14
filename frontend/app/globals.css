@@ -339,19 +339,38 @@ a {
   width: 12px;
 }
 
-::-webkit-scrollbar-track {
+/* 70s Theme Scrollbar */
+.theme-70s ::-webkit-scrollbar-track {
   background: #F5F5DC;
   border-radius: 6px;
 }
 
-::-webkit-scrollbar-thumb {
+.theme-70s ::-webkit-scrollbar-thumb {
   background: linear-gradient(45deg, #FF6B35, #F7C242);
   border-radius: 6px;
   border: 2px solid #F5F5DC;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.theme-70s ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #F7C242, #FF6B35);
+}
+
+/* 80s Theme Scrollbar */
+.theme-80s ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 0px;
+}
+
+.theme-80s ::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00FFFF, #FF00FF);
+  border-radius: 0px;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.theme-80s ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #FF00FF, #00FFFF);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.7);
 }
 
 /* Markdown styling for retro theme */

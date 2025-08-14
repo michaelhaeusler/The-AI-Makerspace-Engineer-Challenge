@@ -688,16 +688,6 @@ video {
   --tw-gradient-to: rgb(0 0 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-retro-80s-cyan {
-  --tw-gradient-from: #00FFFF var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(0 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-.from-retro-80s-black {
-  --tw-gradient-from: #000000 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
 .from-retro-80s-purple {
   --tw-gradient-from: #8000FF var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(128 0 255 / 0) var(--tw-gradient-to-position);
@@ -709,17 +699,11 @@ video {
 .to-retro-70s-rust {
   --tw-gradient-to: #D2691E var(--tw-gradient-to-position);
 }
-.to-retro-80s-green {
-  --tw-gradient-to: #00FF00 var(--tw-gradient-to-position);
+.to-retro-80s-magenta {
+  --tw-gradient-to: #FF00FF var(--tw-gradient-to-position);
 }
 .to-retro-80s-purple {
   --tw-gradient-to: #8000FF var(--tw-gradient-to-position);
-}
-.to-retro-80s-blue {
-  --tw-gradient-to: #0000FF var(--tw-gradient-to-position);
-}
-.to-retro-80s-magenta {
-  --tw-gradient-to: #FF00FF var(--tw-gradient-to-position);
 }
 .p-2 {
   padding: 0.5rem;
@@ -1152,19 +1136,38 @@ a {
   width: 12px;
 }
 
-::-webkit-scrollbar-track {
+/* 70s Theme Scrollbar */
+.theme-70s ::-webkit-scrollbar-track {
   background: #F5F5DC;
   border-radius: 6px;
 }
 
-::-webkit-scrollbar-thumb {
+.theme-70s ::-webkit-scrollbar-thumb {
   background: linear-gradient(45deg, #FF6B35, #F7C242);
   border-radius: 6px;
   border: 2px solid #F5F5DC;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.theme-70s ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #F7C242, #FF6B35);
+}
+
+/* 80s Theme Scrollbar */
+.theme-80s ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 0px;
+}
+
+.theme-80s ::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00FFFF, #FF00FF);
+  border-radius: 0px;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.theme-80s ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #FF00FF, #00FFFF);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.7);
 }
 
 /* Markdown styling for retro theme */
