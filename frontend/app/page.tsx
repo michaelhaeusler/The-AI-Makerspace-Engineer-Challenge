@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Zap, Flower, Star, Palette } from 'lucide-react'
+import { Send, Zap, Flower, Star } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -12,6 +12,7 @@ interface Message {
 }
 
 export default function Home() {
+  const [theme, setTheme] = useState<'70s' | '80s'>('70s')
   const [messages, setMessages] = useState<Message[]>([])
   const [userMessage, setUserMessage] = useState('')
   const [developerMessage, setDeveloperMessage] = useState('You are a helpful AI assistant with a groovy 70s personality. Keep responses fun, positive, and occasionally use 70s slang like "far out", "groovy", "right on", etc.')
@@ -19,7 +20,6 @@ export default function Home() {
   const [model, setModel] = useState('gpt-4.1-mini')
   const [isLoading, setIsLoading] = useState(false)
   const [currentResponse, setCurrentResponse] = useState('')
-  const [theme, setTheme] = useState<'70s' | '80s'>('70s')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -31,7 +31,9 @@ export default function Home() {
   }, [messages, currentResponse])
 
   useEffect(() => {
-    document.body.className = `theme-${theme}`
+    // Preserve existing body classes and only toggle theme classes
+    document.body.classList.remove('theme-70s', 'theme-80s')
+    document.body.classList.add(`theme-${theme}`)
   }, [theme])
 
   // Update developer message based on theme
@@ -43,9 +45,7 @@ export default function Home() {
     }
   }, [theme])
 
-  const toggleTheme = () => {
-    setTheme(theme === '70s' ? '80s' : '70s')
-  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -120,15 +120,26 @@ export default function Home() {
     <div className="min-h-screen p-4 md:p-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="flex justify-center items-center mb-4">
-          <button
-            onClick={toggleTheme}
-            className="retro-button px-4 py-2 mr-4"
-            title={`Switch to ${theme === '70s' ? '80s' : '70s'} theme`}
-          >
-            <Palette className="w-5 h-5" />
-            {theme === '70s' ? '80s' : '70s'}
-          </button>
+        <div className="flex justify-center items-center mb-6">
+          {/* Theme Toggle Switch */}
+          <div className={`theme-switch ${theme === '70s' ? 'theme-70s' : 'theme-80s'}`}>
+            <button
+              onClick={() => setTheme('70s')}
+              className={`switch-option ${theme === '70s' ? 'active' : ''}`}
+              title="Switch to 70s theme"
+            >
+              <span className="switch-label">70s</span>
+              {theme === '70s' && <div className="switch-indicator"></div>}
+            </button>
+            <button
+              onClick={() => setTheme('80s')}
+              className={`switch-option ${theme === '80s' ? 'active' : ''}`}
+              title="Switch to 80s theme"
+            >
+              <span className="switch-label">80s</span>
+              {theme === '80s' && <div className="switch-indicator"></div>}
+            </button>
+          </div>
         </div>
         <div className="groovy-text text-4xl md:text-6xl mb-4">
           <Flower className="inline-block mr-4 animate-groove" />
@@ -136,7 +147,7 @@ export default function Home() {
           <Star className="inline-block ml-4 animate-groove" />
         </div>
         <p className="font-retro text-lg md:text-xl">
-          {theme === '70s' 
+          {theme === '70s'
             ? '✨ Far out AI conversations with a 70s vibe! ✨'
             : '🎵 Totally radical AI conversations with an 80s vibe! 🎵'
           }
@@ -209,17 +220,16 @@ export default function Home() {
                     key={index}
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                                          <div
-                        className={`max-w-[80%] p-4 rounded-2xl ${
-                          message.role === 'user'
-                            ? theme === '70s' 
-                              ? 'bg-gradient-to-r from-retro-70s-brown to-retro-70s-rust text-white'
-                              : 'bg-gradient-to-r from-retro-80s-blue to-retro-80s-purple text-white'
-                            : theme === '70s'
-                              ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green text-white'
-                              : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green text-white'
+                    <div
+                      className={`max-w-[80%] p-4 rounded-2xl ${message.role === 'user'
+                        ? theme === '70s'
+                          ? 'bg-gradient-to-r from-retro-70s-brown to-retro-70s-rust text-white'
+                          : 'bg-gradient-to-r from-retro-80s-blue to-retro-80s-purple text-white'
+                        : theme === '70s'
+                          ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green text-white'
+                          : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green text-white'
                         }`}
-                      >
+                    >
                       {message.role === 'user' ? (
                         <p className="font-retro">{message.content}</p>
                       ) : (
@@ -260,11 +270,10 @@ export default function Home() {
 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className={`${
-                     theme === '70s' 
-                       ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green'
-                       : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green'
-                   } text-white p-4 rounded-2xl`}>
+                    <div className={`${theme === '70s'
+                      ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green'
+                      : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green'
+                      } text-white p-4 rounded-2xl`}>
                       <div className="flex items-center space-x-2">
                         <div className="typing-indicator"></div>
                         <span className="font-retro">AI is thinking...</span>

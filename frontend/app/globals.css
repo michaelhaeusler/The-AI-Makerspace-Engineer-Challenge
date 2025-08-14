@@ -42,7 +42,7 @@
 /* 70s Theme */
 body.theme-70s {
   background-color: var(--retro-70s-cream) !important;
-  background-image: 
+  background-image:
     radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(218, 165, 32, 0.2) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(107, 142, 35, 0.12) 0%, transparent 50%);
@@ -51,12 +51,12 @@ body.theme-70s {
 /* 80s Theme */
 body.theme-80s {
   background-color: var(--retro-80s-black) !important;
-  background-image: 
-    linear-gradient(45deg, 
-      rgba(0, 255, 255, 0.1) 0%, 
-      rgba(255, 0, 255, 0.1) 25%, 
-      rgba(255, 255, 0, 0.1) 50%, 
-      rgba(0, 255, 0, 0.1) 75%, 
+  background-image:
+    linear-gradient(45deg,
+      rgba(0, 255, 255, 0.1) 0%,
+      rgba(255, 0, 255, 0.1) 25%,
+      rgba(255, 255, 0, 0.1) 50%,
+      rgba(0, 255, 0, 0.1) 75%,
       rgba(255, 0, 0, 0.1) 100%);
   color: var(--retro-80s-white);
 }
@@ -94,7 +94,7 @@ a {
 .theme-70s .retro-border {
   border: 3px solid var(--retro-70s-brown);
   border-radius: 15px;
-  box-shadow: 
+  box-shadow:
     0 0 0 3px var(--retro-70s-yellow),
     0 0 0 6px var(--retro-70s-orange),
     0 8px 16px rgba(139, 69, 19, 0.3);
@@ -104,7 +104,7 @@ a {
 .theme-80s .retro-border {
   border: 3px solid var(--retro-80s-cyan);
   border-radius: 0px;
-  box-shadow: 
+  box-shadow:
     0 0 0 3px var(--retro-80s-magenta),
     0 0 0 6px var(--retro-80s-yellow),
     0 8px 16px rgba(0, 255, 255, 0.3);
@@ -115,7 +115,7 @@ a {
   background: linear-gradient(45deg, var(--retro-70s-orange), var(--retro-70s-yellow));
   border: 2px solid var(--retro-70s-brown);
   border-radius: 25px;
-  box-shadow: 
+  box-shadow:
     0 4px 8px rgba(139, 69, 19, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
@@ -127,7 +127,7 @@ a {
 
 .theme-70s .retro-button:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 6px 12px rgba(139, 69, 19, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   background: linear-gradient(45deg, var(--retro-70s-yellow), var(--retro-70s-orange));
@@ -138,7 +138,7 @@ a {
   background: linear-gradient(45deg, var(--retro-80s-cyan), var(--retro-80s-magenta));
   border: 2px solid var(--retro-80s-white);
   border-radius: 0px;
-  box-shadow: 
+  box-shadow:
     0 4px 8px rgba(0, 255, 255, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
@@ -151,7 +151,7 @@ a {
 
 .theme-80s .retro-button:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 6px 12px rgba(255, 0, 255, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   background: linear-gradient(45deg, var(--retro-80s-magenta), var(--retro-80s-cyan));
@@ -162,7 +162,7 @@ a {
   background: var(--retro-70s-cream);
   border: 2px solid var(--retro-70s-brown);
   border-radius: 10px;
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(139, 69, 19, 0.2),
     0 2px 4px rgba(139, 69, 19, 0.1);
   font-family: 'Orbitron', monospace;
@@ -172,7 +172,7 @@ a {
 .theme-70s .retro-input:focus {
   outline: none;
   border-color: var(--retro-70s-orange);
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(139, 69, 19, 0.2),
     0 0 0 3px rgba(255, 107, 53, 0.3);
 }
@@ -182,7 +182,7 @@ a {
   background: var(--retro-80s-black);
   border: 2px solid var(--retro-80s-cyan);
   border-radius: 0px;
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(0, 255, 255, 0.2),
     0 2px 4px rgba(0, 255, 255, 0.1);
   font-family: 'Orbitron', monospace;
@@ -192,7 +192,7 @@ a {
 .theme-80s .retro-input:focus {
   outline: none;
   border-color: var(--retro-80s-magenta);
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(0, 255, 255, 0.2),
     0 0 0 3px rgba(255, 0, 255, 0.3);
 }
@@ -201,7 +201,7 @@ a {
 .theme-70s .groovy-text {
   font-family: 'Orbitron', monospace;
   font-weight: 900;
-  text-shadow: 
+  text-shadow:
     2px 2px 0 var(--retro-70s-orange),
     4px 4px 0 var(--retro-70s-yellow);
   letter-spacing: 2px;
@@ -212,7 +212,7 @@ a {
 .theme-80s .groovy-text {
   font-family: 'Orbitron', monospace;
   font-weight: 900;
-  text-shadow: 
+  text-shadow:
     0 0 5px var(--retro-80s-cyan),
     0 0 10px var(--retro-80s-cyan),
     0 0 15px var(--retro-80s-cyan),
@@ -224,24 +224,24 @@ a {
 
 /* 70s Psychedelic Background */
 .theme-70s .psychedelic-bg {
-  background: 
-    linear-gradient(45deg, 
-      rgba(139, 69, 19, 0.15) 0%, 
-      rgba(218, 165, 32, 0.2) 25%, 
-      rgba(107, 142, 35, 0.15) 50%, 
-      rgba(210, 105, 30, 0.2) 75%, 
+  background:
+    linear-gradient(45deg,
+      rgba(139, 69, 19, 0.15) 0%,
+      rgba(218, 165, 32, 0.2) 25%,
+      rgba(107, 142, 35, 0.15) 50%,
+      rgba(210, 105, 30, 0.2) 75%,
       rgba(160, 82, 45, 0.15) 100%);
   animation: groove 4s ease-in-out infinite alternate;
 }
 
 /* 80s Synthwave Background */
 .theme-80s .psychedelic-bg {
-  background: 
-    linear-gradient(45deg, 
-      rgba(0, 255, 255, 0.1) 0%, 
-      rgba(255, 0, 255, 0.15) 25%, 
-      rgba(255, 255, 0, 0.1) 50%, 
-      rgba(0, 255, 0, 0.15) 75%, 
+  background:
+    linear-gradient(45deg,
+      rgba(0, 255, 255, 0.1) 0%,
+      rgba(255, 0, 255, 0.15) 25%,
+      rgba(255, 255, 0, 0.1) 50%,
+      rgba(0, 255, 0, 0.15) 75%,
       rgba(255, 0, 0, 0.1) 100%);
   animation: groove 4s ease-in-out infinite alternate;
 }
@@ -258,14 +258,15 @@ a {
 
 @keyframes neon-pulse {
   0% {
-    text-shadow: 
+    text-shadow:
       0 0 5px var(--retro-80s-cyan),
       0 0 10px var(--retro-80s-cyan),
       0 0 15px var(--retro-80s-cyan),
       0 0 20px var(--retro-80s-magenta);
   }
+
   100% {
-    text-shadow: 
+    text-shadow:
       0 0 2px var(--retro-80s-cyan),
       0 0 5px var(--retro-80s-cyan),
       0 0 8px var(--retro-80s-cyan),
@@ -278,7 +279,7 @@ a {
   background: linear-gradient(135deg, var(--retro-70s-cream) 0%, #FFF8DC 100%);
   border: 3px solid var(--retro-70s-brown);
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     0 8px 16px rgba(139, 69, 19, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   position: relative;
@@ -300,7 +301,7 @@ a {
   background: linear-gradient(135deg, var(--retro-80s-black) 0%, #1a1a1a 100%);
   border: 3px solid var(--retro-80s-cyan);
   border-radius: 0px;
-  box-shadow: 
+  box-shadow:
     0 8px 16px rgba(0, 255, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
@@ -426,4 +427,160 @@ a {
 .prose em {
   font-style: italic;
   color: inherit;
+}
+
+/* Theme Switch Styles */
+.theme-switch {
+  display: flex;
+  border-radius: 50px;
+  padding: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* 70s Transistor Radio Switch */
+.theme-switch.theme-70s {
+  background: linear-gradient(135deg, var(--retro-70s-brown) 0%, var(--retro-70s-rust) 100%);
+  border: 3px solid var(--retro-70s-gold);
+  box-shadow:
+    0 4px 8px rgba(139, 69, 19, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.theme-switch.theme-70s .switch-option {
+  background: linear-gradient(135deg, var(--retro-70s-cream) 0%, #FFF8DC 100%);
+  border: 2px solid var(--retro-70s-brown);
+  border-radius: 25px;
+  padding: 12px 24px;
+  margin: 0 2px;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--retro-70s-brown);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 80px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.theme-switch.theme-70s .switch-option:hover {
+  background: linear-gradient(135deg, var(--retro-70s-yellow) 0%, var(--retro-70s-orange) 100%);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(139, 69, 19, 0.3);
+}
+
+.theme-switch.theme-70s .switch-option.active {
+  background: linear-gradient(135deg, var(--retro-70s-orange) 0%, var(--retro-70s-yellow) 100%);
+  color: white;
+  box-shadow:
+    0 2px 4px rgba(139, 69, 19, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.theme-switch.theme-70s .switch-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  background: var(--retro-70s-green);
+  border: 2px solid var(--retro-70s-brown);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--retro-70s-green);
+  animation: pulse-70s 2s ease-in-out infinite;
+}
+
+@keyframes pulse-70s {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--retro-70s-green);
+  }
+
+  50% {
+    box-shadow: 0 0 16px var(--retro-70s-green), 0 0 24px var(--retro-70s-green);
+  }
+}
+
+/* 80s Futuristic Synth Switch */
+.theme-switch.theme-80s {
+  background: linear-gradient(135deg, var(--retro-80s-black) 0%, #1a1a1a 100%);
+  border: 3px solid var(--retro-80s-cyan);
+  box-shadow:
+    0 4px 8px rgba(0, 255, 255, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.theme-switch.theme-80s .switch-option {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid var(--retro-80s-cyan);
+  border-radius: 0px;
+  padding: 12px 24px;
+  margin: 0 2px;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--retro-80s-cyan);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 80px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px var(--retro-80s-cyan);
+}
+
+.theme-switch.theme-80s .switch-option:hover {
+  background: linear-gradient(135deg, var(--retro-80s-magenta) 0%, var(--retro-80s-purple) 100%);
+  color: var(--retro-80s-white);
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 4px rgba(255, 0, 255, 0.3),
+    0 0 10px var(--retro-80s-magenta);
+  text-shadow: 0 0 10px var(--retro-80s-white);
+}
+
+.theme-switch.theme-80s .switch-option.active {
+  background: linear-gradient(135deg, var(--retro-80s-cyan) 0%, var(--retro-80s-blue) 100%);
+  color: var(--retro-80s-black);
+  box-shadow:
+    0 2px 4px rgba(0, 255, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 15px var(--retro-80s-cyan);
+  text-shadow: none;
+}
+
+.theme-switch.theme-80s .switch-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  background: var(--retro-80s-yellow);
+  border: 2px solid var(--retro-80s-cyan);
+  border-radius: 0px;
+  box-shadow:
+    0 0 8px var(--retro-80s-yellow),
+    0 0 16px var(--retro-80s-yellow);
+  animation: pulse-80s 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-80s {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px var(--retro-80s-yellow),
+      0 0 16px var(--retro-80s-yellow);
+  }
+
+  50% {
+    box-shadow:
+      0 0 16px var(--retro-80s-yellow),
+      0 0 24px var(--retro-80s-yellow),
+      0 0 32px var(--retro-80s-yellow);
+  }
 }
