@@ -626,16 +626,6 @@ video {
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
-.from-retro-green {
-  --tw-gradient-from: #4A7C59 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(74 124 89 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-.from-retro-orange {
-  --tw-gradient-from: #FF6B35 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 107 53 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
 .from-retro-brown {
   --tw-gradient-from: #8B4513 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(139 69 19 / 0) var(--tw-gradient-to-position);
@@ -645,12 +635,6 @@ video {
   --tw-gradient-from: #6B8E23 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(107 142 35 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-.to-retro-teal {
-  --tw-gradient-to: #008080 var(--tw-gradient-to-position);
-}
-.to-retro-yellow {
-  --tw-gradient-to: #F7C242 var(--tw-gradient-to-position);
 }
 .to-retro-green {
   --tw-gradient-to: #4A7C59 var(--tw-gradient-to-position);
@@ -708,21 +692,17 @@ video {
   --tw-text-opacity: 1;
   color: rgb(218 165 32 / var(--tw-text-opacity, 1));
 }
+.text-retro-olive {
+  --tw-text-opacity: 1;
+  color: rgb(107 142 35 / var(--tw-text-opacity, 1));
+}
 .text-retro-orange {
   --tw-text-opacity: 1;
   color: rgb(255 107 53 / var(--tw-text-opacity, 1));
 }
-.text-retro-pink {
-  --tw-text-opacity: 1;
-  color: rgb(255 105 180 / var(--tw-text-opacity, 1));
-}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-.text-retro-olive {
-  --tw-text-opacity: 1;
-  color: rgb(107 142 35 / var(--tw-text-opacity, 1));
 }
 .opacity-70 {
   opacity: 0.7;
@@ -734,6 +714,11 @@ video {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 245, 245, 220;
   --background-end-rgb: 255, 248, 220;
+}
+
+/* Force 70s background colors */
+body {
+  background-color: #F5F5DC !important;
 }
 
 * {
@@ -758,9 +743,9 @@ body {
     )
     rgb(var(--background-start-rgb));
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(107, 142, 35, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(218, 165, 32, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(107, 142, 35, 0.12) 0%, transparent 50%);
 }
 
 a {
@@ -830,11 +815,11 @@ a {
 .psychedelic-bg {
   background: 
     linear-gradient(45deg, 
-      rgba(139, 69, 19, 0.08) 0%, 
-      rgba(218, 165, 32, 0.1) 25%, 
-      rgba(107, 142, 35, 0.08) 50%, 
-      rgba(210, 105, 30, 0.1) 75%, 
-      rgba(160, 82, 45, 0.08) 100%);
+      rgba(139, 69, 19, 0.15) 0%, 
+      rgba(218, 165, 32, 0.2) 25%, 
+      rgba(107, 142, 35, 0.15) 50%, 
+      rgba(210, 105, 30, 0.2) 75%, 
+      rgba(160, 82, 45, 0.15) 100%);
   animation: groove 4s ease-in-out infinite alternate;
 }
 

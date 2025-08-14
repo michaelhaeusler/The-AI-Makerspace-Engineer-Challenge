@@ -101,7 +101,7 @@ export default function Home() {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="groovy-text text-4xl md:text-6xl text-retro-brown mb-4">
-                     <Flower className="inline-block mr-4 text-retro-olive animate-groove" />
+          <Flower className="inline-block mr-4 text-retro-olive animate-groove" />
           GROOVY CHAT
           <Star className="inline-block ml-4 text-retro-gold animate-groove" />
         </div>
@@ -118,7 +118,7 @@ export default function Home() {
               <Zap className="inline-block mr-2 text-retro-orange" />
               SETTINGS
             </h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-retro-brown font-bold mb-2">
@@ -177,11 +177,10 @@ export default function Home() {
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                                             className={`max-w-[80%] p-4 rounded-2xl ${
-                         message.role === 'user'
-                           ? 'bg-gradient-to-r from-retro-brown to-retro-rust text-white'
-                           : 'bg-gradient-to-r from-retro-olive to-retro-green text-white'
-                       }`}
+                      className={`max-w-[80%] p-4 rounded-2xl ${message.role === 'user'
+                        ? 'bg-gradient-to-r from-retro-brown to-retro-rust text-white'
+                        : 'bg-gradient-to-r from-retro-olive to-retro-green text-white'
+                        }`}
                     >
                       <p className="font-retro">{message.content}</p>
                       <p className="text-xs opacity-70 mt-2">
@@ -190,7 +189,7 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
-                
+
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="bg-gradient-to-r from-retro-olive to-retro-green text-white p-4 rounded-2xl">
@@ -204,7 +203,7 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-                
+
                 <div ref={messagesEndRef} />
               </div>
 
