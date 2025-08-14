@@ -1,35 +1,45 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "frontend/package.json", "use": "@vercel/next" },
-      { 
-        "src": "api/app.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "rewrites": [
-      { 
-        "source": "/api/(.*)", 
-        "destination": "api/app.py"
-      },
-      { 
-        "source": "/(.*)", 
-        "destination": "frontend/$1"
-      }
-    ],
-    "headers": [
-      {
-        "source": "/(.*)",
-        "headers": [
-          {
-            "key": "X-Frame-Options",
-            "value": "SAMEORIGIN"
-          },
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          }
-        ]
-      }
-    ]
-  } 
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "api/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "api/app.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "frontend/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
+}
