@@ -8,6 +8,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // 70s Theme Colors
+        'retro-70s-orange': '#FF6B35',
+        'retro-70s-yellow': '#F7C242',
+        'retro-70s-green': '#4A7C59',
+        'retro-70s-brown': '#8B4513',
+        'retro-70s-cream': '#F5F5DC',
+        'retro-70s-rust': '#D2691E',
+        'retro-70s-olive': '#6B8E23',
+        'retro-70s-gold': '#DAA520',
+        'retro-70s-teal': '#008080',
+        'retro-70s-pink': '#FF69B4',
+        'retro-70s-purple': '#9370DB',
+        
+        // 80s Theme Colors
+        'retro-80s-cyan': '#00FFFF',
+        'retro-80s-magenta': '#FF00FF',
+        'retro-80s-yellow': '#FFFF00',
+        'retro-80s-black': '#000000',
+        'retro-80s-white': '#FFFFFF',
+        'retro-80s-blue': '#0000FF',
+        'retro-80s-red': '#FF0000',
+        'retro-80s-green': '#00FF00',
+        'retro-80s-orange': '#FF8000',
+        'retro-80s-purple': '#8000FF',
+        'retro-80s-pink': '#FF0080',
+        
+        // Legacy colors for backward compatibility
         'retro-orange': '#FF6B35',
         'retro-yellow': '#F7C242',
         'retro-green': '#4A7C59',
