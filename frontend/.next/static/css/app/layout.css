@@ -636,11 +636,27 @@ video {
   --tw-gradient-to: rgb(255 107 53 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
+.from-retro-brown {
+  --tw-gradient-from: #8B4513 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(139 69 19 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-retro-olive {
+  --tw-gradient-from: #6B8E23 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(107 142 35 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
 .to-retro-teal {
   --tw-gradient-to: #008080 var(--tw-gradient-to-position);
 }
 .to-retro-yellow {
   --tw-gradient-to: #F7C242 var(--tw-gradient-to-position);
+}
+.to-retro-green {
+  --tw-gradient-to: #4A7C59 var(--tw-gradient-to-position);
+}
+.to-retro-rust {
+  --tw-gradient-to: #D2691E var(--tw-gradient-to-position);
 }
 .p-3 {
   padding: 0.75rem;
@@ -704,6 +720,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
+.text-retro-olive {
+  --tw-text-opacity: 1;
+  color: rgb(107 142 35 / var(--tw-text-opacity, 1));
+}
 .opacity-70 {
   opacity: 0.7;
 }
@@ -738,9 +758,9 @@ body {
     )
     rgb(var(--background-start-rgb));
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(247, 194, 66, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(74, 124, 89, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(107, 142, 35, 0.06) 0%, transparent 50%);
 }
 
 a {
@@ -810,11 +830,11 @@ a {
 .psychedelic-bg {
   background: 
     linear-gradient(45deg, 
-      rgba(255, 107, 53, 0.1) 0%, 
-      rgba(247, 194, 66, 0.1) 25%, 
-      rgba(74, 124, 89, 0.1) 50%, 
-      rgba(255, 105, 180, 0.1) 75%, 
-      rgba(147, 112, 219, 0.1) 100%);
+      rgba(139, 69, 19, 0.08) 0%, 
+      rgba(218, 165, 32, 0.1) 25%, 
+      rgba(107, 142, 35, 0.08) 50%, 
+      rgba(210, 105, 30, 0.1) 75%, 
+      rgba(160, 82, 45, 0.08) 100%);
   animation: groove 4s ease-in-out infinite alternate;
 }
 
@@ -841,7 +861,7 @@ a {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #FF6B35, #F7C242, #4A7C59, #FF69B4, #9370DB);
+  background: linear-gradient(90deg, #8B4513, #DAA520, #6B8E23, #D2691E, #A0522D);
 }
 
 .typing-indicator {

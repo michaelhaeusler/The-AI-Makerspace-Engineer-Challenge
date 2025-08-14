@@ -101,7 +101,7 @@ export default function Home() {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="groovy-text text-4xl md:text-6xl text-retro-brown mb-4">
-          <Flower className="inline-block mr-4 text-retro-pink animate-groove" />
+                     <Flower className="inline-block mr-4 text-retro-olive animate-groove" />
           GROOVY CHAT
           <Star className="inline-block ml-4 text-retro-gold animate-groove" />
         </div>
@@ -177,11 +177,11 @@ export default function Home() {
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[80%] p-4 rounded-2xl ${
-                        message.role === 'user'
-                          ? 'bg-gradient-to-r from-retro-orange to-retro-yellow text-white'
-                          : 'bg-gradient-to-r from-retro-green to-retro-teal text-white'
-                      }`}
+                                             className={`max-w-[80%] p-4 rounded-2xl ${
+                         message.role === 'user'
+                           ? 'bg-gradient-to-r from-retro-brown to-retro-rust text-white'
+                           : 'bg-gradient-to-r from-retro-olive to-retro-green text-white'
+                       }`}
                     >
                       <p className="font-retro">{message.content}</p>
                       <p className="text-xs opacity-70 mt-2">
@@ -193,7 +193,7 @@ export default function Home() {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gradient-to-r from-retro-green to-retro-teal text-white p-4 rounded-2xl">
+                    <div className="bg-gradient-to-r from-retro-olive to-retro-green text-white p-4 rounded-2xl">
                       <div className="flex items-center space-x-2">
                         <div className="typing-indicator"></div>
                         <span className="font-retro">AI is thinking...</span>
