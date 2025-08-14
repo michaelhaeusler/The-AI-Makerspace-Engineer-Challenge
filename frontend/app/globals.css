@@ -509,6 +509,7 @@ a {
 .theme-switch.theme-80s {
   background: linear-gradient(135deg, var(--retro-80s-black) 0%, #1a1a1a 100%);
   border: 3px solid var(--retro-80s-cyan);
+  border-radius: 0px;
   box-shadow:
     0 4px 8px rgba(0, 255, 255, 0.3),
     inset 0 2px 4px rgba(255, 255, 255, 0.1);

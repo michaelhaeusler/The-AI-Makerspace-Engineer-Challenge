@@ -320,7 +320,7 @@ export default function Home() {
                   type="text"
                   value={userMessage}
                   onChange={(e) => setUserMessage(e.target.value)}
-                  placeholder="Type your groovy message..."
+                  placeholder={theme === '70s' ? "Type your groovy message..." : "Type your radical message..."}
                   className="retro-input flex-1 p-3 text-retro-brown"
                   disabled={isLoading}
                 />
