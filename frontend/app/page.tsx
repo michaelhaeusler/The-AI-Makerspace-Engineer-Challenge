@@ -227,7 +227,7 @@ export default function Home() {
                           : 'bg-gradient-to-r from-retro-80s-blue to-retro-80s-purple text-white'
                         : theme === '70s'
                           ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green text-white'
-                          : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green text-white'
+                          : 'bg-gradient-to-r from-retro-80s-purple to-retro-80s-magenta text-white'
                         }`}
                     >
                       {message.role === 'user' ? (
@@ -272,7 +272,7 @@ export default function Home() {
                   <div className="flex justify-start">
                     <div className={`${theme === '70s'
                       ? 'bg-gradient-to-r from-retro-70s-olive to-retro-70s-green'
-                      : 'bg-gradient-to-r from-retro-80s-cyan to-retro-80s-green'
+                      : 'bg-gradient-to-r from-retro-80s-purple to-retro-80s-magenta'
                       } text-white p-4 rounded-2xl`}>
                       <div className="flex items-center space-x-2">
                         <div className="typing-indicator"></div>
