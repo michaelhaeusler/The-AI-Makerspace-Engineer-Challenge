@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Send, Zap, Flower, Star } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -176,17 +178,47 @@ export default function Home() {
                     key={index}
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div
-                      className={`max-w-[80%] p-4 rounded-2xl ${message.role === 'user'
-                        ? 'bg-gradient-to-r from-retro-brown to-retro-rust text-white'
-                        : 'bg-gradient-to-r from-retro-olive to-retro-green text-white'
-                        }`}
-                    >
-                      <p className="font-retro">{message.content}</p>
-                      <p className="text-xs opacity-70 mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
-                    </div>
+                                          <div
+                        className={`max-w-[80%] p-4 rounded-2xl ${message.role === 'user'
+                          ? 'bg-gradient-to-r from-retro-brown to-retro-rust text-white'
+                          : 'bg-gradient-to-r from-retro-olive to-retro-green text-white'
+                          }`}
+                      >
+                        {message.role === 'user' ? (
+                          <p className="font-retro">{message.content}</p>
+                        ) : (
+                          <div className="font-retro prose prose-invert max-w-none">
+                            <ReactMarkdown 
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                h1: ({node, ...props}) => <h1 className="text-xl font-bold mb-2" {...props} />,
+                                h2: ({node, ...props}) => <h2 className="text-lg font-bold mb-2" {...props} />,
+                                h3: ({node, ...props}) => <h3 className="text-base font-bold mb-1" {...props} />,
+                                p: ({node, ...props}) => <p className="mb-2" {...props} />,
+                                ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                                ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                                li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                                code: ({node, inline, ...props}: any) => 
+                                  inline ? (
+                                    <code className="bg-black bg-opacity-30 px-1 py-0.5 rounded text-sm" {...props} />
+                                  ) : (
+                                    <code className="block bg-black bg-opacity-30 p-2 rounded text-sm mb-2 overflow-x-auto" {...props} />
+                                  ),
+                                pre: ({node, ...props}) => <pre className="bg-black bg-opacity-30 p-2 rounded text-sm mb-2 overflow-x-auto" {...props} />,
+                                blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-white border-opacity-50 pl-4 italic mb-2" {...props} />,
+                                a: ({node, ...props}) => <a className="text-blue-200 underline" {...props} />,
+                                strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                                em: ({node, ...props}) => <em className="italic" {...props} />,
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
+                          </div>
+                        )}
+                        <p className="text-xs opacity-70 mt-2">
+                          {message.timestamp.toLocaleTimeString()}
+                        </p>
+                      </div>
                   </div>
                 ))}
 
@@ -198,7 +230,33 @@ export default function Home() {
                         <span className="font-retro">AI is thinking...</span>
                       </div>
                       {currentResponse && (
-                        <p className="font-retro mt-2">{currentResponse}</p>
+                        <div className="font-retro prose prose-invert max-w-none mt-2">
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              h1: ({node, ...props}) => <h1 className="text-xl font-bold mb-2" {...props} />,
+                              h2: ({node, ...props}) => <h2 className="text-lg font-bold mb-2" {...props} />,
+                              h3: ({node, ...props}) => <h3 className="text-base font-bold mb-1" {...props} />,
+                              p: ({node, ...props}) => <p className="mb-2" {...props} />,
+                              ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                              ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                              li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                              code: ({node, inline, ...props}: any) => 
+                                inline ? (
+                                  <code className="bg-black bg-opacity-30 px-1 py-0.5 rounded text-sm" {...props} />
+                                ) : (
+                                  <code className="block bg-black bg-opacity-30 p-2 rounded text-sm mb-2 overflow-x-auto" {...props} />
+                                ),
+                              pre: ({node, ...props}) => <pre className="bg-black bg-opacity-30 p-2 rounded text-sm mb-2 overflow-x-auto" {...props} />,
+                              blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-white border-opacity-50 pl-4 italic mb-2" {...props} />,
+                              a: ({node, ...props}) => <a className="text-blue-200 underline" {...props} />,
+                              strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                              em: ({node, ...props}) => <em className="italic" {...props} />,
+                            }}
+                          >
+                            {currentResponse}
+                          </ReactMarkdown>
+                        </div>
                       )}
                     </div>
                   </div>

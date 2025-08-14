@@ -176,3 +176,72 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #F7C242, #FF6B35);
 }
+
+/* Markdown styling for retro theme */
+.prose {
+  color: inherit;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: inherit;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+}
+
+.prose p {
+  color: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.prose ul, .prose ol {
+  color: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.prose li {
+  color: inherit;
+  margin-bottom: 0.25rem;
+}
+
+.prose code {
+  font-family: 'Courier New', monospace;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.prose pre {
+  font-family: 'Courier New', monospace;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.prose blockquote {
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  padding-left: 1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+
+.prose a {
+  color: #87CEEB;
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: #ADD8E6;
+}
+
+.prose strong {
+  font-weight: bold;
+  color: inherit;
+}
+
+.prose em {
+  font-style: italic;
+  color: inherit;
+}
