@@ -1,10 +1,5 @@
 # 🎵 Retro Chat Vibes - AI-Powered Chat with 70s/80s Flair! 🚀
 
-<p align="center">
-  <img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719" 
-       width="200px" height="auto" alt="AI Makerspace Logo"/>
-</p>
-
 ## 🌟 What's This Groovy App All About?
 
 Welcome to **Retro Chat Vibes** - your totally rad AI chat application that takes you back to the golden era of computing! 🕹️✨
