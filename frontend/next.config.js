@@ -1,13 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: '/api/:path*',
-      },
-    ];
-  },
+  // Removed the problematic rewrite rule that was causing redirect loops
+  // Vercel handles API routing differently than local development
 }
 
 module.exports = nextConfig

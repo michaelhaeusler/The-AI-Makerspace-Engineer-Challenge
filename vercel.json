@@ -20,13 +20,6 @@
       "destination": "frontend/$1"
     }
   ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/",
-      "permanent": false
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
