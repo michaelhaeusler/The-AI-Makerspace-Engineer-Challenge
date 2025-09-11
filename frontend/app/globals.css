@@ -605,19 +605,180 @@ a {
   }
 }
 
-/* Personality Slider Styles */
+/* Personality Range Slider Styles */
 .personality-slider-container {
   margin-top: 8px;
+  padding-bottom: 16px;
 }
 
-.personality-slider {
+.slider-labels {
   display: flex;
-  border-radius: 50px;
-  padding: 4px;
-  position: relative;
-  transition: all 0.3s ease;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 12px;
 }
+
+.slider-label-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--retro-70s-brown);
+  text-align: center;
+  flex: 1;
+}
+
+.theme-80s .slider-label-text {
+  color: var(--retro-80s-cyan);
+  text-shadow: 0 0 3px var(--retro-80s-cyan);
+}
+
+.slider-wrapper {
+  padding: 0 12px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+/* 70s Range Slider */
+.theme-70s .personality-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg,
+      var(--retro-70s-cream) 0%,
+      var(--retro-70s-yellow) 33%,
+      var(--retro-70s-orange) 66%,
+      var(--retro-70s-brown) 100%);
+  outline: none;
+  border: 2px solid var(--retro-70s-brown);
+  box-shadow:
+    inset 0 2px 4px rgba(139, 69, 19, 0.2),
+    0 2px 4px rgba(139, 69, 19, 0.1);
+  cursor: pointer;
+  margin: 0 12px;
+  width: calc(100% - 24px);
+}
+
+.theme-70s .personality-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--retro-70s-orange) 0%, var(--retro-70s-yellow) 100%);
+  border: 3px solid var(--retro-70s-brown);
+  cursor: pointer;
+  box-shadow:
+    0 4px 8px rgba(139, 69, 19, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.theme-70s .personality-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 6px 12px rgba(139, 69, 19, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.theme-70s .personality-range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--retro-70s-orange) 0%, var(--retro-70s-yellow) 100%);
+  border: 3px solid var(--retro-70s-brown);
+  cursor: pointer;
+  box-shadow:
+    0 4px 8px rgba(139, 69, 19, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* 80s Range Slider */
+.theme-80s .personality-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 0px;
+  background: linear-gradient(90deg,
+      var(--retro-80s-black) 0%,
+      var(--retro-80s-cyan) 33%,
+      var(--retro-80s-magenta) 66%,
+      var(--retro-80s-yellow) 100%);
+  outline: none;
+  border: 2px solid var(--retro-80s-cyan);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 255, 255, 0.2),
+    0 2px 4px rgba(0, 255, 255, 0.1);
+  cursor: pointer;
+  margin: 0 12px;
+  width: calc(100% - 24px);
+}
+
+.theme-80s .personality-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 0px;
+  background: linear-gradient(135deg, var(--retro-80s-cyan) 0%, var(--retro-80s-magenta) 100%);
+  border: 3px solid var(--retro-80s-white);
+  cursor: pointer;
+  box-shadow:
+    0 4px 8px rgba(0, 255, 255, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 12px var(--retro-80s-cyan);
+  transition: all 0.3s ease;
+}
+
+.theme-80s .personality-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 6px 12px rgba(0, 255, 255, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 16px var(--retro-80s-cyan);
+}
+
+.theme-80s .personality-range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 0px;
+  background: linear-gradient(135deg, var(--retro-80s-cyan) 0%, var(--retro-80s-magenta) 100%);
+  border: 3px solid var(--retro-80s-white);
+  cursor: pointer;
+  box-shadow:
+    0 4px 8px rgba(0, 255, 255, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 12px var(--retro-80s-cyan);
+  transition: all 0.3s ease;
+}
+
+.slider-description {
+  text-align: center;
+  padding: 6px 8px 4px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  margin-bottom: -8px;
+}
+
+.theme-70s .slider-description {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(218, 165, 32, 0.1) 100%);
+  border: 2px solid var(--retro-70s-brown);
+  border-radius: 15px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.theme-80s .slider-description {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid var(--retro-80s-cyan);
+  border-radius: 0px;
+}
+
 
 /* 70s Personality Slider */
 .theme-70s .personality-slider {

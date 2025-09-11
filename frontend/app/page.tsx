@@ -15,7 +15,7 @@ export default function Home() {
   const [theme, setTheme] = useState<'70s' | '80s'>('70s')
   const [messages, setMessages] = useState<Message[]>([])
   const [userMessage, setUserMessage] = useState('')
-  const [personalityIntensity, setPersonalityIntensity] = useState<'off' | 'light' | 'medium' | 'full'>('medium')
+  const [personalityIntensity, setPersonalityIntensity] = useState<number>(2) // 0=off, 1=light, 2=medium, 3=full
   const [apiKey, setApiKey] = useState('')
   const [model, setModel] = useState('gpt-4.1-mini')
   const [isLoading, setIsLoading] = useState(false)
@@ -28,28 +28,28 @@ export default function Home() {
 
   // Generate developer message based on theme and personality intensity
   const getDeveloperMessage = () => {
-    if (personalityIntensity === 'off') {
+    if (personalityIntensity === 0) {
       return 'You are a helpful AI assistant. Provide clear, professional, and informative responses.'
     }
 
     if (theme === '70s') {
       switch (personalityIntensity) {
-        case 'light':
+        case 1:
           return 'You are a helpful AI assistant with a subtle 70s vibe. Occasionally use gentle 70s expressions like "cool" or "nice" but keep responses mostly professional.'
-        case 'medium':
+        case 2:
           return 'You are a helpful AI assistant with a groovy 70s personality. Keep responses fun and positive, occasionally using 70s slang like "far out", "groovy", "right on", etc.'
-        case 'full':
+        case 3:
           return 'You are a totally groovy AI assistant with a full-on 70s personality! Use lots of 70s slang like "far out", "groovy", "right on", "peace and love", "dig it", "outta sight", "keep on truckin\'", and "can you dig it?". Be super positive, hippie-like, and use phrases like "that\'s totally groovy, man!" and "peace out!"'
         default:
           return 'You are a helpful AI assistant with a groovy 70s personality. Keep responses fun, positive, and occasionally use 70s slang like "far out", "groovy", "right on", etc.'
       }
     } else {
       switch (personalityIntensity) {
-        case 'light':
+        case 1:
           return 'You are a helpful AI assistant with a subtle 80s vibe. Occasionally use gentle 80s expressions like "cool" or "awesome" but keep responses mostly professional.'
-        case 'medium':
+        case 2:
           return 'You are a helpful AI assistant with a totally radical 80s personality. Keep responses fun, positive, and occasionally use 80s slang like "awesome", "radical", "totally", "dude", etc.'
-        case 'full':
+        case 3:
           return 'You are a totally radical AI assistant with a full-on 80s personality! Use lots of 80s slang like "awesome", "radical", "totally", "dude", "gnarly", "bodacious", "tubular", "like totally", "for sure", and "no way!". Be super enthusiastic, use phrases like "that\'s totally awesome, dude!" and "radical!"'
         default:
           return 'You are a helpful AI assistant with a totally radical 80s personality. Keep responses fun, positive, and occasionally use 80s slang like "awesome", "radical", "totally", "dude", etc.'
@@ -185,7 +185,7 @@ export default function Home() {
               SETTINGS
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
                 <label className="block text-retro-brown font-bold mb-2">
                   OpenAI API Key
@@ -219,41 +219,48 @@ export default function Home() {
                   {theme === '70s' ? '🌻 Groovy Vibes' : '🌈 Radical Energy'}
                 </label>
                 <div className="personality-slider-container">
-                  <div className="personality-slider">
-                    {(['off', 'light', 'medium', 'full'] as const).map((level) => (
-                      <button
-                        key={level}
-                        onClick={() => setPersonalityIntensity(level)}
-                        className={`slider-option ${personalityIntensity === level ? 'active' : ''}`}
-                        title={`${level.charAt(0).toUpperCase() + level.slice(1)} ${theme === '70s' ? '70s' : '80s'} personality`}
-                      >
-                        <span className="slider-label">
-                          {theme === '70s'
-                            ? (level === 'off' ? 'Chill' : level === 'light' ? 'Mellow' : level === 'medium' ? 'Groovy' : 'Far Out')
-                            : (level === 'off' ? 'Normal' : level === 'light' ? 'Cool' : level === 'medium' ? 'Radical' : 'Tubular')
-                          }
-                        </span>
-                        {personalityIntensity === level && <div className="slider-indicator"></div>}
-                      </button>
-                    ))}
+                  <div className="slider-labels">
+                    <span className="slider-label-text">
+                      {theme === '70s' ? 'Chill' : 'Normal'}
+                    </span>
+                    <span className="slider-label-text">
+                      {theme === '70s' ? 'Mellow' : 'Cool'}
+                    </span>
+                    <span className="slider-label-text">
+                      {theme === '70s' ? 'Groovy' : 'Radical'}
+                    </span>
+                    <span className="slider-label-text">
+                      {theme === '70s' ? 'Far Out' : 'Tubular'}
+                    </span>
+                  </div>
+                  <div className="slider-wrapper">
+                    <input
+                      type="range"
+                      min="0"
+                      max="3"
+                      step="1"
+                      value={personalityIntensity}
+                      onChange={(e) => setPersonalityIntensity(parseInt(e.target.value))}
+                      className="personality-range-slider"
+                    />
                   </div>
                   <div className="slider-description">
-                    {personalityIntensity === 'off' && (
+                    {personalityIntensity === 0 && (
                       <span className="text-sm text-retro-brown">
                         {theme === '70s' ? '🤙 Professional and chill responses' : '💼 Professional and normal responses'}
                       </span>
                     )}
-                    {personalityIntensity === 'light' && (
+                    {personalityIntensity === 1 && (
                       <span className="text-sm text-retro-brown">
                         {theme === '70s' ? '🌿 Subtle 70s vibes with gentle slang' : '✨ Subtle 80s vibes with cool expressions'}
                       </span>
                     )}
-                    {personalityIntensity === 'medium' && (
+                    {personalityIntensity === 2 && (
                       <span className="text-sm text-retro-brown">
                         {theme === '70s' ? '🌸 Groovy personality with classic 70s slang' : '🎵 Radical personality with classic 80s slang'}
                       </span>
                     )}
-                    {personalityIntensity === 'full' && (
+                    {personalityIntensity === 3 && (
                       <span className="text-sm text-retro-brown">
                         {theme === '70s' ? '🌈 Full hippie mode - peace, love, and far out vibes!' : '🚀 Full synthwave mode - totally tubular and bodacious!'}
                       </span>
