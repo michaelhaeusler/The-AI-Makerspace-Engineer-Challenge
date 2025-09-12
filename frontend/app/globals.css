@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -929,5 +932,69 @@ a {
 
 /* Chat messages container with proper scrollbar spacing */
 .chat-messages-container {
-  padding-right: 16px; /* Add space between content and scrollbar */
+  padding-right: 16px;
+  /* Add space between content and scrollbar */
+}
+
+/* Theme-specific chat fonts with improved readability */
+.theme-70s .chat-message-text {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  line-height: 1.5;
+}
+
+.theme-80s .chat-message-text {
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+/* Improved spacing for chat message content */
+.chat-message-text p {
+  margin-bottom: 1rem !important;
+}
+
+.chat-message-text ul,
+.chat-message-text ol {
+  margin-bottom: 1rem !important;
+  padding-left: 1.5rem !important;
+}
+
+.chat-message-text li {
+  margin-bottom: 0.5rem !important;
+}
+
+.chat-message-text h1,
+.chat-message-text h2,
+.chat-message-text h3,
+.chat-message-text h4,
+.chat-message-text h5,
+.chat-message-text h6 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.4 !important;
+}
+
+.chat-message-text h1:first-child,
+.chat-message-text h2:first-child,
+.chat-message-text h3:first-child,
+.chat-message-text h4:first-child,
+.chat-message-text h5:first-child,
+.chat-message-text h6:first-child {
+  margin-top: 0 !important;
+}
+
+.chat-message-text blockquote {
+  margin: 1rem 0 !important;
+  padding-left: 1rem !important;
+  border-left: 3px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.chat-message-text pre,
+.chat-message-text code {
+  margin: 0.5rem 0 !important;
+  padding: 0.75rem !important;
+  border-radius: 0.5rem !important;
 }

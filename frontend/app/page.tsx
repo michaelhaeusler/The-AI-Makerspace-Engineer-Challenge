@@ -296,19 +296,19 @@ export default function Home() {
                         }`}
                     >
                       {message.role === 'user' ? (
-                        <p className="font-retro">{message.content}</p>
+                        <p className="chat-message-text">{message.content}</p>
                       ) : (
-                        <div className="font-retro prose prose-invert max-w-none">
+                        <div className="chat-message-text prose prose-invert max-w-none">
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              h1: ({ node, ...props }) => <h1 className="text-xl font-bold mb-2" {...props} />,
-                              h2: ({ node, ...props }) => <h2 className="text-lg font-bold mb-2" {...props} />,
-                              h3: ({ node, ...props }) => <h3 className="text-base font-bold mb-1" {...props} />,
-                              p: ({ node, ...props }) => <p className="mb-2" {...props} />,
-                              ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-2" {...props} />,
-                              ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-2" {...props} />,
-                              li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+                              h1: ({ node, ...props }) => <h1 className="text-xl font-bold mb-3 mt-4" {...props} />,
+                              h2: ({ node, ...props }) => <h2 className="text-lg font-bold mb-2 mt-3" {...props} />,
+                              h3: ({ node, ...props }) => <h3 className="text-base font-bold mb-2 mt-2" {...props} />,
+                              p: ({ node, ...props }) => <p className="mb-3" {...props} />,
+                              ul: ({ node, ...props }) => <ul className="list-disc list-outside mb-3 ml-4" {...props} />,
+                              ol: ({ node, ...props }) => <ol className="list-decimal list-outside mb-3 ml-4" {...props} />,
+                              li: ({ node, ...props }) => <li className="mb-2" {...props} />,
                               code: ({ node, inline, ...props }: any) =>
                                 inline ? (
                                   <code className="bg-black bg-opacity-30 px-1 py-0.5 rounded text-sm" {...props} />
@@ -341,20 +341,20 @@ export default function Home() {
                       } text-white p-4 rounded-2xl`}>
                       <div className="flex items-center space-x-2">
                         <div className="typing-indicator"></div>
-                        <span className="font-retro">AI is thinking...</span>
+                        <span className="chat-message-text">AI is thinking...</span>
                       </div>
                       {currentResponse && (
-                        <div className="font-retro prose prose-invert max-w-none mt-2">
+                        <div className="chat-message-text prose prose-invert max-w-none mt-2">
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              h1: ({ node, ...props }) => <h1 className="text-xl font-bold mb-2" {...props} />,
-                              h2: ({ node, ...props }) => <h2 className="text-lg font-bold mb-2" {...props} />,
-                              h3: ({ node, ...props }) => <h3 className="text-base font-bold mb-1" {...props} />,
-                              p: ({ node, ...props }) => <p className="mb-2" {...props} />,
-                              ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-2" {...props} />,
-                              ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-2" {...props} />,
-                              li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+                              h1: ({ node, ...props }) => <h1 className="text-xl font-bold mb-3 mt-4" {...props} />,
+                              h2: ({ node, ...props }) => <h2 className="text-lg font-bold mb-2 mt-3" {...props} />,
+                              h3: ({ node, ...props }) => <h3 className="text-base font-bold mb-2 mt-2" {...props} />,
+                              p: ({ node, ...props }) => <p className="mb-3" {...props} />,
+                              ul: ({ node, ...props }) => <ul className="list-disc list-outside mb-3 ml-4" {...props} />,
+                              ol: ({ node, ...props }) => <ol className="list-decimal list-outside mb-3 ml-4" {...props} />,
+                              li: ({ node, ...props }) => <li className="mb-2" {...props} />,
                               code: ({ node, inline, ...props }: any) =>
                                 inline ? (
                                   <code className="bg-black bg-opacity-30 px-1 py-0.5 rounded text-sm" {...props} />
