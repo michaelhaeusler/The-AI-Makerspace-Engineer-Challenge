@@ -32,18 +32,16 @@ cd frontend && npm install && cd ..
 
 # Start backend server in background
 echo "🎵 Starting FastAPI backend server on http://localhost:8000..."
-cd api && uv run python app.py &
+(cd api && uv run python app.py) &
 BACKEND_PID=$!
-cd ..
 
 # Wait a moment for backend to start
 sleep 2
 
 # Start frontend server in background
 echo "🎨 Starting Next.js frontend server on http://localhost:3000..."
-cd frontend && npm run dev &
+(cd frontend && npm run dev) &
 FRONTEND_PID=$!
-cd ..
 
 # Save PIDs to file for stop script
 echo "$BACKEND_PID" > .dev-pids
@@ -63,3 +61,4 @@ trap 'echo "🛑 Stopping development servers..."; kill $BACKEND_PID $FRONTEND_P
 
 # Keep script running
 wait
+
