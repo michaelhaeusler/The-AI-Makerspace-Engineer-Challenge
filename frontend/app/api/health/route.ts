@@ -3,7 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   try {
     // Forward the request to the backend
-    const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:8000'
+    const backendUrl = process.env.NODE_ENV === 'production' 
+      ? '' // Use relative URL in production (same Vercel project)
+      : 'http://127.0.0.1:8000' // Use localhost in development
     const backendResponse = await fetch(`${backendUrl}/api/health`, {
       method: 'GET',
     })
