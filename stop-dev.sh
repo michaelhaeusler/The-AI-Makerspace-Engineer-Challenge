@@ -72,3 +72,4 @@ pkill -f "next dev" 2>/dev/null && echo "✅ Stopped Next.js dev processes" || e
 echo ""
 echo "🎉 All development servers stopped!"
 echo "💡 Run ./start-dev.sh to start them again"
+

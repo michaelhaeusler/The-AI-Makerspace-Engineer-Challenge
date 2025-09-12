@@ -34,3 +34,4 @@ echo "💡 Commands:"
 echo "   ./start-dev.sh  - Start both servers"
 echo "   ./stop-dev.sh   - Stop both servers"
 echo "   ./start-backend.sh - Start only backend"
+

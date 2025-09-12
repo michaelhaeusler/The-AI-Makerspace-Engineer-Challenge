@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed the problematic rewrite rule that was causing redirect loops
-  // Vercel handles API routing differently than local development
+  // Using Next.js API routes to proxy to backend instead of rewrites
 }
 
 module.exports = nextConfig
