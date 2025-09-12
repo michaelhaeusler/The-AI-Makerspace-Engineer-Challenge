@@ -920,3 +920,14 @@ a {
   border: 1px solid var(--retro-80s-cyan);
   border-radius: 0px;
 }
+
+/* 80s Theme Text Color Override - Make brown text flashy neon */
+.theme-80s .text-retro-brown {
+  color: var(--retro-80s-cyan) !important;
+  text-shadow: 0 0 5px var(--retro-80s-cyan), 0 0 10px var(--retro-80s-cyan);
+}
+
+/* Chat messages container with proper scrollbar spacing */
+.chat-messages-container {
+  padding-right: 16px; /* Add space between content and scrollbar */
+}
