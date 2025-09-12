@@ -1,13 +1,17 @@
 [project]
-name = "beyond-chatgpt"
+name = "retro-chat-vibes"
 version = "0.1.0"
-description = "gpt-like-a-dev"
+description = "A groovy chat app with 70s and 80s themes and AI personality controls"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.12",
-    "jupyter>=1.1.1",
-    "openai",
-    "pydantic>=2.11.4",
     "uvicorn>=0.34.2",
+    "openai>=1.77.0",
+    "pydantic>=2.11.4",
+    "python-multipart>=0.0.18",
+    "jupyter>=1.1.1",
 ]
+
+[tool.uv]
+dev-dependencies = ["pytest>=7.0.0", "black>=23.0.0", "ruff>=0.1.0"]
