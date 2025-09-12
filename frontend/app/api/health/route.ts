@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   try {
     // Forward the request to the backend
-    const backendResponse = await fetch('http://127.0.0.1:8000/api/health', {
+    const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:8000'
+    const backendResponse = await fetch(`${backendUrl}/api/health`, {
       method: 'GET',
     })
 
