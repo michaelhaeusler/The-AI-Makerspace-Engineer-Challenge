@@ -1,6 +1,5 @@
 # Project Specific
 uv.lock
-.dev-pids
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
