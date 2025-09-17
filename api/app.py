@@ -76,8 +76,8 @@ class ChatRequest(BaseModel):
     class Config:
         """Pydantic configuration for the model."""
 
-        # Example of what a valid request looks like
-        schema_extra = {
+        # Example of what a valid request looks like (updated for Pydantic V2)
+        json_schema_extra = {
             "example": {
                 "developer_message": "You are a helpful AI assistant.",
                 "user_message": "What is machine learning?",
@@ -213,9 +213,10 @@ if __name__ == "__main__":
     import uvicorn
 
     # Start the development server
+    # Note: reload=False to avoid the import string warning when running directly
     uvicorn.run(
         app,
         host="0.0.0.0",  # Accept connections from any IP address
         port=8000,  # Listen on port 8000
-        reload=True,  # Auto-reload on code changes (development only)
+        reload=False,  # Disabled when running directly to avoid warnings
     )
