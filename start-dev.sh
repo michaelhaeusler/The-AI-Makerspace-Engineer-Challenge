@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Start both frontend and backend servers for development
-echo "🚀 Starting Retro Chat Vibes Development Environment..."
+# Start backend server for development (frontend removed)
+echo "🚀 Starting RAG Chat Development Environment..."
 
 # Check if we're in the right directory
-if [ ! -f "api/app.py" ] || [ ! -f "frontend/package.json" ]; then
-    echo "❌ Error: Required files not found. Please run this script from the project root."
+if [ ! -f "api/app.py" ]; then
+    echo "❌ Error: api/app.py not found. Please run this script from the project root."
     exit 1
 fi
 
@@ -16,48 +16,31 @@ if ! command -v uv &> /dev/null; then
     exit 1
 fi
 
-# Check if npm is installed
-if ! command -v npm &> /dev/null; then
-    echo "❌ Error: npm is not installed. Please install Node.js and npm first."
-    exit 1
-fi
-
 # Install backend dependencies
 echo "📦 Installing backend dependencies with uv..."
 cd api && uv pip install -r requirements.txt && cd ..
-
-# Install frontend dependencies
-echo "📦 Installing frontend dependencies with npm..."
-cd frontend && npm install && cd ..
 
 # Start backend server in background
 echo "🎵 Starting FastAPI backend server on http://localhost:8000..."
 (cd api && uv run python app.py) &
 BACKEND_PID=$!
 
-# Wait a moment for backend to start
-sleep 2
-
-# Start frontend server in background
-echo "🎨 Starting Next.js frontend server on http://localhost:3000..."
-(cd frontend && npm run dev) &
-FRONTEND_PID=$!
-
-# Save PIDs to file for stop script
+# Save PID to file for stop script
 echo "$BACKEND_PID" > .dev-pids
-echo "$FRONTEND_PID" >> .dev-pids
 
 echo ""
-echo "✅ Development servers started successfully!"
-echo "🌐 Frontend: http://localhost:3000"
-echo "🔧 Backend:  http://localhost:8000"
+echo "✅ Backend server started successfully!"
+echo "🔧 Backend API: http://localhost:8000"
+echo "📖 API Docs:   http://localhost:8000/docs"
 echo ""
-echo "📝 To stop both servers, run: ./stop-dev.sh"
-echo "📝 Or press Ctrl+C to stop this script (servers will continue running)"
+echo "📝 To stop the server, run: ./stop-dev.sh"
+echo "📝 Or press Ctrl+C to stop this script (server will continue running)"
+echo ""
+echo "ℹ️  Frontend has been removed - ready for new implementation!"
 echo ""
 
 # Wait for user to stop
-trap 'echo "🛑 Stopping development servers..."; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; rm -f .dev-pids; exit 0' INT
+trap 'echo "🛑 Stopping backend server..."; kill $BACKEND_PID 2>/dev/null; rm -f .dev-pids; exit 0' INT
 
 # Keep script running
 wait

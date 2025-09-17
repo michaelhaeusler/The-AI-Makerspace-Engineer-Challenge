@@ -36,9 +36,8 @@ if [ -f ".dev-pids" ]; then
     echo "📖 Reading server PIDs from .dev-pids..."
     readarray -t pids < .dev-pids
     
-    if [ ${#pids[@]} -ge 2 ]; then
+    if [ ${#pids[@]} -ge 1 ]; then
         kill_process "${pids[0]}" "Backend (FastAPI)"
-        kill_process "${pids[1]}" "Frontend (Next.js)"
     fi
     
     # Clean up PID file

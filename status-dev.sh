@@ -31,6 +31,8 @@ fi
 
 echo ""
 echo "💡 Commands:"
-echo "   ./start-dev.sh  - Start both servers"
-echo "   ./stop-dev.sh   - Stop both servers"
-echo "   ./start-backend.sh - Start only backend"
+echo "   ./start-dev.sh     - Start backend server"
+echo "   ./stop-dev.sh      - Stop backend server"
+echo "   ./start-backend.sh - Start only backend (alternative)"
+echo ""
+echo "ℹ️  Frontend has been removed - ready for new implementation!"
