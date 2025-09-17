@@ -31,8 +31,8 @@ fi
 
 echo ""
 echo "💡 Commands:"
-echo "   ./start-dev.sh     - Start backend server"
-echo "   ./stop-dev.sh      - Stop backend server"
+echo "   ./start-dev.sh     - Start both frontend and backend servers"
+echo "   ./stop-dev.sh      - Stop both servers"
 echo "   ./start-backend.sh - Start only backend (alternative)"
 echo ""
-echo "ℹ️  Frontend has been removed - ready for new implementation!"
+echo "✨ Beautiful new Apple-inspired frontend ready!"
