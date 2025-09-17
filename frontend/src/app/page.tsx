@@ -42,6 +42,8 @@ export default function RAGChat() {
   const [error, setError] = useState<string | null>(null)
   const [apiKey, setApiKey] = useState('')
   const [showApiKeyInput, setShowApiKeyInput] = useState(true)
+  const [showReplaceDialog, setShowReplaceDialog] = useState(false)
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -54,32 +56,54 @@ export default function RAGChat() {
     scrollToBottom()
   }, [messages])
 
+  const processFileUpload = (file: File) => {
+    setUploadedFile({
+      name: file.name,
+      size: file.size,
+      uploadProgress: 0,
+      status: 'uploading'
+    })
+    setError(null)
+
+    // Simulate upload progress
+    let progress = 0
+    const interval = setInterval(() => {
+      progress += 10
+      setUploadedFile(prev => prev ? { ...prev, uploadProgress: progress } : null)
+
+      if (progress >= 100) {
+        clearInterval(interval)
+        setUploadedFile(prev => prev ? { ...prev, status: 'completed' } : null)
+      }
+    }, 100)
+  }
+
   const onDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
     if (file && file.type === 'application/pdf') {
-      // Remove old file if exists
-      setUploadedFile({
-        name: file.name,
-        size: file.size,
-        uploadProgress: 0,
-        status: 'uploading'
-      })
-      setError(null)
-
-      // Simulate upload progress
-      let progress = 0
-      const interval = setInterval(() => {
-        progress += 10
-        setUploadedFile(prev => prev ? { ...prev, uploadProgress: progress } : null)
-
-        if (progress >= 100) {
-          clearInterval(interval)
-          setUploadedFile(prev => prev ? { ...prev, status: 'completed' } : null)
-        }
-      }, 100)
+      // If there's already a file, show replacement confirmation
+      if (uploadedFile && uploadedFile.status === 'completed') {
+        setPendingFile(file)
+        setShowReplaceDialog(true)
+      } else {
+        processFileUpload(file)
+      }
     } else {
       setError('Please upload a PDF file only.')
     }
+  }
+
+  const handleReplaceConfirm = () => {
+    if (pendingFile) {
+      processFileUpload(pendingFile)
+    }
+    setShowReplaceDialog(false)
+    setPendingFile(null)
+  }
+
+  const handleReplaceCancel = () => {
+    setShowReplaceDialog(false)
+    setPendingFile(null)
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -225,12 +249,12 @@ export default function RAGChat() {
             </div>
           </div>
 
-          {uploadedFile && (
+          {uploadedFile && uploadedFile.status === 'completed' && (
             <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="flex items-center space-x-2 bg-neutral-100 text-neutral-700 px-3 py-1">
+              <Badge variant="secondary" className="flex items-center space-x-2 bg-green-50 text-green-700 border-green-200 px-3 py-1">
                 <FileText className="w-3 h-3" />
-                <span className="text-xs font-medium">{uploadedFile.name}</span>
-                <button onClick={removeFile} className="ml-1 hover:text-red-500 transition-colors">
+                <span className="text-xs font-medium">Document ready</span>
+                <button onClick={removeFile} className="ml-1 hover:text-red-500 transition-colors" title="Remove document">
                   <X className="w-3 h-3" />
                 </button>
               </Badge>
@@ -240,21 +264,43 @@ export default function RAGChat() {
       </div>
 
       <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
-        {/* File Upload Area */}
-        {!uploadedFile && (
-          <Card className="mb-6 border-2 border-dashed border-neutral-200 bg-white/50 backdrop-blur-sm hover:border-neutral-300 transition-colors">
-            <div {...getRootProps()} className="p-8 text-center cursor-pointer">
-              <input {...getInputProps()} />
-              <Upload className={`w-12 h-12 mx-auto mb-4 ${isDragActive ? 'text-neutral-600' : 'text-neutral-400'}`} />
-              <p className="text-lg font-medium text-neutral-700 mb-2">
-                {isDragActive ? 'Drop your PDF here' : 'Upload a PDF document'}
-              </p>
-              <p className="text-sm text-neutral-500">
-                Drag and drop or click to select a PDF file
-              </p>
-            </div>
-          </Card>
-        )}
+        {/* File Upload Area - Always Visible */}
+        <Card className={`mb-6 border-2 border-dashed ${
+          uploadedFile && uploadedFile.status === 'completed' 
+            ? 'border-neutral-300 bg-neutral-50/50' 
+            : 'border-neutral-200 bg-white/50'
+        } backdrop-blur-sm hover:border-neutral-400 transition-all duration-200`}>
+          <div {...getRootProps()} className="p-6 text-center cursor-pointer">
+            <input {...getInputProps()} />
+            {uploadedFile && uploadedFile.status === 'completed' ? (
+              <>
+                <div className="flex items-center justify-center mb-3">
+                  <FileText className="w-8 h-8 text-neutral-500 mr-2" />
+                  <Upload className={`w-6 h-6 ${isDragActive ? 'text-neutral-600' : 'text-neutral-400'}`} />
+                </div>
+                <p className="text-sm font-medium text-neutral-700 mb-1">
+                  {isDragActive ? 'Drop new PDF to replace' : 'Upload a different PDF'}
+                </p>
+                <p className="text-xs text-neutral-500">
+                  Current: {uploadedFile.name} • {formatFileSize(uploadedFile.size)}
+                </p>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Drag and drop or click to replace document
+                </p>
+              </>
+            ) : (
+              <>
+                <Upload className={`w-10 h-10 mx-auto mb-3 ${isDragActive ? 'text-neutral-600' : 'text-neutral-400'}`} />
+                <p className="text-base font-medium text-neutral-700 mb-1">
+                  {isDragActive ? 'Drop your PDF here' : 'Upload a PDF document'}
+                </p>
+                <p className="text-sm text-neutral-500">
+                  Drag and drop or click to select a PDF file
+                </p>
+              </>
+            )}
+          </div>
+        </Card>
 
         {/* Upload Progress */}
         {uploadedFile && uploadedFile.status === 'uploading' && (
@@ -287,7 +333,7 @@ export default function RAGChat() {
                 <p className="text-neutral-500">
                   {uploadedFile
                     ? `Your PDF "${uploadedFile.name}" is ready for questions.`
-                    : 'Upload a PDF document to get started, or ask general questions.'
+                    : 'Upload a PDF document above to get started, or ask general questions.'
                   }
                 </p>
               </div>
@@ -351,6 +397,49 @@ export default function RAGChat() {
           </div>
         </Card>
       </div>
+
+      {/* Replace File Dialog */}
+      {showReplaceDialog && pendingFile && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-md p-6 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 bg-orange-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <AlertCircle className="w-6 h-6 text-orange-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">Replace Document?</h3>
+              <p className="text-sm text-neutral-600 mb-4">
+                This will replace your current document with the new one.
+              </p>
+              <div className="space-y-2 text-xs text-neutral-500">
+                <div className="flex justify-between">
+                  <span>Current:</span>
+                  <span className="font-medium">{uploadedFile?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>New:</span>
+                  <span className="font-medium">{pendingFile.name}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                onClick={handleReplaceCancel}
+                className="flex-1 rounded-xl border-neutral-200 hover:bg-neutral-50"
+              >
+                Keep Current
+              </Button>
+              <Button
+                onClick={handleReplaceConfirm}
+                className="flex-1 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white"
+              >
+                Replace
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
