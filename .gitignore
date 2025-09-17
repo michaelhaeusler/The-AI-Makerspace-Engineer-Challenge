@@ -193,3 +193,6 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Development scripts
+.dev-pids
