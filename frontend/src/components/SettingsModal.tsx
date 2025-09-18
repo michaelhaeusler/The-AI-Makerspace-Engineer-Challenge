@@ -51,6 +51,7 @@ export const SettingsModal = ({
             {AVAILABLE_MODELS.map((model) => (
               <button
                 key={model.id}
+                data-testid={`settings-model-${model.id}`}
                 onClick={() => onModelChange(model.id)}
                 className={`w-full text-left p-3 rounded-lg border transition-colors ${selectedModel === model.id
                   ? `${colorClasses.selectedBorder} ${colorClasses.selectedBg}`
@@ -71,6 +72,7 @@ export const SettingsModal = ({
             {AVAILABLE_COLORS.map((color) => (
               <button
                 key={color.id}
+                data-testid={`settings-color-${color.id}`}
                 onClick={() => onColorChange(color.id)}
                 className={`p-2 rounded-lg border text-center transition-colors ${selectedColor === color.id
                   ? `border-${color.id}-300 bg-gray-100`

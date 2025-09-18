@@ -68,10 +68,12 @@ export const ChatArea = ({
             <div className="space-y-6">
               {messages.map((message, index) => (
                 <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] ${message.role === 'user'
-                    ? `${colorClasses.userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
-                    : `text-neutral-900`
-                    }`}>
+                  <div
+                    data-testid={`chat-message-${message.role}`}
+                    className={`max-w-[80%] ${message.role === 'user'
+                      ? `${colorClasses.userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
+                      : `text-neutral-900`
+                      }`}>
                     {message.role === 'user' ? (
                       <p className="text-sm leading-relaxed">{message.content}</p>
                     ) : (
@@ -84,7 +86,7 @@ export const ChatArea = ({
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className={`${colorClasses.assistantBg} rounded-2xl rounded-bl-md px-4 py-3`}>
+                  <div data-testid="chat-loading-indicator" className={`${colorClasses.assistantBg} rounded-2xl rounded-bl-md px-4 py-3`}>
                     <div className="flex items-center space-x-2">
                       <Loader2 className={`w-4 h-4 animate-spin ${colorClasses.loading}`} />
                       <span className={`text-sm ${colorClasses.loadingText}`}>AI is thinking...</span>

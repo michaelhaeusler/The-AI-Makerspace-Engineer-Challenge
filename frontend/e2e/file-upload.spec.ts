@@ -5,19 +5,20 @@ test.describe('File Upload Functionality', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app and enter API key
     await page.goto('/');
-    await page.getByPlaceholder('sk-...').fill('sk-test-api-key-for-testing');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
+    await page.getByTestId('api-key-continue-button').click();
   });
 
   test('should show file upload area', async ({ page }) => {
-    // Should see upload area
-    await expect(page.getByText('Upload a PDF document')).toBeVisible();
+    // Should see upload area - use test ID to avoid ambiguity
+    await expect(page.getByTestId('file-upload-area')).toBeVisible();
     await expect(page.getByText('Drag and drop or click to select a PDF file')).toBeVisible();
   });
 
   test('should show upload area as clickable', async ({ page }) => {
-    const uploadArea = page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' });
+    const uploadArea = page.getByTestId('file-upload-area');
     await expect(uploadArea).toBeVisible();
+    await expect(uploadArea).toHaveAttribute('role', 'button');
   });
 
   test('should show progress bar during upload simulation', async ({ page }) => {
@@ -36,10 +37,10 @@ test.describe('File Upload Functionality', () => {
     });
 
     // Click upload area to trigger file chooser
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Should show progress elements (even if simulated)
-    await expect(page.getByText('Processing')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('file-upload-progress')).toBeVisible({ timeout: 10000 });
   });
 
   test('should show document info after upload', async ({ page }) => {
@@ -77,10 +78,11 @@ test.describe('File Upload Functionality', () => {
     });
 
     // Trigger upload
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Should eventually show document info
-    await expect(page.getByText('📄 test-document.pdf')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId('file-uploaded-info')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId('file-uploaded-name')).toContainText('test-document.pdf');
   });
 
   test('should show remove button for uploaded document', async ({ page }) => {
@@ -111,10 +113,10 @@ test.describe('File Upload Functionality', () => {
       });
     });
 
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Should show remove button
-    await expect(page.getByTitle('Remove document and return to normal chat mode')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId('file-remove-button')).toBeVisible({ timeout: 15000 });
   });
 
   test('should remove document when X is clicked', async ({ page }) => {
@@ -153,14 +155,14 @@ test.describe('File Upload Functionality', () => {
       });
     });
 
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Wait for document to appear and click remove
-    await expect(page.getByTitle('Remove document and return to normal chat mode')).toBeVisible({ timeout: 15000 });
-    await page.getByTitle('Remove document and return to normal chat mode').click();
+    await expect(page.getByTestId('file-remove-button')).toBeVisible({ timeout: 15000 });
+    await page.getByTestId('file-remove-button').click();
 
     // Document should be removed
-    await expect(page.getByText('📄 test.pdf')).not.toBeVisible();
+    await expect(page.getByTestId('file-uploaded-info')).not.toBeVisible();
     await expect(page.getByText('Start a conversation')).toBeVisible();
   });
 });

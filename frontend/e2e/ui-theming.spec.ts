@@ -4,45 +4,45 @@ test.describe('UI Theming and Visual Elements', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app and enter API key
     await page.goto('/');
-    await page.getByPlaceholder('sk-...').fill('sk-test-api-key-for-testing');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
+    await page.getByTestId('api-key-continue-button').click();
   });
 
   test('should apply theme color to UI elements', async ({ page }) => {
     // Open settings and select blue theme
-    await page.getByTitle('Settings').click();
-    await page.getByText('Blue').click();
-    await page.getByRole('button', { name: 'Done' }).click();
+    await page.getByTestId('header-settings-button').click();
+    await page.getByTestId('settings-color-blue').click();
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Check that send button has blue styling
-    const sendButton = page.locator('button:has(svg)').last();
+    const sendButton = page.getByTestId('chat-send-button');
     await expect(sendButton).toHaveClass(/bg-blue-600/);
   });
 
   test('should persist theme selection across page reloads', async ({ page }) => {
     // Select purple theme
-    await page.getByTitle('Settings').click();
-    await page.getByText('Purple').click();
-    await page.getByRole('button', { name: 'Done' }).click();
+    await page.getByTestId('header-settings-button').click();
+    await page.getByTestId('settings-color-purple').click();
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Reload page
     await page.reload();
 
     // Enter API key again (since it's not persisted in tests)
-    await page.getByPlaceholder('sk-...').fill('sk-test-api-key-for-testing');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
+    await page.getByTestId('api-key-continue-button').click();
 
     // Check that purple theme is still applied
-    await page.getByTitle('Settings').click();
-    const purpleButton = page.locator('button:has-text("Purple")');
+    await page.getByTestId('header-settings-button').click();
+    const purpleButton = page.getByTestId('settings-color-purple');
     await expect(purpleButton).toHaveClass(/border-purple-300/);
   });
 
   test('should show progress bar with theme color', async ({ page }) => {
     // Select emerald theme
-    await page.getByTitle('Settings').click();
-    await page.getByText('Emerald').click();
-    await page.getByRole('button', { name: 'Done' }).click();
+    await page.getByTestId('header-settings-button').click();
+    await page.getByTestId('settings-color-emerald').click();
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Mock file upload to trigger progress bar
     await page.route('/api/upload-pdf-only', async (route) => {
@@ -73,12 +73,12 @@ test.describe('UI Theming and Visual Elements', () => {
       });
     });
 
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Should see progress bar with emerald color
-    const progressBar = page.locator('[data-slot="progress-indicator"]');
+    const progressBar = page.getByTestId('file-upload-progress-bar');
     await expect(progressBar).toBeVisible({ timeout: 5000 });
-    await expect(progressBar).toHaveClass(/bg-emerald-600/);
+    await expect(progressBar.locator('[data-slot="progress-indicator"]')).toHaveClass(/bg-emerald-600/);
   });
 
   test('should show proper visual hierarchy', async ({ page }) => {
@@ -87,7 +87,7 @@ test.describe('UI Theming and Visual Elements', () => {
     await expect(page.getByText('AI-powered document chat')).toBeVisible();
 
     // Check main content areas
-    await expect(page.getByText('Upload a PDF document')).toBeVisible();
+    await expect(page.getByTestId('file-upload-area')).toBeVisible();
     await expect(page.getByText('Start a conversation')).toBeVisible();
 
     // Check that elements have proper styling classes
@@ -97,9 +97,9 @@ test.describe('UI Theming and Visual Elements', () => {
 
   test('should show loading states with theme colors', async ({ page }) => {
     // Select red theme
-    await page.getByTitle('Settings').click();
-    await page.getByText('Red').click();
-    await page.getByRole('button', { name: 'Done' }).click();
+    await page.getByTestId('header-settings-button').click();
+    await page.getByTestId('settings-color-red').click();
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Mock delayed chat response
     await page.route('/api/chat', async (route) => {
@@ -112,14 +112,14 @@ test.describe('UI Theming and Visual Elements', () => {
     });
 
     // Send message to trigger loading
-    const messageInput = page.getByPlaceholder('Type your message...');
+    const messageInput = page.getByTestId('chat-input-field');
     await messageInput.fill('Test message');
     await messageInput.press('Enter');
 
     // Should show loading with red theme
-    const loadingSpinner = page.locator('.animate-spin');
-    await expect(loadingSpinner).toBeVisible();
-    await expect(loadingSpinner).toHaveClass(/text-red-600/);
+    const loadingIndicator = page.getByTestId('chat-loading-indicator');
+    await expect(loadingIndicator).toBeVisible();
+    await expect(loadingIndicator.locator('.animate-spin')).toHaveClass(/text-red-600/);
   });
 
   test('should handle responsive design elements', async ({ page }) => {
@@ -128,19 +128,19 @@ test.describe('UI Theming and Visual Elements', () => {
 
     // Elements should still be visible and properly arranged
     await expect(page.getByText('RAG Chat')).toBeVisible();
-    await expect(page.getByText('Upload a PDF document')).toBeVisible();
-    await expect(page.getByPlaceholder('Type your message...')).toBeVisible();
+    await expect(page.getByTestId('file-upload-area')).toBeVisible();
+    await expect(page.getByTestId('chat-input-field')).toBeVisible();
 
     // Test mobile size
     await page.setViewportSize({ width: 375, height: 667 }); // Mobile size
 
     // Should still work on mobile
     await expect(page.getByText('RAG Chat')).toBeVisible();
-    await expect(page.getByPlaceholder('Type your message...')).toBeVisible();
+    await expect(page.getByTestId('chat-input-field')).toBeVisible();
   });
 
   test('should show proper focus states', async ({ page }) => {
-    const messageInput = page.getByPlaceholder('Type your message...');
+    const messageInput = page.getByTestId('chat-input-field');
 
     // Focus the input
     await messageInput.focus();

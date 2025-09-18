@@ -18,8 +18,8 @@ export const ApiKeyInput = ({ selectedColor, onApiKeySubmit }: ApiKeyInputProps)
   const [apiKey, setApiKey] = useState('')
 
   const handleSubmit = () => {
-    if (apiKey) {
-      onApiKeySubmit(apiKey)
+    if (apiKey.trim()) {
+      onApiKeySubmit(apiKey.trim())
     }
   }
 
@@ -52,7 +52,7 @@ export const ApiKeyInput = ({ selectedColor, onApiKeySubmit }: ApiKeyInputProps)
           <Button
             data-testid="api-key-continue-button"
             onClick={handleSubmit}
-            disabled={!apiKey}
+            disabled={!apiKey.trim()}
             className={`w-full h-12 rounded-xl ${colorClasses.button} text-white font-medium transition-all duration-200`}
           >
             Continue

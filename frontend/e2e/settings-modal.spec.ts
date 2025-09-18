@@ -21,75 +21,75 @@ test.describe('Settings Modal', () => {
   test('should show available models in settings', async ({ page }) => {
     await page.getByTestId('header-settings-button').click();
 
-    // Should see model options - use more specific selectors
-    await expect(page.getByRole('button', { name: 'GPT-4o Mini Fast & efficient' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'GPT-4o Most capable' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'GPT-3.5 Turbo Classic choice' })).toBeVisible();
+    // Should see model options - use test IDs
+    await expect(page.getByTestId('settings-model-gpt-4o-mini')).toBeVisible();
+    await expect(page.getByTestId('settings-model-gpt-4o')).toBeVisible();
+    await expect(page.getByTestId('settings-model-gpt-3.5-turbo')).toBeVisible();
   });
 
   test('should show available colors in settings', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Should see color options
-    await expect(page.getByText('Blue')).toBeVisible();
-    await expect(page.getByText('Emerald')).toBeVisible();
-    await expect(page.getByText('Purple')).toBeVisible();
+    // Should see color options - use test IDs
+    await expect(page.getByTestId('settings-color-blue')).toBeVisible();
+    await expect(page.getByTestId('settings-color-emerald')).toBeVisible();
+    await expect(page.getByTestId('settings-color-purple')).toBeVisible();
   });
 
   test('should allow model selection', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Click on GPT-4o model - use the specific button
-    await page.getByRole('button', { name: 'GPT-4o Most capable' }).click();
+    // Click on GPT-4o model - use test ID
+    await page.getByTestId('settings-model-gpt-4o').click();
 
     // Should be selected (visual indication)
-    const gpt4Button = page.getByRole('button', { name: 'GPT-4o Most capable' });
+    const gpt4Button = page.getByTestId('settings-model-gpt-4o');
     await expect(gpt4Button).toHaveClass(/border-.*-300/);
   });
 
   test('should allow color selection', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Click on Purple color
-    await page.getByText('Purple').click();
+    // Click on Purple color - use test ID
+    await page.getByTestId('settings-color-purple').click();
 
     // Should be selected (visual indication)
-    const purpleButton = page.locator('button:has-text("Purple")');
+    const purpleButton = page.getByTestId('settings-color-purple');
     await expect(purpleButton).toHaveClass(/border-purple-300/);
   });
 
   test('should close settings modal when done button is clicked', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Click done button
-    await page.getByRole('button', { name: 'Done' }).click();
+    // Click done button - use test ID
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Settings modal should be closed
     await expect(page.getByText('Language Model')).not.toBeVisible();
   });
 
   test('should close settings modal when X button is clicked', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Click X button - look for the close button in the modal header
-    await page.locator('.fixed .p-6 button').first().click();
+    // Click X button - use test ID
+    await page.getByTestId('settings-modal-close-button').click();
 
     // Settings modal should be closed
     await expect(page.getByText('Language Model')).not.toBeVisible();
   });
 
   test('should persist color selection after modal close', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
-    // Select blue color
-    await page.getByText('Blue').click();
-    await page.getByRole('button', { name: 'Done' }).click();
+    // Select blue color - use test ID
+    await page.getByTestId('settings-color-blue').click();
+    await page.getByTestId('settings-modal-done-button').click();
 
     // Reopen settings
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
     // Blue should still be selected
-    const blueButton = page.locator('button:has-text("Blue")');
+    const blueButton = page.getByTestId('settings-color-blue');
     await expect(blueButton).toHaveClass(/border-blue-300/);
   });
 });

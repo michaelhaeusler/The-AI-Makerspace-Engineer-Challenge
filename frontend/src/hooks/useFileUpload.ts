@@ -10,22 +10,17 @@ import { UploadedFile, Message } from '@/types'
 interface UseFileUploadProps {
   apiKey: string
   selectedModel: string
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  setError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export const useFileUpload = ({
   apiKey,
-  selectedModel,
-  setMessages,
-  setIsLoading,
-  setError
+  selectedModel
 }: UseFileUploadProps) => {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null)
   const [processingStep, setProcessingStep] = useState<string>('')
   const [showReplaceDialog, setShowReplaceDialog] = useState(false)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   /**
    * Main file processing function - handles upload, processing, and summary generation
@@ -286,6 +281,8 @@ Based on the content I analyzed, here are specific questions you can ask:
     handleReplaceConfirm,
     handleReplaceCancel,
     handleRemoveDocument,
-    formatFileSize
+    formatFileSize,
+    error,
+    setError
   }
 }

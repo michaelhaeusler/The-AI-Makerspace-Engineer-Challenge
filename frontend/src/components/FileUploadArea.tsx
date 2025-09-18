@@ -37,7 +37,7 @@ export const FileUploadArea = ({
         ? 'border-neutral-300 bg-neutral-50/50'
         : 'border-neutral-200 bg-white/50'
         } backdrop-blur-sm hover:border-neutral-400 transition-all duration-200`}>
-        <div {...getRootProps()} data-testid="file-upload-area" className="p-6 text-center cursor-pointer">
+        <div {...getRootProps()} data-testid="file-upload-area" role="button" className="p-6 text-center cursor-pointer">
           <input {...getInputProps()} />
           {uploadedFile && uploadedFile.status === 'completed' ? (
             <>
@@ -71,7 +71,7 @@ export const FileUploadArea = ({
 
       {/* Upload Progress */}
       {uploadedFile && uploadedFile.status === 'uploading' && (
-        <Card className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
+        <Card data-testid="file-upload-progress" className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-sm font-medium text-neutral-700">
               Processing {uploadedFile.name}
@@ -79,12 +79,13 @@ export const FileUploadArea = ({
             <span className="text-sm text-neutral-500">{formatFileSize(uploadedFile.size)}</span>
           </div>
           <Progress
+            data-testid="file-upload-progress-bar"
             value={uploadedFile.uploadProgress}
             className="h-2"
             indicatorClassName={colorClasses.progress}
           />
           {processingStep && (
-            <p className="text-xs text-neutral-400 mt-1.5">
+            <p data-testid="file-upload-status" className="text-xs text-neutral-400 mt-1.5">
               {processingStep}
             </p>
           )}
@@ -93,9 +94,9 @@ export const FileUploadArea = ({
 
       {/* Uploaded Document Info */}
       {uploadedFile && uploadedFile.status === 'completed' && (
-        <Card className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
+        <Card data-testid="file-uploaded-info" className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
           <div className="flex items-center">
-            <span className="text-sm font-medium text-neutral-700">
+            <span data-testid="file-uploaded-name" className="text-sm font-medium text-neutral-700">
               📄 {uploadedFile.name}
             </span>
             <button

@@ -4,24 +4,24 @@ test.describe('Chat Functionality', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app and enter API key
     await page.goto('/');
-    await page.getByPlaceholder('sk-...').fill('sk-test-api-key-for-testing');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
+    await page.getByTestId('api-key-continue-button').click();
   });
 
   test('should show chat interface elements', async ({ page }) => {
-    // Should see chat input area
-    await expect(page.getByPlaceholder('Type your message...')).toBeVisible();
-    await expect(page.getByRole('button').last()).toBeVisible(); // Send button with icon
+    // Should see chat input area - use test IDs
+    await expect(page.getByTestId('chat-input-field')).toBeVisible();
+    await expect(page.getByTestId('chat-send-button')).toBeVisible();
   });
 
   test('should disable send button when input is empty', async ({ page }) => {
-    const sendButton = page.getByRole('button').last(); // Send button in chat input
+    const sendButton = page.getByTestId('chat-send-button');
     await expect(sendButton).toBeDisabled();
   });
 
   test('should enable send button when message is typed', async ({ page }) => {
-    const messageInput = page.getByPlaceholder('Type your message...');
-    const sendButton = page.locator('button:has(svg)').last();
+    const messageInput = page.getByTestId('chat-input-field');
+    const sendButton = page.getByTestId('chat-send-button');
 
     await messageInput.fill('Hello, this is a test message');
     await expect(sendButton).toBeEnabled();
@@ -37,18 +37,18 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    const messageInput = page.getByPlaceholder('Type your message...');
-    const sendButton = page.locator('button:has(svg)').last();
+    const messageInput = page.getByTestId('chat-input-field');
+    const sendButton = page.getByTestId('chat-send-button');
 
     // Type and send message
     await messageInput.fill('Hello AI!');
     await sendButton.click();
 
-    // Should see the user message
-    await expect(page.getByText('Hello AI!')).toBeVisible();
+    // Should see the user message in chat
+    await expect(page.getByTestId('chat-message-user')).toContainText('Hello AI!');
 
     // Should eventually see AI response
-    await expect(page.getByText('Hello! This is a test response from the AI.')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('chat-message-assistant')).toContainText('Hello! This is a test response from the AI.');
   });
 
   test('should send message when Enter is pressed', async ({ page }) => {
@@ -61,15 +61,15 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    const messageInput = page.getByPlaceholder('Type your message...');
+    const messageInput = page.getByTestId('chat-input-field');
 
     // Type message and press Enter
     await messageInput.fill('Test Enter key');
     await messageInput.press('Enter');
 
     // Should see both messages
-    await expect(page.getByText('Test Enter key')).toBeVisible();
-    await expect(page.getByText('Response via Enter key.')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('chat-message-user')).toContainText('Test Enter key');
+    await expect(page.getByTestId('chat-message-assistant')).toContainText('Response via Enter key.');
   });
 
   test('should show loading indicator while waiting for response', async ({ page }) => {
@@ -84,14 +84,14 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    const messageInput = page.getByPlaceholder('Type your message...');
-    const sendButton = page.locator('button:has(svg)').last();
+    const messageInput = page.getByTestId('chat-input-field');
+    const sendButton = page.getByTestId('chat-send-button');
 
     await messageInput.fill('Test loading');
     await sendButton.click();
 
     // Should show loading indicator
-    await expect(page.getByText('AI is thinking...')).toBeVisible();
+    await expect(page.getByTestId('chat-loading-indicator')).toBeVisible();
   });
 
   test('should handle API errors gracefully', async ({ page }) => {
@@ -104,14 +104,14 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    const messageInput = page.getByPlaceholder('Type your message...');
-    const sendButton = page.locator('button:has(svg)').last();
+    const messageInput = page.getByTestId('chat-input-field');
+    const sendButton = page.getByTestId('chat-send-button');
 
     await messageInput.fill('This will cause an error');
     await sendButton.click();
 
     // Should show error message
-    await expect(page.getByText('Failed to send message')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('error-alert')).toContainText('Failed to send message');
   });
 
   test('should show different placeholder for RAG mode', async ({ page }) => {
@@ -142,7 +142,7 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    await page.locator('[role="button"]').filter({ hasText: 'Upload a PDF document' }).click();
+    await page.getByTestId('file-upload-area').click();
 
     // Should show RAG mode placeholder
     await expect(page.getByPlaceholder('Ask a question about your document...')).toBeVisible({ timeout: 15000 });
@@ -157,7 +157,7 @@ test.describe('Chat Functionality', () => {
       });
     });
 
-    const messageInput = page.getByPlaceholder('Type your message...');
+    const messageInput = page.getByTestId('chat-input-field');
 
     await messageInput.fill('Test message');
     await messageInput.press('Enter');

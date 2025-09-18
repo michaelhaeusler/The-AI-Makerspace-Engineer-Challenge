@@ -52,22 +52,6 @@ export default function RAGChat() {
   // Settings management (model, theme with localStorage persistence)
   const { selectedModel, selectedColor, setSelectedModel, setSelectedColor } = useSettings()
 
-  // Chat functionality (messages, streaming, keyboard shortcuts)
-  const {
-    messages,
-    setMessages,
-    input,
-    setInput,
-    isLoading,
-    setIsLoading,
-    error,
-    setError,
-    messagesEndRef,
-    textareaRef,
-    sendMessage,
-    handleKeyPress
-  } = useChat({ apiKey, selectedModel, uploadedFile: null })
-
   // File upload management (drag & drop, progress, document processing)
   const {
     uploadedFile,
@@ -79,17 +63,33 @@ export default function RAGChat() {
     isDragActive,
     handleReplaceConfirm,
     handleReplaceCancel,
-    handleRemoveDocument
-  } = useFileUpload({
-    apiKey,
-    selectedModel,
-    setMessages,
-    setIsLoading,
-    setError
-  })
+    handleRemoveDocument,
+    error: uploadError,
+    setError: setUploadError
+  } = useFileUpload({ apiKey, selectedModel })
 
-  // Update chat hook with current uploadedFile state
-  const chatWithFile = useChat({ apiKey, selectedModel, uploadedFile })
+  // Chat functionality (messages, streaming, keyboard shortcuts)
+  const {
+    messages,
+    setMessages,
+    input,
+    setInput,
+    isLoading,
+    setIsLoading,
+    error: chatError,
+    setError: setChatError,
+    messagesEndRef,
+    textareaRef,
+    sendMessage,
+    handleKeyPress
+  } = useChat({ apiKey, selectedModel, uploadedFile })
+
+  // Combine errors from both hooks
+  const error = uploadError || chatError
+  const setError = (err: string | null) => {
+    setUploadError(err)
+    setChatError(err)
+  }
 
   /**
    * Handle API key submission from the initial screen
@@ -138,23 +138,23 @@ export default function RAGChat() {
 
         {/* Chat Messages Area */}
         <ChatArea
-          messages={chatWithFile.messages.length > 0 ? chatWithFile.messages : messages}
-          isLoading={chatWithFile.isLoading || isLoading}
+          messages={messages}
+          isLoading={isLoading}
           uploadedFile={uploadedFile}
           selectedColor={selectedColor}
-          messagesEndRef={chatWithFile.messagesEndRef || messagesEndRef}
+          messagesEndRef={messagesEndRef}
         />
 
         {/* Message Input */}
         <ChatInput
-          input={chatWithFile.input || input}
-          setInput={chatWithFile.setInput || setInput}
-          isLoading={chatWithFile.isLoading || isLoading}
+          input={input}
+          setInput={setInput}
+          isLoading={isLoading}
           uploadedFile={uploadedFile}
           selectedColor={selectedColor}
-          textareaRef={chatWithFile.textareaRef || textareaRef}
-          onSendMessage={chatWithFile.sendMessage || sendMessage}
-          onKeyPress={chatWithFile.handleKeyPress || handleKeyPress}
+          textareaRef={textareaRef}
+          onSendMessage={sendMessage}
+          onKeyPress={handleKeyPress}
         />
       </div>
 
