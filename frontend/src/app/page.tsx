@@ -72,18 +72,116 @@ export default function RAGChat() {
     { id: 'emerald', name: 'Emerald', description: 'Natural' }
   ]
 
-  const getColorClasses = (color: string) => ({
-    userBg: `bg-${color}-600`,
-    assistantBg: `bg-gray-50`,
-    assistantText: `text-gray-900`,
-    button: `bg-${color}-600 hover:bg-${color}-700`,
-    loading: `text-${color}-600`,
-    loadingText: `text-${color}-700`,
-    icon: `text-${color}-500 hover:text-${color}-700`,
-    iconHover: `hover:bg-gray-100`,
-    selectedBg: `bg-gray-100`,
-    selectedBorder: `border-${color}-300`
-  })
+  const getColorClasses = (color: string) => {
+    const colorMap = {
+      blue: {
+        userBg: 'bg-blue-600',
+        button: 'bg-blue-600 hover:bg-blue-700',
+        loading: 'text-blue-600',
+        loadingText: 'text-blue-700',
+        icon: 'text-blue-500 hover:text-blue-700',
+        selectedBorder: 'border-blue-300'
+      },
+      teal: {
+        userBg: 'bg-teal-600',
+        button: 'bg-teal-600 hover:bg-teal-700',
+        loading: 'text-teal-600',
+        loadingText: 'text-teal-700',
+        icon: 'text-teal-500 hover:text-teal-700',
+        selectedBorder: 'border-teal-300'
+      },
+      purple: {
+        userBg: 'bg-purple-600',
+        button: 'bg-purple-600 hover:bg-purple-700',
+        loading: 'text-purple-600',
+        loadingText: 'text-purple-700',
+        icon: 'text-purple-500 hover:text-purple-700',
+        selectedBorder: 'border-purple-300'
+      },
+      emerald: {
+        userBg: 'bg-emerald-600',
+        button: 'bg-emerald-600 hover:bg-emerald-700',
+        loading: 'text-emerald-600',
+        loadingText: 'text-emerald-700',
+        icon: 'text-emerald-500 hover:text-emerald-700',
+        selectedBorder: 'border-emerald-300'
+      },
+      indigo: {
+        userBg: 'bg-indigo-600',
+        button: 'bg-indigo-600 hover:bg-indigo-700',
+        loading: 'text-indigo-600',
+        loadingText: 'text-indigo-700',
+        icon: 'text-indigo-500 hover:text-indigo-700',
+        selectedBorder: 'border-indigo-300'
+      },
+      rose: {
+        userBg: 'bg-rose-600',
+        button: 'bg-rose-600 hover:bg-rose-700',
+        loading: 'text-rose-600',
+        loadingText: 'text-rose-700',
+        icon: 'text-rose-500 hover:text-rose-700',
+        selectedBorder: 'border-rose-300'
+      },
+      orange: {
+        userBg: 'bg-orange-600',
+        button: 'bg-orange-600 hover:bg-orange-700',
+        loading: 'text-orange-600',
+        loadingText: 'text-orange-700',
+        icon: 'text-orange-500 hover:text-orange-700',
+        selectedBorder: 'border-orange-300'
+      },
+      amber: {
+        userBg: 'bg-amber-600',
+        button: 'bg-amber-600 hover:bg-amber-700',
+        loading: 'text-amber-600',
+        loadingText: 'text-amber-700',
+        icon: 'text-amber-500 hover:text-amber-700',
+        selectedBorder: 'border-amber-300'
+      },
+      cyan: {
+        userBg: 'bg-cyan-600',
+        button: 'bg-cyan-600 hover:bg-cyan-700',
+        loading: 'text-cyan-600',
+        loadingText: 'text-cyan-700',
+        icon: 'text-cyan-500 hover:text-cyan-700',
+        selectedBorder: 'border-cyan-300'
+      },
+      stone: {
+        userBg: 'bg-stone-600',
+        button: 'bg-stone-600 hover:bg-stone-700',
+        loading: 'text-stone-600',
+        loadingText: 'text-stone-700',
+        icon: 'text-stone-500 hover:text-stone-700',
+        selectedBorder: 'border-stone-300'
+      },
+      violet: {
+        userBg: 'bg-violet-600',
+        button: 'bg-violet-600 hover:bg-violet-700',
+        loading: 'text-violet-600',
+        loadingText: 'text-violet-700',
+        icon: 'text-violet-500 hover:text-violet-700',
+        selectedBorder: 'border-violet-300'
+      },
+      red: {
+        userBg: 'bg-red-600',
+        button: 'bg-red-600 hover:bg-red-700',
+        loading: 'text-red-600',
+        loadingText: 'text-red-700',
+        icon: 'text-red-500 hover:text-red-700',
+        selectedBorder: 'border-red-300'
+      }
+    }
+
+    const selectedColors = colorMap[color as keyof typeof colorMap] || colorMap.emerald
+
+    return {
+      ...selectedColors,
+      assistantBg: 'bg-gray-50',
+      assistantText: 'text-gray-900',
+      iconHover: 'hover:bg-gray-100',
+      selectedBg: 'bg-gray-100'
+    }
+  }
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -205,12 +303,19 @@ export default function RAGChat() {
 
       setMessages(prev => [...prev, assistantMessage])
 
+      let isFirstChunk = true
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
 
         const chunk = new TextDecoder().decode(value)
         assistantContent += chunk
+
+        // Hide loading indicator as soon as first chunk arrives
+        if (isFirstChunk) {
+          setIsLoading(false)
+          isFirstChunk = false
+        }
 
         setMessages(prev =>
           prev.map((msg, index) =>
@@ -372,52 +477,60 @@ export default function RAGChat() {
         )}
 
         {/* Chat Messages */}
-        <Card className="flex-1 mb-4 border-0 shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden">
-          <ScrollArea className="h-full p-6">
-            {messages.length === 0 ? (
-              <div className="text-center py-12">
-                <MessageCircle className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-neutral-700 mb-2">
-                  {uploadedFile ? 'Ask questions about your document' : 'Start a conversation'}
-                </h3>
-                <p className="text-neutral-500">
-                  {uploadedFile
-                    ? `Your PDF "${uploadedFile.name}" is ready for questions.`
-                    : 'Upload a PDF document above to get started, or ask general questions.'
-                  }
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {messages.map((message, index) => (
-                  <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[80%] ${message.role === 'user'
-                      ? `${getColorClasses(selectedColor).userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
-                      : `${getColorClasses(selectedColor).assistantBg} ${getColorClasses(selectedColor).assistantText} rounded-2xl rounded-bl-md px-4 py-3`
-                      }`}>
-                      {message.role === 'user' ? (
-                        <p className="text-sm leading-relaxed">{message.content}</p>
-                      ) : (
-                        <div className="prose prose-sm prose-neutral max-w-none">
-                          <ReactMarkdown>{message.content}</ReactMarkdown>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className={`${getColorClasses(selectedColor).assistantBg} rounded-2xl rounded-bl-md px-4 py-3`}>
-                      <div className="flex items-center space-x-2">
-                        <Loader2 className={`w-4 h-4 animate-spin ${getColorClasses(selectedColor).loading}`} />
-                        <span className={`text-sm ${getColorClasses(selectedColor).loadingText}`}>AI is thinking...</span>
+        <Card className="flex-1 mb-4 border-0 shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden relative">
+          <ScrollArea className="h-full relative">
+            {/* Top gradient fade - positioned inside ScrollArea */}
+            <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white via-white/80 to-transparent pointer-events-none z-10" />
+
+            <div className="p-6">
+              {messages.length === 0 ? (
+                <div className="text-center py-12">
+                  <MessageCircle className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-neutral-700 mb-2">
+                    {uploadedFile ? 'Ask questions about your document' : 'Start a conversation'}
+                  </h3>
+                  <p className="text-neutral-500">
+                    {uploadedFile
+                      ? `Your PDF "${uploadedFile.name}" is ready for questions.`
+                      : 'Upload a PDF document above to get started, or ask general questions.'
+                    }
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {messages.map((message, index) => (
+                    <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[80%] ${message.role === 'user'
+                        ? `${getColorClasses(selectedColor).userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
+                        : `${getColorClasses(selectedColor).assistantBg} ${getColorClasses(selectedColor).assistantText} rounded-2xl rounded-bl-md px-4 py-3`
+                        }`}>
+                        {message.role === 'user' ? (
+                          <p className="text-sm leading-relaxed">{message.content}</p>
+                        ) : (
+                          <div className="prose prose-sm prose-neutral max-w-none">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className={`${getColorClasses(selectedColor).assistantBg} rounded-2xl rounded-bl-md px-4 py-3`}>
+                        <div className="flex items-center space-x-2">
+                          <Loader2 className={`w-4 h-4 animate-spin ${getColorClasses(selectedColor).loading}`} />
+                          <span className={`text-sm ${getColorClasses(selectedColor).loadingText}`}>AI is thinking...</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Bottom gradient fade - positioned inside ScrollArea */}
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-10" />
           </ScrollArea>
         </Card>
 
