@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start both frontend and backend servers for development
-echo "🚀 Starting RAG Chat Development Environment..."
+echo "🚀 Starting RAG PDF Chat Development Environment..."
 
 # Check if we're in the right directory
 if [ ! -f "api/app.py" ] || [ ! -f "frontend/package.json" ]; then

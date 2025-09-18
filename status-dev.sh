@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check status of development servers
-echo "📊 Retro Chat Vibes Development Server Status"
+echo "📊 RAG PDF Chat Development Server Status"
 echo "=============================================="
 
 # Check backend server

@@ -1,204 +1,188 @@
-# 🎵 Retro Chat Vibes - AI-Powered Chat with 70s/80s Flair! 🚀
+# 📄 RAG PDF Chat - AI-Powered Document Q&A! 🚀
 
-## 🌟 What's This Groovy App All About?
+## 🌟 What's This Amazing App All About?
 
-Welcome to **Retro Chat Vibes** - your totally rad AI chat application that takes you back to the golden era of computing! 🕹️✨
+Welcome to **RAG PDF Chat** - your intelligent document companion that transforms any PDF into an interactive conversation partner! 🤖✨
 
-This isn't just any chat app - it's a **time-traveling conversation machine** that lets you switch between the psychedelic 70s and the neon-lit 80s with a single click! Chat with AI while vibing to different retro aesthetics that'll make you feel like you're coding in a different decade.
+This isn't just any chat app - it's a **smart document assistant** that uses cutting-edge RAG (Retrieval-Augmented Generation) technology to answer questions about your uploaded PDFs with pinpoint accuracy. Upload a document, ask questions, and get precise answers based solely on the content you provided!
 
-### 🎨 What Makes This App So Special?
+### 🎯 What Makes This App So Powerful?
 
-- **🎭 Dual Theme Magic**: Switch between groovy 70s vibes and radical 80s synthwave aesthetics
-- **🤖 AI-Powered Conversations**: Powered by OpenAI's latest models for intelligent responses
-- **📝 Markdown Support**: Beautifully formatted responses with code highlighting
-- **🎵 Retro UI Elements**: Authentic period-appropriate design elements and animations
-- **🌐 Full-Stack Awesomeness**: Modern tech stack with a retro twist
+- **📄 PDF Intelligence**: Upload any PDF and instantly make it searchable and conversational
+- **🔍 Semantic Search**: Advanced vector-based search finds relevant content even with different wording
+- **🤖 RAG Technology**: Retrieval-Augmented Generation ensures answers come only from your document
+- **💬 Natural Conversations**: Chat naturally about your documents with streaming AI responses
+- **🎨 Beautiful UI**: Apple-inspired design with drag-and-drop file upload and smooth animations
+- **⚡ Real-Time Processing**: Fast PDF processing, chunking, and embedding generation
 
 ## 🛠️ Tech Stack - The Good Stuff
 
 ### Frontend (The Pretty Part) 🎨
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript for fewer bugs
-- **Tailwind CSS** - Utility-first styling with custom retro themes
-- **React Markdown** - Beautiful markdown rendering
-- **Lucide React** - Crisp, customizable icons
+- **Next.js 15** - React framework with App Router and TypeScript
+- **Tailwind CSS** - Utility-first CSS for rapid UI development
+- **shadcn/ui** - Beautiful, accessible component library
+- **React Dropzone** - Drag-and-drop file upload with progress indicators
+- **React Markdown** - Rich markdown rendering for AI responses
+- **Lucide React** - Clean, consistent icons
 
 ### Backend (The Brain) 🧠
-- **FastAPI** - Lightning-fast Python web framework
-- **OpenAI API** - Access to GPT-4.1-mini and other models
-- **Pydantic** - Data validation and settings management
-- **Uvicorn** - ASGI server for production-ready performance
+- **FastAPI** - Modern, fast Python web framework with automatic API docs
+- **OpenAI API** - GPT-4o-mini for intelligent responses and text-embedding-3-small for vectors
+- **PyPDF2** - PDF text extraction and processing
+- **NumPy** - Efficient vector operations for semantic search
+- **Uvicorn** - Lightning-fast ASGI server
+- **Pydantic** - Data validation and serialization
 
-### Deployment (The Launch Pad) 🚀
-- **Vercel** - Zero-config deployment platform
-- **Monorepo Structure** - Frontend and backend in one repo
+### RAG Engine (The Magic) ✨
+- **Custom Vector Database** - In-memory vector store with cosine similarity search
+- **Text Chunking** - Intelligent document splitting for optimal retrieval
+- **Embedding Generation** - Convert text to high-dimensional semantic vectors
+- **Context Injection** - Seamlessly integrate retrieved content into AI prompts
 
-## 🚀 Quick Start - Get Grooving in Minutes!
+## 🚀 Quick Start - Get This Baby Running!
 
 ### Prerequisites
-- **Node.js** (v18 or higher) - For the frontend magic
-- **Python** (v3.8 or higher) - For the backend brains
-- **OpenAI API Key** - Your ticket to AI conversations
-- **Git** - For version control awesomeness
+- **Python 3.11+** (the backend needs modern Python)
+- **Node.js 18+** (for the slick frontend)
+- **uv** (Python package manager - install with `curl -LsSf https://astral.sh/uv/install.sh | sh`)
+- **OpenAI API Key** (get yours at [platform.openai.com](https://platform.openai.com))
 
-### 1. Clone This Bad Boy
+### Installation & Setup
+
+1. **Clone this awesome repo:**
 ```bash
-git clone https://github.com/your-username/The-AI-Makerspace-Engineer-Challenge.git
+git clone <your-repo-url>
 cd The-AI-Makerspace-Engineer-Challenge
 ```
 
-### 2. Backend Setup (The Brain Surgery) 🧠
+2. **Start the development environment:**
 ```bash
-# Navigate to the API directory
-cd api
-
-# Create a virtual environment (Python best practice!)
-python -m venv venv
-
-# Activate the virtual environment
-# On macOS/Linux:
-source venv/bin/activate
-# On Windows:
-# venv\Scripts\activate
-
-# Install the dependencies
-pip install -r requirements.txt
-
-# Start the backend server
-python app.py
+./start-dev.sh
 ```
 
-Your backend will be grooving on `http://localhost:8000`! 🎵
+That's it! The script handles everything:
+- ✅ Installs all Python dependencies (including the custom aimakerspace package)
+- ✅ Installs frontend dependencies
+- ✅ Starts both backend (port 8000) and frontend (port 3000)
+- ✅ Sets up the development environment properly
 
-### 3. Frontend Setup (The Visual Magic) ✨
+3. **Open your browser and visit:**
+- **Frontend**: http://localhost:3000 (the main app)
+- **Backend API**: http://localhost:8000 (API endpoints)
+- **API Docs**: http://localhost:8000/docs (interactive API documentation)
+
+### 🎯 How to Use
+
+1. **Add your OpenAI API key** in the app settings
+2. **Upload a PDF** by dragging and dropping or clicking the upload area
+3. **Wait for processing** - the app will extract text, create chunks, and generate embeddings
+4. **Start asking questions!** The AI will answer based only on your document content
+5. **Get accurate answers** - if the info isn't in your PDF, the AI will tell you so
+
+## 🎮 Development Commands
+
+### Start & Stop
 ```bash
-# Open a new terminal and navigate to the frontend
-cd frontend
-
-# Install the dependencies
-npm install
-
-# Start the development server
-npm run dev
+./start-dev.sh      # Start both frontend and backend
+./stop-dev.sh       # Stop all development servers
+./start-backend.sh  # Start only the backend server
+./status-dev.sh     # Check if servers are running
 ```
 
-Your frontend will be vibing on `http://localhost:3000`! 🎨
-
-### 4. Get Your API Key Ready 🔑
-1. Head over to [OpenAI's Platform](https://platform.openai.com/api-keys)
-2. Create a new API key (or use an existing one)
-3. Copy that bad boy - you'll need it for chatting!
-
-## 🎮 How to Use - Let's Get Chatting!
-
-1. **Open the App**: Navigate to `http://localhost:3000` in your browser
-2. **Enter Your API Key**: Paste your OpenAI API key in the secure input field
-3. **Choose Your Vibe**: Switch between 70s and 80s themes using the retro toggle
-4. **Start Chatting**: Type your message and watch the AI respond with retro flair!
-5. **Enjoy the Magic**: Watch as your messages get beautifully formatted with markdown
-
-## 🎨 Theme Features - The Visual Goodness
-
-### 70s Theme 🌸
-- **Psychedelic Backgrounds**: Swirling patterns and warm earth tones
-- **Groovy Typography**: Funky fonts that scream "peace and love"
-- **Retro Animations**: Smooth transitions and period-appropriate effects
-- **Authentic UI Elements**: Transistor radio-style switches and controls
-
-### 80s Theme 🌈
-- **Neon Synthwave**: Electric blues, pinks, and purples
-- **Futuristic Typography**: Bold, geometric fonts with neon glow effects
-- **Retro-Futuristic Animations**: Pulsing neon effects and synthwave vibes
-- **Synth-Style Controls**: Rectangular switches that look like vintage synthesizers
-
-## 🚀 Deployment - Share Your Creation!
-
-### Deploy to Vercel (Recommended) 🌐
+### Manual Development
 ```bash
-# Install Vercel CLI globally
-npm install -g vercel
+# Backend only
+cd api && uv run python app.py
 
-# Deploy your app
-vercel --prod
+# Frontend only
+cd frontend && npm run dev
 ```
 
-### Manual Deployment Steps
-1. **Push to GitHub**: Make sure your code is in a GitHub repository
-2. **Connect to Vercel**: Link your GitHub repo to Vercel
-3. **Configure Environment**: Set up your environment variables
-4. **Deploy**: Vercel will automatically build and deploy your app!
+## 📁 Project Structure - What's Where?
 
-## 🔧 Configuration - Make It Your Own!
-
-### Environment Variables
-Create a `.env.local` file in the frontend directory:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+📦 The-AI-Makerspace-Engineer-Challenge/
+├── 🤖 aimakerspace/              # Custom RAG library
+│   ├── text_utils.py            # PDF loading and text chunking
+│   ├── vectordatabase.py        # Vector storage and semantic search
+│   └── openai_utils/            # OpenAI API integrations
+│       ├── embedding.py         # Text embedding generation
+│       ├── chatmodel.py         # Chat completion handling
+│       └── prompts.py           # Prompt engineering utilities
+├── 🔧 api/                      # FastAPI backend
+│   ├── app.py                   # Main FastAPI application
+│   └── requirements.txt         # Backend dependencies
+├── 🎨 frontend/                 # Next.js frontend
+│   ├── src/app/                 # App Router pages and layouts
+│   │   ├── page.tsx            # Main chat interface
+│   │   ├── layout.tsx          # Root layout with metadata
+│   │   ├── globals.css         # Global styles and animations
+│   │   └── api/chat/route.ts   # API route for backend proxy
+│   ├── src/components/ui/       # shadcn/ui components
+│   └── src/lib/utils.ts        # Utility functions
+├── 🚀 start-dev.sh             # Start development environment
+├── 🛑 stop-dev.sh              # Stop development servers
+├── 📊 status-dev.sh            # Check server status
+└── 📋 pyproject.toml           # Python project configuration
 ```
 
-### Customizing Themes
-The themes are defined in `frontend/app/globals.css`. Feel free to tweak the colors and animations to match your vibe!
+## 🧠 How RAG Works - The Magic Explained
 
-## 🐛 Troubleshooting - When Things Get Weird
+Our RAG system follows this intelligent workflow:
 
-### Common Issues and Solutions
+### 1. **Document Processing** 📄
+```
+PDF Upload → Text Extraction → Intelligent Chunking → Ready for Search
+```
 
-**"API Key Not Working"** 🔑
-- Double-check your OpenAI API key
-- Make sure you have credits in your OpenAI account
-- Verify the API key format (starts with `sk-`)
+### 2. **Embedding Generation** 🔢
+```
+Text Chunks → OpenAI Embeddings → High-Dimensional Vectors → Stored in Database
+```
 
-**"Backend Not Starting"** 🖥️
-- Ensure Python virtual environment is activated
-- Check if port 8000 is available
-- Verify all dependencies are installed
+### 3. **Question Processing** ❓
+```
+User Question → Question Embedding → Semantic Search → Find Relevant Chunks
+```
 
-**"Frontend Not Loading"** 🎨
-- Make sure Node.js is installed and up to date
-- Clear the `.next` cache: `rm -rf .next`
-- Check if port 3000 is available
+### 4. **Answer Generation** 🤖
+```
+Retrieved Chunks + User Question → Context-Aware Prompt → AI Response → Streamed to User
+```
 
-**"Theme Not Switching"** 🎭
-- Hard refresh your browser (Ctrl+F5 or Cmd+Shift+R)
-- Check browser console for JavaScript errors
-- Ensure all CSS files are loading properly
+## 🎨 Features That Make You Go "Wow!"
 
-## 🤝 Contributing - Join the Retro Revolution!
+### 🎯 **Smart Document Processing**
+- Automatic text extraction from any PDF
+- Intelligent chunking for optimal retrieval
+- Fast embedding generation with OpenAI's latest models
 
-We love contributions! Here's how you can help make this app even more awesome:
+### 🔍 **Semantic Search**
+- Find relevant content even with different wording
+- Vector similarity search with cosine distance
+- Top-k retrieval for most relevant chunks
 
-1. **Fork the Repository**: Create your own copy
-2. **Create a Feature Branch**: `git checkout -b feature/amazing-feature`
-3. **Make Your Changes**: Add some retro magic
-4. **Test Everything**: Make sure it works in both themes
-5. **Submit a Pull Request**: Share your groovy additions!
+### 💬 **Conversational Interface**
+- Streaming responses for real-time feel
+- Beautiful markdown rendering
+- Context-aware conversations
 
-### Ideas for Contributions
-- 🎵 Add more retro themes (60s, 90s, Y2K)
-- 🎨 Create new retro animations and effects
-- 🔧 Add more AI model options
-- 📱 Improve mobile responsiveness
-- 🎮 Add retro sound effects
+### 🎨 **Apple-Inspired Design**
+- Clean, modern interface
+- Smooth animations and transitions
+- Responsive design that works everywhere
+- Drag-and-drop file upload with progress
 
-## 📄 License - The Legal Stuff
+## 🤝 Contributing
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Found a bug? Have a cool feature idea? Contributions are welcome! This project is built for learning and experimentation.
 
-## 🙏 Acknowledgments - Shoutouts!
+## 📄 License
 
-- **AI Makerspace** - For the amazing challenge and community
-- **OpenAI** - For the incredible AI models
-- **Vercel** - For seamless deployment
-- **The Retro Computing Community** - For inspiration and nostalgia
-
-## 🎉 Connect With Us!
-
-- **GitHub**: [AI Makerspace](https://github.com/AI-Maker-Space)
-- **Community**: Join our Discord for more retro coding adventures!
-- **Share Your Creation**: Tag us on social media with your deployed apps!
+This project is open source and available under the MIT License.
 
 ---
 
-**Made with ❤️ and lots of retro vibes by the AI Makerspace community!**
+**Built with ❤️ using modern AI and web technologies**
 
-*"In a world of modern apps, be the retro one that stands out!"* 🌟 
+*Transform your PDFs into intelligent conversations - because documents should be interactive, not just readable!* 🚀📄✨

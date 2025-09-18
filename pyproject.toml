@@ -1,7 +1,7 @@
 [project]
-name = "retro-chat-vibes"
-version = "0.1.0"
-description = "A groovy chat app with 70s and 80s themes and AI personality controls"
+name = "rag-pdf-chat"
+version = "1.0.0"
+description = "AI-powered RAG chat application for PDF document Q&A with semantic search"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

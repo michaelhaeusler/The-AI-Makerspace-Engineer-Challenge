@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start only the backend server using uv
-echo "🚀 Starting Retro Chat Vibes Backend with uv..."
+echo "🚀 Starting RAG PDF Chat Backend with uv..."
 
 # Check if we're in the right directory
 if [ ! -f "api/app.py" ]; then

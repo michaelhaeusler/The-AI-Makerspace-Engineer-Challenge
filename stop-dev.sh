@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stop both frontend and backend development servers
-echo "🛑 Stopping Retro Chat Vibes Development Servers..."
+echo "🛑 Stopping RAG PDF Chat Development Servers..."
 
 # Function to kill process by PID
 kill_process() {
