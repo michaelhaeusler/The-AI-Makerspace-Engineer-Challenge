@@ -49,7 +49,7 @@ export default function RAGChat() {
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [selectedModel, setSelectedModel] = useState('gpt-4o-mini')
   const [showSettings, setShowSettings] = useState(false)
-  const [selectedColor, setSelectedColor] = useState('emerald')
+  const [selectedColor, setSelectedColor] = useState('')
 
   const availableModels = [
     { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Fast & efficient' },
@@ -72,6 +72,39 @@ export default function RAGChat() {
     { id: 'emerald', name: 'Emerald', description: 'Natural' }
   ]
 
+  // Load settings from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedModel = localStorage.getItem('ragchat-model')
+      const savedColor = localStorage.getItem('ragchat-color')
+
+      if (savedModel && availableModels.some(m => m.id === savedModel)) {
+        setSelectedModel(savedModel)
+      }
+
+      if (savedColor && availableColors.some(c => c.id === savedColor)) {
+        setSelectedColor(savedColor)
+      } else {
+        // Set default color only if no saved color exists
+        setSelectedColor('emerald')
+      }
+    }
+  }, [])
+
+  // Save model to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ragchat-model', selectedModel)
+    }
+  }, [selectedModel])
+
+  // Save color to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ragchat-color', selectedColor)
+    }
+  }, [selectedColor])
+
   const getColorClasses = (color: string) => {
     const colorMap = {
       blue: {
@@ -80,7 +113,8 @@ export default function RAGChat() {
         loading: 'text-blue-600',
         loadingText: 'text-blue-700',
         icon: 'text-blue-500 hover:text-blue-700',
-        selectedBorder: 'border-blue-300'
+        selectedBorder: 'border-blue-300',
+        progress: 'bg-blue-600'
       },
       teal: {
         userBg: 'bg-teal-600',
@@ -88,7 +122,8 @@ export default function RAGChat() {
         loading: 'text-teal-600',
         loadingText: 'text-teal-700',
         icon: 'text-teal-500 hover:text-teal-700',
-        selectedBorder: 'border-teal-300'
+        selectedBorder: 'border-teal-300',
+        progress: 'bg-teal-600'
       },
       purple: {
         userBg: 'bg-purple-600',
@@ -96,7 +131,8 @@ export default function RAGChat() {
         loading: 'text-purple-600',
         loadingText: 'text-purple-700',
         icon: 'text-purple-500 hover:text-purple-700',
-        selectedBorder: 'border-purple-300'
+        selectedBorder: 'border-purple-300',
+        progress: 'bg-purple-600'
       },
       emerald: {
         userBg: 'bg-emerald-600',
@@ -104,7 +140,8 @@ export default function RAGChat() {
         loading: 'text-emerald-600',
         loadingText: 'text-emerald-700',
         icon: 'text-emerald-500 hover:text-emerald-700',
-        selectedBorder: 'border-emerald-300'
+        selectedBorder: 'border-emerald-300',
+        progress: 'bg-emerald-600'
       },
       indigo: {
         userBg: 'bg-indigo-600',
@@ -112,7 +149,8 @@ export default function RAGChat() {
         loading: 'text-indigo-600',
         loadingText: 'text-indigo-700',
         icon: 'text-indigo-500 hover:text-indigo-700',
-        selectedBorder: 'border-indigo-300'
+        selectedBorder: 'border-indigo-300',
+        progress: 'bg-indigo-600'
       },
       rose: {
         userBg: 'bg-rose-600',
@@ -120,7 +158,8 @@ export default function RAGChat() {
         loading: 'text-rose-600',
         loadingText: 'text-rose-700',
         icon: 'text-rose-500 hover:text-rose-700',
-        selectedBorder: 'border-rose-300'
+        selectedBorder: 'border-rose-300',
+        progress: 'bg-rose-600'
       },
       orange: {
         userBg: 'bg-orange-600',
@@ -128,7 +167,8 @@ export default function RAGChat() {
         loading: 'text-orange-600',
         loadingText: 'text-orange-700',
         icon: 'text-orange-500 hover:text-orange-700',
-        selectedBorder: 'border-orange-300'
+        selectedBorder: 'border-orange-300',
+        progress: 'bg-orange-600'
       },
       amber: {
         userBg: 'bg-amber-600',
@@ -136,7 +176,8 @@ export default function RAGChat() {
         loading: 'text-amber-600',
         loadingText: 'text-amber-700',
         icon: 'text-amber-500 hover:text-amber-700',
-        selectedBorder: 'border-amber-300'
+        selectedBorder: 'border-amber-300',
+        progress: 'bg-amber-600'
       },
       cyan: {
         userBg: 'bg-cyan-600',
@@ -144,7 +185,8 @@ export default function RAGChat() {
         loading: 'text-cyan-600',
         loadingText: 'text-cyan-700',
         icon: 'text-cyan-500 hover:text-cyan-700',
-        selectedBorder: 'border-cyan-300'
+        selectedBorder: 'border-cyan-300',
+        progress: 'bg-cyan-600'
       },
       stone: {
         userBg: 'bg-stone-600',
@@ -152,7 +194,8 @@ export default function RAGChat() {
         loading: 'text-stone-600',
         loadingText: 'text-stone-700',
         icon: 'text-stone-500 hover:text-stone-700',
-        selectedBorder: 'border-stone-300'
+        selectedBorder: 'border-stone-300',
+        progress: 'bg-stone-600'
       },
       violet: {
         userBg: 'bg-violet-600',
@@ -160,7 +203,8 @@ export default function RAGChat() {
         loading: 'text-violet-600',
         loadingText: 'text-violet-700',
         icon: 'text-violet-500 hover:text-violet-700',
-        selectedBorder: 'border-violet-300'
+        selectedBorder: 'border-violet-300',
+        progress: 'bg-violet-600'
       },
       red: {
         userBg: 'bg-red-600',
@@ -168,7 +212,25 @@ export default function RAGChat() {
         loading: 'text-red-600',
         loadingText: 'text-red-700',
         icon: 'text-red-500 hover:text-red-700',
-        selectedBorder: 'border-red-300'
+        selectedBorder: 'border-red-300',
+        progress: 'bg-red-600'
+      }
+    }
+
+    // Handle loading state (empty color) with neutral styles
+    if (!color) {
+      return {
+        userBg: 'bg-gray-600',
+        button: 'bg-gray-600 hover:bg-gray-700',
+        loading: 'text-gray-600',
+        loadingText: 'text-gray-700',
+        icon: 'text-gray-500 hover:text-gray-700',
+        selectedBorder: 'border-gray-300',
+        progress: 'bg-gray-600',
+        assistantBg: 'bg-gray-50',
+        assistantText: 'text-gray-900',
+        iconHover: 'hover:bg-gray-100',
+        selectedBg: 'bg-gray-100'
       }
     }
 
@@ -195,7 +257,12 @@ export default function RAGChat() {
   }, [messages])
 
 
-  const processFileUpload = (file: File) => {
+  const [processingStep, setProcessingStep] = useState<string>('')
+
+  const processFileUpload = async (file: File) => {
+    const startTime = Date.now()
+    console.log(`🚀 Starting document processing for ${file.name} (${formatFileSize(file.size)})`)
+
     setUploadedFile({
       name: file.name,
       size: file.size,
@@ -203,18 +270,161 @@ export default function RAGChat() {
       status: 'uploading'
     })
     setError(null)
+    setIsLoading(true)
+    setProcessingStep('Preparing document...')
 
-    // Simulate upload progress
-    let progress = 0
-    const interval = setInterval(() => {
-      progress += 10
-      setUploadedFile(prev => prev ? { ...prev, uploadProgress: progress } : null)
+    try {
+      // Create FormData for file upload
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('apiKey', apiKey)
 
-      if (progress >= 100) {
-        clearInterval(interval)
-        setUploadedFile(prev => prev ? { ...prev, status: 'completed' } : null)
+      // Smart progress simulation with step updates
+      let currentProgress = 0
+      const progressInterval = setInterval(() => {
+        setUploadedFile(prev => {
+          if (prev && prev.uploadProgress < 85) {
+            currentProgress += 3
+            if (currentProgress < 30) {
+              setProcessingStep('Reading document...')
+            } else if (currentProgress < 70) {
+              setProcessingStep('Analyzing content...')
+            } else {
+              setProcessingStep('Almost ready...')
+            }
+            return { ...prev, uploadProgress: currentProgress }
+          }
+          return prev
+        })
+      }, 800)
+
+      console.log('📤 Uploading and processing document...')
+      const uploadStart = Date.now()
+
+      // Upload file and process (this includes embedding creation)
+      const response = await fetch('/api/upload-pdf-only', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const uploadEnd = Date.now()
+      console.log(`✅ Document processing completed in ${uploadEnd - uploadStart}ms`)
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Upload failed')
       }
-    }, 100)
+
+      const result = await response.json()
+      clearInterval(progressInterval)
+
+      // Complete the upload progress
+      setUploadedFile({
+        name: file.name,
+        size: file.size,
+        uploadProgress: 100,
+        status: 'completed'
+      })
+      setProcessingStep('Creating summary...')
+
+      // We'll add the message when we get the first chunk to avoid empty bubble
+
+      console.log('🤖 Generating document summary...')
+      const summaryStart = Date.now()
+
+      // Stream the summary generation
+      const summaryResponse = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          developer_message: `You are analyzing a document. Please provide a comprehensive summary in the following format:
+
+# 📄 Document Summary
+
+## Overview
+[2-3 sentence overview of what this document is about]
+
+## 🎯 Main Topics
+- **Topic 1**: Brief description
+- **Topic 2**: Brief description  
+- **Topic 3**: Brief description
+
+## 📚 Key Sections
+- **Section 1**: Brief description
+- **Section 2**: Brief description
+- **Section 3**: Brief description
+
+## 💡 Suggested Questions
+Based on the content I analyzed, here are specific questions you can ask:
+- [Generate 3-4 specific questions that can be answered using the content provided above]
+- [Reference actual topics, names, concepts, or data mentioned in the document]
+- [Make questions specific enough that they can be answered with the available content]
+- [Example: Instead of "How does X work?" use "How does [specific process mentioned] work in [specific context]?"]
+
+---
+*Document "${file.name}" has been processed and is ready for questions!*`,
+          user_message: 'Please analyze and summarize the uploaded document.',
+          model: selectedModel,
+          api_key: apiKey
+        }),
+      })
+
+      if (!summaryResponse.ok) {
+        throw new Error('Summary generation failed')
+      }
+
+      const reader = summaryResponse.body?.getReader()
+      if (!reader) throw new Error('No reader available')
+
+      let summaryContent = ''
+      let isFirstChunk = true
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = new TextDecoder().decode(value)
+        summaryContent += chunk
+
+        // Add message and hide loading spinner as soon as first chunk arrives
+        if (isFirstChunk) {
+          const summaryMessage: Message = {
+            role: 'assistant',
+            content: summaryContent,
+            timestamp: Date.now()
+          }
+          setMessages(prev => [...prev, summaryMessage])
+          setIsLoading(false)
+          isFirstChunk = false
+        } else {
+          // Update existing message
+          setMessages(prev =>
+            prev.map((msg, index) =>
+              index === prev.length - 1
+                ? { ...msg, content: summaryContent }
+                : msg
+            )
+          )
+        }
+      }
+
+      const summaryEnd = Date.now()
+      console.log(`✅ Summary generated in ${summaryEnd - summaryStart}ms`)
+
+      // Clean up processing step
+      setProcessingStep('')
+
+      const totalTime = Date.now() - startTime
+      console.log(`🎉 Total processing time: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)`)
+
+    } catch (error) {
+      console.error('❌ Upload error:', error)
+      setError(error instanceof Error ? error.message : 'Upload failed')
+      setUploadedFile(prev => prev ? { ...prev, status: 'error' } : null)
+      setIsLoading(false)
+      setProcessingStep('')
+    }
   }
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -243,6 +453,33 @@ export default function RAGChat() {
   const handleReplaceCancel = () => {
     setShowReplaceDialog(false)
     setPendingFile(null)
+  }
+
+  const handleRemoveDocument = async () => {
+    try {
+      setError(null)
+      console.log('🗑️ Removing uploaded document...')
+
+      const response = await fetch('/api/clear-document', {
+        method: 'POST',
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to clear document')
+      }
+
+      // Clear frontend state
+      setUploadedFile(null)
+      setMessages([])
+      setProcessingStep('')
+
+      console.log('✅ Document removed - returned to normal chat mode')
+
+    } catch (error) {
+      console.error('❌ Error removing document:', error)
+      setError(error instanceof Error ? error.message : 'Failed to remove document')
+    }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -396,17 +633,6 @@ export default function RAGChat() {
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Remove Document Button (when document is loaded) */}
-            {uploadedFile && uploadedFile.status === 'completed' && (
-              <button
-                onClick={removeFile}
-                className={`p-1.5 rounded-lg ${getColorClasses(selectedColor).iconHover} transition-colors`}
-                title="Remove document"
-              >
-                <X className={`w-4 h-4 ${getColorClasses(selectedColor).icon}`} />
-              </button>
-            )}
-
             {/* Settings Button */}
             <button
               onClick={() => setShowSettings(true)}
@@ -459,14 +685,44 @@ export default function RAGChat() {
 
         {/* Upload Progress */}
         {uploadedFile && uploadedFile.status === 'uploading' && (
-          <Card className="mb-6 p-4 bg-white/50 backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-neutral-700">Uploading {uploadedFile.name}</span>
+          <Card className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-sm font-medium text-neutral-700">
+                Processing {uploadedFile.name}
+              </span>
               <span className="text-sm text-neutral-500">{formatFileSize(uploadedFile.size)}</span>
             </div>
-            <Progress value={uploadedFile.uploadProgress} className="h-2" />
+            <Progress
+              value={uploadedFile.uploadProgress}
+              className="h-2"
+              indicatorClassName={getColorClasses(selectedColor).progress}
+            />
+            {processingStep && (
+              <p className="text-xs text-neutral-400 mt-1.5">
+                {processingStep}
+              </p>
+            )}
           </Card>
         )}
+
+        {/* Uploaded Document Info */}
+        {uploadedFile && uploadedFile.status === 'completed' && (
+          <Card className="gap-2 mb-3 p-3 bg-white/50 backdrop-blur-sm">
+            <div className="flex items-center">
+              <span className="text-sm font-medium text-neutral-700">
+                📄 {uploadedFile.name}
+              </span>
+              <button
+                onClick={handleRemoveDocument}
+                className="ml-2 text-neutral-400 hover:text-red-500 transition-colors duration-200 p-1"
+                title="Remove document and return to normal chat mode"
+              >
+                ✕
+              </button>
+            </div>
+          </Card>
+        )}
+
 
         {/* Error Alert */}
         {error && (
@@ -485,16 +741,33 @@ export default function RAGChat() {
             <div className="p-6">
               {messages.length === 0 ? (
                 <div className="text-center py-12">
-                  <MessageCircle className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-neutral-700 mb-2">
-                    {uploadedFile ? 'Ask questions about your document' : 'Start a conversation'}
-                  </h3>
-                  <p className="text-neutral-500">
-                    {uploadedFile
-                      ? `Your PDF "${uploadedFile.name}" is ready for questions.`
-                      : 'Upload a PDF document above to get started, or ask general questions.'
-                    }
-                  </p>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-16 h-16 text-neutral-400 mx-auto mb-4 animate-spin" />
+                      <h3 className="text-lg font-medium text-neutral-700 mb-2">
+                        Analyzing your document
+                      </h3>
+                      <p className="text-neutral-500">
+                        {uploadedFile
+                          ? `We're reading and understanding "${uploadedFile.name}". This takes a moment for thorough analysis.`
+                          : 'Preparing your document for analysis...'
+                        }
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <MessageCircle className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-neutral-700 mb-2">
+                        {uploadedFile ? 'Ask questions about your document' : 'Start a conversation'}
+                      </h3>
+                      <p className="text-neutral-500">
+                        {uploadedFile
+                          ? `Your PDF "${uploadedFile.name}" is ready for questions.`
+                          : 'Upload a PDF document above to get started, or ask general questions.'
+                        }
+                      </p>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -502,7 +775,7 @@ export default function RAGChat() {
                     <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-[80%] ${message.role === 'user'
                         ? `${getColorClasses(selectedColor).userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
-                        : `${getColorClasses(selectedColor).assistantBg} ${getColorClasses(selectedColor).assistantText} rounded-2xl rounded-bl-md px-4 py-3`
+                        : `text-neutral-900`
                         }`}>
                         {message.role === 'user' ? (
                           <p className="text-sm leading-relaxed">{message.content}</p>

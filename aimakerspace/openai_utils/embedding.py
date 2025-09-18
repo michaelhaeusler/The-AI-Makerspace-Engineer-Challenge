@@ -28,7 +28,9 @@ class EmbeddingModel:
     not just documents that use the same words.
     """
 
-    def __init__(self, embeddings_model_name: str = "text-embedding-3-small"):
+    def __init__(
+        self, embeddings_model_name: str = "text-embedding-3-small", api_key: str = None
+    ):
         """
         Initialize the embedding model.
 
@@ -36,6 +38,7 @@ class EmbeddingModel:
             embeddings_model_name (str): OpenAI embedding model to use
                 - "text-embedding-3-small": Cheaper, faster, good quality
                 - "text-embedding-3-large": More expensive, slower, higher quality
+            api_key (str): OpenAI API key. If not provided, will try to get from environment variable.
 
         Python Concepts:
         - Environment variables: API keys stored securely outside code
@@ -43,18 +46,21 @@ class EmbeddingModel:
         - Error handling: Validates API key is present
         """
         load_dotenv()  # Load environment variables from .env file
-        self.openai_api_key = os.getenv("OPENAI_API_KEY")
+
+        # Use provided API key or fall back to environment variable
+        self.openai_api_key = api_key or os.getenv("OPENAI_API_KEY")
         if self.openai_api_key is None:
             raise ValueError(
-                "OPENAI_API_KEY environment variable is not set. "
-                "Please configure it with your OpenAI API key."
+                "OpenAI API key is required. Please provide it as a parameter or set the OPENAI_API_KEY environment variable."
             )
 
         self.embeddings_model_name = embeddings_model_name
-        self.async_client = (
-            AsyncOpenAI()
+        self.async_client = AsyncOpenAI(
+            api_key=self.openai_api_key
         )  # For async operations (faster when processing many texts)
-        self.client = OpenAI()  # For synchronous operations (simpler to use)
+        self.client = OpenAI(
+            api_key=self.openai_api_key
+        )  # For synchronous operations (simpler to use)
 
     async def async_get_embeddings(
         self, list_of_text: Iterable[str]
