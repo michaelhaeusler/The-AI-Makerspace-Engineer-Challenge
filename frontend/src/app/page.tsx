@@ -19,7 +19,8 @@ import {
   AlertCircle,
   X,
   ChevronDown,
-  Cpu
+  Cpu,
+  Settings
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
@@ -47,13 +48,42 @@ export default function RAGChat() {
   const [showReplaceDialog, setShowReplaceDialog] = useState(false)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [selectedModel, setSelectedModel] = useState('gpt-4o-mini')
-  const [showModelDropdown, setShowModelDropdown] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [selectedColor, setSelectedColor] = useState('olive')
 
   const availableModels = [
     { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Fast & efficient' },
     { id: 'gpt-4o', name: 'GPT-4o', description: 'Most capable' },
     { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Classic choice' }
   ]
+
+  const availableColors = [
+    { id: 'blue', name: 'Blue', description: 'Professional' },
+    { id: 'teal', name: 'Teal', description: 'Modern' },
+    { id: 'purple', name: 'Purple', description: 'Creative' },
+    { id: 'indigo', name: 'Indigo', description: 'Elegant' },
+    { id: 'rose', name: 'Rose', description: 'Warm' },
+    { id: 'orange', name: 'Orange', description: 'Energetic' },
+    { id: 'amber', name: 'Amber', description: 'Inviting' },
+    { id: 'cyan', name: 'Cyan', description: 'Fresh' },
+    { id: 'stone', name: 'Stone', description: 'Neutral' },
+    { id: 'violet', name: 'Violet', description: 'Modern' },
+    { id: 'red', name: 'Red', description: 'Bold' },
+    { id: 'olive', name: 'Olive', description: 'Natural' }
+  ]
+
+  const getColorClasses = (color: string) => ({
+    userBg: `bg-${color}-600`,
+    assistantBg: `bg-gray-50`,
+    assistantText: `text-gray-900`,
+    button: `bg-${color}-600 hover:bg-${color}-700`,
+    loading: `text-${color}-600`,
+    loadingText: `text-${color}-700`,
+    icon: `text-${color}-500 hover:text-${color}-700`,
+    iconHover: `hover:bg-gray-100`,
+    selectedBg: `bg-gray-100`,
+    selectedBorder: `border-${color}-300`
+  })
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -66,19 +96,6 @@ export default function RAGChat() {
     scrollToBottom()
   }, [messages])
 
-  // Close model dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (showModelDropdown) {
-        setShowModelDropdown(false)
-      }
-    }
-
-    if (showModelDropdown) {
-      document.addEventListener('click', handleClickOutside)
-      return () => document.removeEventListener('click', handleClickOutside)
-    }
-  }, [showModelDropdown])
 
   const processFileUpload = (file: File) => {
     setUploadedFile({
@@ -248,7 +265,7 @@ export default function RAGChat() {
             <Button
               onClick={() => apiKey && setShowApiKeyInput(false)}
               disabled={!apiKey}
-              className="w-full h-12 rounded-xl bg-lime-600 hover:bg-lime-700 text-white font-medium transition-all duration-200"
+              className={`w-full h-12 rounded-xl ${getColorClasses(selectedColor).button} text-white font-medium transition-all duration-200`}
             >
               Continue
             </Button>
@@ -278,12 +295,21 @@ export default function RAGChat() {
             {uploadedFile && uploadedFile.status === 'completed' && (
               <button
                 onClick={removeFile}
-                className="p-1.5 rounded-lg hover:bg-lime-100 transition-colors"
+                className={`p-1.5 rounded-lg ${getColorClasses(selectedColor).iconHover} transition-colors`}
                 title="Remove document"
               >
-                <X className="w-4 h-4 text-lime-500 hover:text-lime-700" />
+                <X className={`w-4 h-4 ${getColorClasses(selectedColor).icon}`} />
               </button>
             )}
+
+            {/* Settings Button */}
+            <button
+              onClick={() => setShowSettings(true)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+              title="Settings"
+            >
+              <Settings className="w-4 h-4 text-gray-500 hover:text-gray-700" />
+            </button>
           </div>
         </div>
       </div>
@@ -366,8 +392,8 @@ export default function RAGChat() {
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] ${message.role === 'user'
-                        ? 'bg-lime-600 text-white rounded-2xl rounded-br-md px-4 py-3'
-                        : 'bg-lime-50 text-lime-900 rounded-2xl rounded-bl-md px-4 py-3'
+                      ? `${getColorClasses(selectedColor).userBg} text-white rounded-2xl rounded-br-md px-4 py-3`
+                      : `${getColorClasses(selectedColor).assistantBg} ${getColorClasses(selectedColor).assistantText} rounded-2xl rounded-bl-md px-4 py-3`
                       }`}>
                       {message.role === 'user' ? (
                         <p className="text-sm leading-relaxed">{message.content}</p>
@@ -381,10 +407,10 @@ export default function RAGChat() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-lime-50 rounded-2xl rounded-bl-md px-4 py-3">
+                    <div className={`${getColorClasses(selectedColor).assistantBg} rounded-2xl rounded-bl-md px-4 py-3`}>
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-lime-600" />
-                        <span className="text-sm text-lime-700">AI is thinking...</span>
+                        <Loader2 className={`w-4 h-4 animate-spin ${getColorClasses(selectedColor).loading}`} />
+                        <span className={`text-sm ${getColorClasses(selectedColor).loadingText}`}>AI is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -410,7 +436,7 @@ export default function RAGChat() {
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-3 h-auto rounded-xl bg-lime-600 hover:bg-lime-700 text-white transition-all duration-200"
+              className={`px-6 py-3 h-auto rounded-xl ${getColorClasses(selectedColor).button} text-white transition-all duration-200`}
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -419,49 +445,76 @@ export default function RAGChat() {
               )}
             </Button>
           </div>
-          
-          {/* Small Model Selector - Bottom Right */}
-          <div className="flex justify-end mt-2">
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setShowModelDropdown(!showModelDropdown)
-                }}
-                className="flex items-center space-x-1 px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors text-xs text-gray-600"
-              >
-                <Cpu className="w-3 h-3" />
-                <span className="font-medium">
-                  {availableModels.find(m => m.id === selectedModel)?.name}
-                </span>
-                <ChevronDown className="w-2 h-2" />
-              </button>
-
-              {/* Dropdown */}
-              {showModelDropdown && (
-                <div className="absolute right-0 bottom-full mb-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-[100]">
-                  <div className="p-1">
-                    {availableModels.map((model) => (
-                      <button
-                        key={model.id}
-                        onClick={() => {
-                          setSelectedModel(model.id)
-                          setShowModelDropdown(false)
-                        }}
-                        className={`w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors ${selectedModel === model.id ? 'bg-gray-100' : ''
-                          }`}
-                      >
-                        <div className="font-medium text-gray-900">{model.name}</div>
-                        <div className="text-gray-500">{model.description}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
         </Card>
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-md p-6 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
+              <button
+                onClick={() => setShowSettings(false)}
+                className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-4 h-4 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Model Selection */}
+            <div className="mb-6">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Language Model</h4>
+              <div className="space-y-2">
+                {availableModels.map((model) => (
+                  <button
+                    key={model.id}
+                    onClick={() => setSelectedModel(model.id)}
+                    className={`w-full text-left p-3 rounded-lg border transition-colors ${selectedModel === model.id
+                      ? `${getColorClasses(selectedColor).selectedBorder} ${getColorClasses(selectedColor).selectedBg}`
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                  >
+                    <div className="font-medium text-gray-900">{model.name}</div>
+                    <div className="text-sm text-gray-500">{model.description}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Color Selection */}
+            <div className="mb-6">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Theme Color</h4>
+              <div className="grid grid-cols-4 gap-2">
+                {availableColors.map((color) => (
+                  <button
+                    key={color.id}
+                    onClick={() => setSelectedColor(color.id)}
+                    className={`p-2 rounded-lg border text-center transition-colors ${selectedColor === color.id
+                      ? `border-${color.id}-300 bg-gray-100`
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                  >
+                    <div className="flex justify-center space-x-1 mb-1">
+                      <div className={`w-3 h-3 bg-${color.id}-600 rounded`}></div>
+                      <div className="w-3 h-3 bg-gray-50 border rounded"></div>
+                    </div>
+                    <div className="text-xs font-medium text-gray-700">{color.name}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Close Button */}
+            <Button
+              onClick={() => setShowSettings(false)}
+              className={`w-full ${getColorClasses(selectedColor).button} text-white`}
+            >
+              Done
+            </Button>
+          </Card>
+        </div>
+      )}
 
       {/* Replace File Dialog */}
       {showReplaceDialog && pendingFile && (
@@ -497,7 +550,7 @@ export default function RAGChat() {
               </Button>
               <Button
                 onClick={handleReplaceConfirm}
-                className="flex-1 rounded-xl bg-lime-600 hover:bg-lime-700 text-white"
+                className={`flex-1 rounded-xl ${getColorClasses(selectedColor).button} text-white`}
               >
                 Replace
               </Button>
@@ -506,184 +559,6 @@ export default function RAGChat() {
         </div>
       )}
 
-      {/* Temporary Color Palette Viewer */}
-      <div className="fixed bottom-4 left-4 right-4 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-[200] max-h-48 overflow-y-auto">
-        <h3 className="text-sm font-semibold mb-3 text-gray-800">🎨 Color Palette Options - Click to Apply</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-xs">
-
-          {/* Blue */}
-          <button
-            onClick={() => alert('Blue selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-blue-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-blue-700 rounded"></div>
-              <div className="w-4 h-4 bg-blue-600 rounded"></div>
-              <div className="w-4 h-4 bg-blue-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Blue</div>
-            <div className="text-gray-500">Professional</div>
-          </button>
-
-          {/* Teal */}
-          <button
-            onClick={() => alert('Teal selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-teal-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-teal-700 rounded"></div>
-              <div className="w-4 h-4 bg-teal-600 rounded"></div>
-              <div className="w-4 h-4 bg-teal-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Teal</div>
-            <div className="text-gray-500">Modern</div>
-          </button>
-
-          {/* Purple */}
-          <button
-            onClick={() => alert('Purple selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-purple-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-purple-700 rounded"></div>
-              <div className="w-4 h-4 bg-purple-600 rounded"></div>
-              <div className="w-4 h-4 bg-purple-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Purple</div>
-            <div className="text-gray-500">Creative</div>
-          </button>
-
-          {/* Indigo */}
-          <button
-            onClick={() => alert('Indigo selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-indigo-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-indigo-700 rounded"></div>
-              <div className="w-4 h-4 bg-indigo-600 rounded"></div>
-              <div className="w-4 h-4 bg-indigo-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Indigo</div>
-            <div className="text-gray-500">Elegant</div>
-          </button>
-
-          {/* Rose */}
-          <button
-            onClick={() => alert('Rose selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-rose-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-rose-700 rounded"></div>
-              <div className="w-4 h-4 bg-rose-600 rounded"></div>
-              <div className="w-4 h-4 bg-rose-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Rose</div>
-            <div className="text-gray-500">Warm</div>
-          </button>
-
-          {/* Orange */}
-          <button
-            onClick={() => alert('Orange selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-orange-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-orange-700 rounded"></div>
-              <div className="w-4 h-4 bg-orange-600 rounded"></div>
-              <div className="w-4 h-4 bg-orange-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Orange</div>
-            <div className="text-gray-500">Energetic</div>
-          </button>
-
-          {/* Amber */}
-          <button
-            onClick={() => alert('Amber selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-amber-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-amber-700 rounded"></div>
-              <div className="w-4 h-4 bg-amber-600 rounded"></div>
-              <div className="w-4 h-4 bg-amber-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Amber</div>
-            <div className="text-gray-500">Inviting</div>
-          </button>
-
-          {/* Cyan */}
-          <button
-            onClick={() => alert('Cyan selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-cyan-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-cyan-700 rounded"></div>
-              <div className="w-4 h-4 bg-cyan-600 rounded"></div>
-              <div className="w-4 h-4 bg-cyan-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Cyan</div>
-            <div className="text-gray-500">Fresh</div>
-          </button>
-
-          {/* Stone */}
-          <button
-            onClick={() => alert('Stone selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-stone-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-stone-700 rounded"></div>
-              <div className="w-4 h-4 bg-stone-600 rounded"></div>
-              <div className="w-4 h-4 bg-stone-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Stone</div>
-            <div className="text-gray-500">Neutral</div>
-          </button>
-
-          {/* Violet */}
-          <button
-            onClick={() => alert('Violet selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-violet-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-violet-700 rounded"></div>
-              <div className="w-4 h-4 bg-violet-600 rounded"></div>
-              <div className="w-4 h-4 bg-violet-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Violet</div>
-            <div className="text-gray-500">Modern</div>
-          </button>
-
-          {/* Red */}
-          <button
-            onClick={() => alert('Red selected! (Will implement color change)')}
-            className="p-2 rounded-lg border hover:border-red-400 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-red-700 rounded"></div>
-              <div className="w-4 h-4 bg-red-600 rounded"></div>
-              <div className="w-4 h-4 bg-red-50 border rounded"></div>
-            </div>
-            <div className="text-gray-700 font-medium">Red</div>
-            <div className="text-gray-500">Bold</div>
-          </button>
-
-          {/* Lime - Currently Selected */}
-          <button 
-            onClick={() => alert('Lime is currently active!')}
-            className="p-2 rounded-lg border-2 border-lime-400 bg-lime-50 transition-colors"
-          >
-            <div className="flex space-x-1 mb-1">
-              <div className="w-4 h-4 bg-lime-700 rounded"></div>
-              <div className="w-4 h-4 bg-lime-600 rounded"></div>
-              <div className="w-4 h-4 bg-lime-50 border rounded"></div>
-            </div>
-            <div className="text-lime-700 font-bold">Lime ✓</div>
-            <div className="text-lime-600">Currently Active</div>
-          </button>
-
-        </div>
-        <div className="mt-3 text-xs text-gray-500">
-          Each color shows: Dark (chat bubbles) • Medium (icons) • Light (backgrounds)
-        </div>
-      </div>
     </div>
   )
 }
