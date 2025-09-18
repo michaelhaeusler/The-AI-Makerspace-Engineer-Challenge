@@ -1,5 +1,5 @@
 # Import required FastAPI components for building the API
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,8 +8,14 @@ from pydantic import BaseModel
 
 # Import OpenAI client for interacting with OpenAI's API
 from openai import OpenAI
-import os
 from typing import Optional
+import tempfile
+from pathlib import Path
+
+# Import RAG components from aimakerspace
+from aimakerspace.text_utils import PDFLoader, CharacterTextSplitter
+from aimakerspace.openai_utils.embedding import EmbeddingModel
+from aimakerspace.vectordatabase import VectorDatabase
 
 """
 Backend API for the AI Chat Application
@@ -48,6 +54,10 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allows all headers in requests
 )
+
+# Global RAG components - initialized when first PDF is uploaded
+vector_database = None
+embedding_model = None
 
 
 # Define the data model for chat requests using Pydantic
@@ -122,6 +132,32 @@ async def chat(request: ChatRequest):
         # Each request uses its own API key for security
         client = OpenAI(api_key=request.api_key)
 
+        # Perform RAG retrieval if vector database is available
+        enhanced_developer_message = request.developer_message
+        global vector_database, embedding_model
+
+        if vector_database is not None and embedding_model is not None:
+            # Get embedding for user's question
+            query_embedding = await embedding_model.async_get_embedding(
+                request.user_message
+            )
+
+            # Retrieve relevant chunks from vector database
+            relevant_chunks = vector_database.search(query_embedding, k=3)
+
+            # Create context from retrieved chunks
+            if relevant_chunks:
+                context = "\n\n".join(
+                    [chunk[0] for chunk in relevant_chunks]
+                )  # chunk[0] is the text, chunk[1] is the score
+                enhanced_developer_message = f"""{request.developer_message}
+
+CONTEXT FROM UPLOADED DOCUMENT:
+{context}
+
+Please answer the user's question based ONLY on the information provided in the context above. If the answer is not in the context, please say "I don't have that information in the uploaded document."
+"""
+
         # Create an async generator function for streaming responses
         async def generate():
             """
@@ -141,8 +177,8 @@ async def chat(request: ChatRequest):
             stream = client.chat.completions.create(
                 model=request.model,
                 messages=[
-                    # System message: Instructions for how the AI should behave
-                    {"role": "system", "content": request.developer_message},
+                    # System message: Instructions for how the AI should behave (enhanced with RAG context)
+                    {"role": "system", "content": enhanced_developer_message},
                     # User message: The actual question or input
                     {"role": "user", "content": request.user_message},
                 ],
@@ -190,6 +226,82 @@ async def health_check():
         - Deployment systems can verify successful deploys
     """
     return {"status": "ok", "message": "Chat API is running"}
+
+
+@app.post("/api/upload-pdf")
+async def upload_pdf(file: UploadFile):
+    """
+    Process uploaded PDF files for RAG functionality.
+
+    This endpoint:
+    1. Validates the uploaded file is a PDF
+    2. Temporarily saves the file to disk
+    3. Uses PDFLoader to extract text content
+    4. Uses CharacterTextSplitter to create chunks
+    5. Returns processing results
+
+    Args:
+        file (UploadFile): The uploaded PDF file from the frontend
+
+    Returns:
+        dict: Processing results with chunks and metadata
+    """
+    # Validate file type
+    if not file.content_type == "application/pdf":
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+
+    try:
+        # Create a temporary file to save the uploaded PDF
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            # Read and save the uploaded file content
+            content = await file.read()
+            temp_file.write(content)
+            temp_file_path = temp_file.name
+
+        # Process the PDF using our RAG components
+        pdf_loader = PDFLoader(temp_file_path)
+        documents = pdf_loader.load_documents()
+
+        # Split the document into chunks for RAG
+        text_splitter = CharacterTextSplitter()
+        chunks = text_splitter.split_texts(documents)
+
+        # Clean up the temporary file
+        Path(temp_file_path).unlink()
+
+        # Initialize RAG components if not already done
+        global vector_database, embedding_model
+        if embedding_model is None:
+            embedding_model = EmbeddingModel()
+
+        # Create embeddings for all chunks
+        embeddings = []
+        for chunk in chunks:
+            embedding = await embedding_model.async_get_embedding(chunk)
+            embeddings.append(embedding)
+
+        # Initialize or reset vector database with new document
+        vector_database = VectorDatabase()
+
+        # Add all chunks and embeddings to vector database
+        for chunk, embedding in zip(chunks, embeddings):
+            vector_database.insert(chunk, embedding)
+
+        return {
+            "status": "success",
+            "filename": file.filename,
+            "num_documents": len(documents),
+            "num_chunks": len(chunks),
+            "num_embeddings": len(embeddings),
+            "message": f"Successfully processed {file.filename} and created RAG database",
+        }
+
+    except Exception as e:
+        # Clean up temp file if it exists
+        if "temp_file_path" in locals():
+            Path(temp_file_path).unlink(missing_ok=True)
+
+        raise HTTPException(status_code=500, detail=f"Error processing PDF: {str(e)}")
 
 
 # Entry point for running the application directly

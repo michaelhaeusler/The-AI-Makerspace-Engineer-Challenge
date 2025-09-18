@@ -16,12 +16,16 @@ if ! command -v uv &> /dev/null; then
     exit 1
 fi
 
+# Clear any conflicting virtual environment variables
+unset VIRTUAL_ENV
+
 # Install dependencies if needed
 echo "📦 Ensuring dependencies are installed..."
-uv pip install -r requirements.txt
+uv sync
+uv pip install -e .
 
 # Use uv to run the Python app
 echo "🎵 Starting FastAPI server on http://localhost:8000..."
 echo "💡 To start both frontend and backend, use: ./start-dev.sh"
 echo ""
-cd api && uv run python app.py
+uv run --python-preference only-managed python api/app.py

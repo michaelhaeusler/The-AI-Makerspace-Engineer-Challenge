@@ -22,9 +22,14 @@ if ! command -v npm &> /dev/null; then
     exit 1
 fi
 
-# Install backend dependencies
-echo "📦 Installing backend dependencies with uv..."
-cd api && uv pip install -r requirements.txt && cd ..
+# Clear any conflicting virtual environment variables
+unset VIRTUAL_ENV
+
+# Install project dependencies (including aimakerspace package)
+echo "📦 Installing project dependencies with uv..."
+uv sync
+echo "📦 Installing aimakerspace package in editable mode..."
+uv pip install -e .
 
 # Install frontend dependencies
 echo "📦 Installing frontend dependencies with npm..."
@@ -32,7 +37,7 @@ cd frontend && npm install && cd ..
 
 # Start backend server in background
 echo "🎵 Starting FastAPI backend server on http://localhost:8000..."
-(cd api && uv run python app.py) &
+uv run --python-preference only-managed python api/app.py &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
