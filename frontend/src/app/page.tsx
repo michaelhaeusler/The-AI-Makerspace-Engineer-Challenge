@@ -49,7 +49,7 @@ export default function RAGChat() {
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [selectedModel, setSelectedModel] = useState('gpt-4o-mini')
   const [showSettings, setShowSettings] = useState(false)
-  const [selectedColor, setSelectedColor] = useState('olive')
+  const [selectedColor, setSelectedColor] = useState('emerald')
 
   const availableModels = [
     { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Fast & efficient' },
@@ -69,7 +69,7 @@ export default function RAGChat() {
     { id: 'stone', name: 'Stone', description: 'Neutral' },
     { id: 'violet', name: 'Violet', description: 'Modern' },
     { id: 'red', name: 'Red', description: 'Bold' },
-    { id: 'olive', name: 'Olive', description: 'Natural' }
+    { id: 'emerald', name: 'Emerald', description: 'Natural' }
   ]
 
   const getColorClasses = (color: string) => ({
