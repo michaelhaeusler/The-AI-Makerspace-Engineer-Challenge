@@ -17,7 +17,9 @@ import {
   MessageCircle,
   Loader2,
   AlertCircle,
-  X
+  X,
+  ChevronDown,
+  Cpu
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
@@ -44,6 +46,14 @@ export default function RAGChat() {
   const [showApiKeyInput, setShowApiKeyInput] = useState(true)
   const [showReplaceDialog, setShowReplaceDialog] = useState(false)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
+  const [selectedModel, setSelectedModel] = useState('gpt-4o-mini')
+  const [showModelDropdown, setShowModelDropdown] = useState(false)
+
+  const availableModels = [
+    { id: 'gpt-4o-mini', name: 'GPT-4o Mini', description: 'Fast & efficient' },
+    { id: 'gpt-4o', name: 'GPT-4o', description: 'Most capable' },
+    { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Classic choice' }
+  ]
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -55,6 +65,20 @@ export default function RAGChat() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // Close model dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (showModelDropdown) {
+        setShowModelDropdown(false)
+      }
+    }
+    
+    if (showModelDropdown) {
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [showModelDropdown])
 
   const processFileUpload = (file: File) => {
     setUploadedFile({
@@ -143,7 +167,7 @@ export default function RAGChat() {
             ? `You are a helpful AI assistant. Answer questions based on the uploaded PDF document: ${uploadedFile.name}. If the answer is not in the document, please say so.`
             : 'You are a helpful AI assistant.',
           user_message: input.trim(),
-          model: 'gpt-4o-mini',
+          model: selectedModel,
           api_key: apiKey
         }),
       })
@@ -224,7 +248,7 @@ export default function RAGChat() {
             <Button
               onClick={() => apiKey && setShowApiKeyInput(false)}
               disabled={!apiKey}
-              className="w-full h-12 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-medium transition-all duration-200"
+              className="w-full h-12 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition-all duration-200"
             >
               Continue
             </Button>
@@ -249,27 +273,67 @@ export default function RAGChat() {
             </div>
           </div>
 
-          {uploadedFile && uploadedFile.status === 'completed' && (
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="flex items-center space-x-2 bg-green-50 text-green-700 border-green-200 px-3 py-1">
-                <FileText className="w-3 h-3" />
-                <span className="text-xs font-medium">Document ready</span>
-                <button onClick={removeFile} className="ml-1 hover:text-red-500 transition-colors" title="Remove document">
-                  <X className="w-3 h-3" />
-                </button>
-              </Badge>
+          <div className="flex items-center space-x-3">
+            {/* Model Selector */}
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowModelDropdown(!showModelDropdown)
+                }}
+                className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors text-xs"
+              >
+                <Cpu className="w-3 h-3 text-slate-600" />
+                <span className="font-medium text-slate-700">
+                  {availableModels.find(m => m.id === selectedModel)?.name}
+                </span>
+                <ChevronDown className="w-3 h-3 text-slate-500" />
+              </button>
+
+              {/* Dropdown */}
+              {showModelDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                  <div className="p-1">
+                    {availableModels.map((model) => (
+                      <button
+                        key={model.id}
+                        onClick={() => {
+                          setSelectedModel(model.id)
+                          setShowModelDropdown(false)
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-xs hover:bg-slate-50 transition-colors ${
+                          selectedModel === model.id ? 'bg-slate-100' : ''
+                        }`}
+                      >
+                        <div className="font-medium text-slate-900">{model.name}</div>
+                        <div className="text-slate-500">{model.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Remove Document Button (when document is loaded) */}
+            {uploadedFile && uploadedFile.status === 'completed' && (
+              <button
+                onClick={removeFile}
+                className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                title="Remove document"
+              >
+                <X className="w-4 h-4 text-slate-500 hover:text-slate-700" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
         {/* File Upload Area - Always Visible */}
-        <Card className={`mb-6 border-2 border-dashed ${
-          uploadedFile && uploadedFile.status === 'completed' 
-            ? 'border-neutral-300 bg-neutral-50/50' 
-            : 'border-neutral-200 bg-white/50'
-        } backdrop-blur-sm hover:border-neutral-400 transition-all duration-200`}>
+        <Card className={`mb-6 border-2 border-dashed ${uploadedFile && uploadedFile.status === 'completed'
+          ? 'border-neutral-300 bg-neutral-50/50'
+          : 'border-neutral-200 bg-white/50'
+          } backdrop-blur-sm hover:border-neutral-400 transition-all duration-200`}>
           <div {...getRootProps()} className="p-6 text-center cursor-pointer">
             <input {...getInputProps()} />
             {uploadedFile && uploadedFile.status === 'completed' ? (
@@ -342,8 +406,8 @@ export default function RAGChat() {
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] ${message.role === 'user'
-                        ? 'bg-neutral-900 text-white rounded-2xl rounded-br-md px-4 py-3'
-                        : 'bg-neutral-100 text-neutral-900 rounded-2xl rounded-bl-md px-4 py-3'
+                        ? 'bg-slate-700 text-white rounded-2xl rounded-br-md px-4 py-3'
+                        : 'bg-slate-50 text-slate-900 rounded-2xl rounded-bl-md px-4 py-3'
                       }`}>
                       {message.role === 'user' ? (
                         <p className="text-sm leading-relaxed">{message.content}</p>
@@ -357,10 +421,10 @@ export default function RAGChat() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-neutral-100 rounded-2xl rounded-bl-md px-4 py-3">
+                    <div className="bg-slate-50 rounded-2xl rounded-bl-md px-4 py-3">
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-neutral-600" />
-                        <span className="text-sm text-neutral-600">AI is thinking...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-slate-600" />
+                        <span className="text-sm text-slate-600">AI is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -386,7 +450,7 @@ export default function RAGChat() {
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-3 h-auto rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white transition-all duration-200"
+              className="px-6 py-3 h-auto rounded-xl bg-slate-700 hover:bg-slate-600 text-white transition-all duration-200"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -421,7 +485,7 @@ export default function RAGChat() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex space-x-3">
               <Button
                 variant="outline"
@@ -432,7 +496,7 @@ export default function RAGChat() {
               </Button>
               <Button
                 onClick={handleReplaceConfirm}
-                className="flex-1 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white"
+                className="flex-1 rounded-xl bg-slate-700 hover:bg-slate-600 text-white"
               >
                 Replace
               </Button>
