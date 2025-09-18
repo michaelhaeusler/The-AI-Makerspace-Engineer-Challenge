@@ -68,7 +68,7 @@ We've got you covered with comprehensive End-to-End testing using [Playwright](h
 ### Test Commands
 
 ```bash
-# Run all tests (headless mode)
+# Run all tests on Chrome & Firefox (our reliable duo! 🎸)
 npm run test:e2e
 
 # Run tests with the fancy Playwright UI
@@ -79,6 +79,9 @@ npm run test:e2e:headed
 
 # Debug mode - step through tests like a detective 🔍
 npm run test:e2e:debug
+
+# Run ALL browsers including WebKit (the adventurous one 🦄)
+npm run test:e2e:all
 ```
 
 ### What's Tested
@@ -118,8 +121,9 @@ npm run dev          # Start development server
 npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
-npm run test:e2e     # Run E2E tests
+npm run test:e2e     # Run E2E tests (Chrome & Firefox)
 npm run test:e2e:ui  # Run tests with UI
+npm run test:e2e:all # Run tests on all browsers
 ```
 
 ### Tech Stack

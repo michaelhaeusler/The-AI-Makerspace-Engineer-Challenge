@@ -26,7 +26,9 @@ test.describe('API Key Input Flow', () => {
 
     // Enter a mock API key
     await apiKeyInput.fill('sk-test-api-key-for-testing');
-    await expect(continueButton).toBeEnabled();
+    
+    // Wait for the button to be enabled (WebKit needs explicit wait)
+    await expect(continueButton).toBeEnabled({ timeout: 2000 });
   });
 
   test('should proceed to main app when continue is clicked', async ({ page }) => {
@@ -34,7 +36,11 @@ test.describe('API Key Input Flow', () => {
 
     // Fill API key and continue
     await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
-    await page.getByTestId('api-key-continue-button').click();
+    
+    // Wait for button to be enabled, then click
+    const continueButton = page.getByTestId('api-key-continue-button');
+    await expect(continueButton).toBeEnabled({ timeout: 2000 });
+    await continueButton.click();
 
     // Should see the main app interface
     await expect(page.getByText('AI-powered document chat')).toBeVisible();
