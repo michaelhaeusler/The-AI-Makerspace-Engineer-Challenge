@@ -21,10 +21,10 @@ test.describe('Settings Modal', () => {
   test('should show available models in settings', async ({ page }) => {
     await page.getByTitle('Settings').click();
 
-    // Should see model options
-    await expect(page.getByText('GPT-4o Mini')).toBeVisible();
-    await expect(page.getByText('GPT-4o')).toBeVisible();
-    await expect(page.getByText('GPT-3.5 Turbo')).toBeVisible();
+    // Should see model options - use more specific selectors
+    await expect(page.getByRole('button', { name: 'GPT-4o Mini Fast & efficient' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'GPT-4o Most capable' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'GPT-3.5 Turbo Classic choice' })).toBeVisible();
   });
 
   test('should show available colors in settings', async ({ page }) => {
@@ -39,11 +39,11 @@ test.describe('Settings Modal', () => {
   test('should allow model selection', async ({ page }) => {
     await page.getByTitle('Settings').click();
 
-    // Click on GPT-4o model
-    await page.getByText('GPT-4o').click();
+    // Click on GPT-4o model - use the specific button
+    await page.getByRole('button', { name: 'GPT-4o Most capable' }).click();
 
     // Should be selected (visual indication)
-    const gpt4Button = page.locator('button:has-text("GPT-4o")');
+    const gpt4Button = page.getByRole('button', { name: 'GPT-4o Most capable' });
     await expect(gpt4Button).toHaveClass(/border-.*-300/);
   });
 
@@ -71,8 +71,8 @@ test.describe('Settings Modal', () => {
   test('should close settings modal when X button is clicked', async ({ page }) => {
     await page.getByTitle('Settings').click();
 
-    // Click X button
-    await page.locator('button:has(svg)').last().click();
+    // Click X button - look for the close button in the modal header
+    await page.locator('.fixed .p-6 button').first().click();
 
     // Settings modal should be closed
     await expect(page.getByText('Language Model')).not.toBeVisible();
