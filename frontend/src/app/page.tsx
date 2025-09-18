@@ -248,7 +248,7 @@ export default function RAGChat() {
             <Button
               onClick={() => apiKey && setShowApiKeyInput(false)}
               disabled={!apiKey}
-              className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-all duration-200"
+              className="w-full h-12 rounded-xl bg-lime-600 hover:bg-lime-700 text-white font-medium transition-all duration-200"
             >
               Continue
             </Button>
@@ -274,53 +274,14 @@ export default function RAGChat() {
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Model Selector */}
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setShowModelDropdown(!showModelDropdown)
-                }}
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors text-xs"
-              >
-                <Cpu className="w-3 h-3 text-emerald-600" />
-                <span className="font-medium text-emerald-700">
-                  {availableModels.find(m => m.id === selectedModel)?.name}
-                </span>
-                <ChevronDown className="w-3 h-3 text-emerald-500" />
-              </button>
-
-              {/* Dropdown */}
-              {showModelDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-emerald-200 rounded-xl shadow-lg z-[60]">
-                  <div className="p-1">
-                    {availableModels.map((model) => (
-                      <button
-                        key={model.id}
-                        onClick={() => {
-                          setSelectedModel(model.id)
-                          setShowModelDropdown(false)
-                        }}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-xs hover:bg-emerald-50 transition-colors ${selectedModel === model.id ? 'bg-emerald-100' : ''
-                          }`}
-                      >
-                        <div className="font-medium text-emerald-900">{model.name}</div>
-                        <div className="text-emerald-600">{model.description}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Remove Document Button (when document is loaded) */}
             {uploadedFile && uploadedFile.status === 'completed' && (
               <button
                 onClick={removeFile}
-                className="p-1.5 rounded-lg hover:bg-emerald-100 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-lime-100 transition-colors"
                 title="Remove document"
               >
-                <X className="w-4 h-4 text-emerald-500 hover:text-emerald-700" />
+                <X className="w-4 h-4 text-lime-500 hover:text-lime-700" />
               </button>
             )}
           </div>
@@ -405,8 +366,8 @@ export default function RAGChat() {
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] ${message.role === 'user'
-                        ? 'bg-emerald-600 text-white rounded-2xl rounded-br-md px-4 py-3'
-                        : 'bg-emerald-50 text-emerald-900 rounded-2xl rounded-bl-md px-4 py-3'
+                        ? 'bg-lime-600 text-white rounded-2xl rounded-br-md px-4 py-3'
+                        : 'bg-lime-50 text-lime-900 rounded-2xl rounded-bl-md px-4 py-3'
                       }`}>
                       {message.role === 'user' ? (
                         <p className="text-sm leading-relaxed">{message.content}</p>
@@ -420,10 +381,10 @@ export default function RAGChat() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-emerald-50 rounded-2xl rounded-bl-md px-4 py-3">
+                    <div className="bg-lime-50 rounded-2xl rounded-bl-md px-4 py-3">
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
-                        <span className="text-sm text-emerald-700">AI is thinking...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-lime-600" />
+                        <span className="text-sm text-lime-700">AI is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -449,7 +410,7 @@ export default function RAGChat() {
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-3 h-auto rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all duration-200"
+              className="px-6 py-3 h-auto rounded-xl bg-lime-600 hover:bg-lime-700 text-white transition-all duration-200"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -457,6 +418,47 @@ export default function RAGChat() {
                 <Send className="w-4 h-4" />
               )}
             </Button>
+          </div>
+          
+          {/* Small Model Selector - Bottom Right */}
+          <div className="flex justify-end mt-2">
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowModelDropdown(!showModelDropdown)
+                }}
+                className="flex items-center space-x-1 px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors text-xs text-gray-600"
+              >
+                <Cpu className="w-3 h-3" />
+                <span className="font-medium">
+                  {availableModels.find(m => m.id === selectedModel)?.name}
+                </span>
+                <ChevronDown className="w-2 h-2" />
+              </button>
+
+              {/* Dropdown */}
+              {showModelDropdown && (
+                <div className="absolute right-0 bottom-full mb-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-[100]">
+                  <div className="p-1">
+                    {availableModels.map((model) => (
+                      <button
+                        key={model.id}
+                        onClick={() => {
+                          setSelectedModel(model.id)
+                          setShowModelDropdown(false)
+                        }}
+                        className={`w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors ${selectedModel === model.id ? 'bg-gray-100' : ''
+                          }`}
+                      >
+                        <div className="font-medium text-gray-900">{model.name}</div>
+                        <div className="text-gray-500">{model.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </Card>
       </div>
@@ -495,7 +497,7 @@ export default function RAGChat() {
               </Button>
               <Button
                 onClick={handleReplaceConfirm}
-                className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="flex-1 rounded-xl bg-lime-600 hover:bg-lime-700 text-white"
               >
                 Replace
               </Button>
@@ -503,6 +505,185 @@ export default function RAGChat() {
           </Card>
         </div>
       )}
+
+      {/* Temporary Color Palette Viewer */}
+      <div className="fixed bottom-4 left-4 right-4 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-[200] max-h-48 overflow-y-auto">
+        <h3 className="text-sm font-semibold mb-3 text-gray-800">🎨 Color Palette Options - Click to Apply</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-xs">
+
+          {/* Blue */}
+          <button
+            onClick={() => alert('Blue selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-blue-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-blue-700 rounded"></div>
+              <div className="w-4 h-4 bg-blue-600 rounded"></div>
+              <div className="w-4 h-4 bg-blue-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Blue</div>
+            <div className="text-gray-500">Professional</div>
+          </button>
+
+          {/* Teal */}
+          <button
+            onClick={() => alert('Teal selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-teal-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-teal-700 rounded"></div>
+              <div className="w-4 h-4 bg-teal-600 rounded"></div>
+              <div className="w-4 h-4 bg-teal-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Teal</div>
+            <div className="text-gray-500">Modern</div>
+          </button>
+
+          {/* Purple */}
+          <button
+            onClick={() => alert('Purple selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-purple-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-purple-700 rounded"></div>
+              <div className="w-4 h-4 bg-purple-600 rounded"></div>
+              <div className="w-4 h-4 bg-purple-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Purple</div>
+            <div className="text-gray-500">Creative</div>
+          </button>
+
+          {/* Indigo */}
+          <button
+            onClick={() => alert('Indigo selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-indigo-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-indigo-700 rounded"></div>
+              <div className="w-4 h-4 bg-indigo-600 rounded"></div>
+              <div className="w-4 h-4 bg-indigo-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Indigo</div>
+            <div className="text-gray-500">Elegant</div>
+          </button>
+
+          {/* Rose */}
+          <button
+            onClick={() => alert('Rose selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-rose-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-rose-700 rounded"></div>
+              <div className="w-4 h-4 bg-rose-600 rounded"></div>
+              <div className="w-4 h-4 bg-rose-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Rose</div>
+            <div className="text-gray-500">Warm</div>
+          </button>
+
+          {/* Orange */}
+          <button
+            onClick={() => alert('Orange selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-orange-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-orange-700 rounded"></div>
+              <div className="w-4 h-4 bg-orange-600 rounded"></div>
+              <div className="w-4 h-4 bg-orange-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Orange</div>
+            <div className="text-gray-500">Energetic</div>
+          </button>
+
+          {/* Amber */}
+          <button
+            onClick={() => alert('Amber selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-amber-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-amber-700 rounded"></div>
+              <div className="w-4 h-4 bg-amber-600 rounded"></div>
+              <div className="w-4 h-4 bg-amber-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Amber</div>
+            <div className="text-gray-500">Inviting</div>
+          </button>
+
+          {/* Cyan */}
+          <button
+            onClick={() => alert('Cyan selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-cyan-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-cyan-700 rounded"></div>
+              <div className="w-4 h-4 bg-cyan-600 rounded"></div>
+              <div className="w-4 h-4 bg-cyan-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Cyan</div>
+            <div className="text-gray-500">Fresh</div>
+          </button>
+
+          {/* Stone */}
+          <button
+            onClick={() => alert('Stone selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-stone-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-stone-700 rounded"></div>
+              <div className="w-4 h-4 bg-stone-600 rounded"></div>
+              <div className="w-4 h-4 bg-stone-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Stone</div>
+            <div className="text-gray-500">Neutral</div>
+          </button>
+
+          {/* Violet */}
+          <button
+            onClick={() => alert('Violet selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-violet-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-violet-700 rounded"></div>
+              <div className="w-4 h-4 bg-violet-600 rounded"></div>
+              <div className="w-4 h-4 bg-violet-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Violet</div>
+            <div className="text-gray-500">Modern</div>
+          </button>
+
+          {/* Red */}
+          <button
+            onClick={() => alert('Red selected! (Will implement color change)')}
+            className="p-2 rounded-lg border hover:border-red-400 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-red-700 rounded"></div>
+              <div className="w-4 h-4 bg-red-600 rounded"></div>
+              <div className="w-4 h-4 bg-red-50 border rounded"></div>
+            </div>
+            <div className="text-gray-700 font-medium">Red</div>
+            <div className="text-gray-500">Bold</div>
+          </button>
+
+          {/* Lime - Currently Selected */}
+          <button 
+            onClick={() => alert('Lime is currently active!')}
+            className="p-2 rounded-lg border-2 border-lime-400 bg-lime-50 transition-colors"
+          >
+            <div className="flex space-x-1 mb-1">
+              <div className="w-4 h-4 bg-lime-700 rounded"></div>
+              <div className="w-4 h-4 bg-lime-600 rounded"></div>
+              <div className="w-4 h-4 bg-lime-50 border rounded"></div>
+            </div>
+            <div className="text-lime-700 font-bold">Lime ✓</div>
+            <div className="text-lime-600">Currently Active</div>
+          </button>
+
+        </div>
+        <div className="mt-3 text-xs text-gray-500">
+          Each color shows: Dark (chat bubbles) • Medium (icons) • Light (backgrounds)
+        </div>
+      </div>
     </div>
   )
 }
