@@ -73,7 +73,7 @@ export default function RAGChat() {
         setShowModelDropdown(false)
       }
     }
-    
+
     if (showModelDropdown) {
       document.addEventListener('click', handleClickOutside)
       return () => document.removeEventListener('click', handleClickOutside)
@@ -248,7 +248,7 @@ export default function RAGChat() {
             <Button
               onClick={() => apiKey && setShowApiKeyInput(false)}
               disabled={!apiKey}
-              className="w-full h-12 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition-all duration-200"
+              className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-all duration-200"
             >
               Continue
             </Button>
@@ -281,18 +281,18 @@ export default function RAGChat() {
                   e.stopPropagation()
                   setShowModelDropdown(!showModelDropdown)
                 }}
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors text-xs"
+                className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors text-xs"
               >
-                <Cpu className="w-3 h-3 text-slate-600" />
-                <span className="font-medium text-slate-700">
+                <Cpu className="w-3 h-3 text-emerald-600" />
+                <span className="font-medium text-emerald-700">
                   {availableModels.find(m => m.id === selectedModel)?.name}
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-500" />
+                <ChevronDown className="w-3 h-3 text-emerald-500" />
               </button>
 
               {/* Dropdown */}
               {showModelDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-emerald-200 rounded-xl shadow-lg z-[60]">
                   <div className="p-1">
                     {availableModels.map((model) => (
                       <button
@@ -301,12 +301,11 @@ export default function RAGChat() {
                           setSelectedModel(model.id)
                           setShowModelDropdown(false)
                         }}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-xs hover:bg-slate-50 transition-colors ${
-                          selectedModel === model.id ? 'bg-slate-100' : ''
-                        }`}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-xs hover:bg-emerald-50 transition-colors ${selectedModel === model.id ? 'bg-emerald-100' : ''
+                          }`}
                       >
-                        <div className="font-medium text-slate-900">{model.name}</div>
-                        <div className="text-slate-500">{model.description}</div>
+                        <div className="font-medium text-emerald-900">{model.name}</div>
+                        <div className="text-emerald-600">{model.description}</div>
                       </button>
                     ))}
                   </div>
@@ -318,10 +317,10 @@ export default function RAGChat() {
             {uploadedFile && uploadedFile.status === 'completed' && (
               <button
                 onClick={removeFile}
-                className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-emerald-100 transition-colors"
                 title="Remove document"
               >
-                <X className="w-4 h-4 text-slate-500 hover:text-slate-700" />
+                <X className="w-4 h-4 text-emerald-500 hover:text-emerald-700" />
               </button>
             )}
           </div>
@@ -406,8 +405,8 @@ export default function RAGChat() {
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] ${message.role === 'user'
-                        ? 'bg-slate-700 text-white rounded-2xl rounded-br-md px-4 py-3'
-                        : 'bg-slate-50 text-slate-900 rounded-2xl rounded-bl-md px-4 py-3'
+                        ? 'bg-emerald-600 text-white rounded-2xl rounded-br-md px-4 py-3'
+                        : 'bg-emerald-50 text-emerald-900 rounded-2xl rounded-bl-md px-4 py-3'
                       }`}>
                       {message.role === 'user' ? (
                         <p className="text-sm leading-relaxed">{message.content}</p>
@@ -421,10 +420,10 @@ export default function RAGChat() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-slate-50 rounded-2xl rounded-bl-md px-4 py-3">
+                    <div className="bg-emerald-50 rounded-2xl rounded-bl-md px-4 py-3">
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-slate-600" />
-                        <span className="text-sm text-slate-600">AI is thinking...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+                        <span className="text-sm text-emerald-700">AI is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -450,7 +449,7 @@ export default function RAGChat() {
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-3 h-auto rounded-xl bg-slate-700 hover:bg-slate-600 text-white transition-all duration-200"
+              className="px-6 py-3 h-auto rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all duration-200"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -496,7 +495,7 @@ export default function RAGChat() {
               </Button>
               <Button
                 onClick={handleReplaceConfirm}
-                className="flex-1 rounded-xl bg-slate-700 hover:bg-slate-600 text-white"
+                className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 Replace
               </Button>
