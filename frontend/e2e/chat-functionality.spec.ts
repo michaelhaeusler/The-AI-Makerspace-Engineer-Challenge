@@ -4,8 +4,16 @@ test.describe('Chat Functionality', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app and enter API key
     await page.goto('/');
-    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
-    await page.getByTestId('api-key-continue-button').click();
+
+    // Use type() for WebKit compatibility
+    const apiKeyInput = page.getByTestId('api-key-input-field');
+    await apiKeyInput.click();
+    await apiKeyInput.type('sk-test-api-key-for-testing');
+
+    // Wait for button to be enabled, then click
+    const continueButton = page.getByTestId('api-key-continue-button');
+    await expect(continueButton).toBeEnabled({ timeout: 2000 });
+    await continueButton.click();
   });
 
   test('should show chat interface elements', async ({ page }) => {
