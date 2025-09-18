@@ -49,8 +49,8 @@ export async function POST(request: NextRequest) {
         'Connection': 'keep-alive',
       },
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error proxying chat request:', error)
-    return NextResponse.json({ detail: error.message }, { status: 500 })
+    return NextResponse.json({ detail: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }

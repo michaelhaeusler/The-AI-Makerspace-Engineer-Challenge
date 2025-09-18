@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
     const uploadResult = await backendResponse.json()
     return NextResponse.json(uploadResult)
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error uploading file:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }
