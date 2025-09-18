@@ -37,6 +37,7 @@ export const ChatInput = ({
     <Card className="p-4 border-0 shadow-lg bg-white/80 backdrop-blur-sm">
       <div className="flex space-x-3">
         <Textarea
+          data-testid="chat-input-field"
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -46,6 +47,7 @@ export const ChatInput = ({
           disabled={isLoading}
         />
         <Button
+          data-testid="chat-send-button"
           onClick={onSendMessage}
           disabled={!input.trim() || isLoading}
           className={`px-6 py-3 h-auto rounded-xl ${colorClasses.button} text-white transition-all duration-200`}

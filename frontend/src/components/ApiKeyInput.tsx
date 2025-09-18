@@ -39,6 +39,7 @@ export const ApiKeyInput = ({ selectedColor, onApiKeySubmit }: ApiKeyInputProps)
         <div className="space-y-4">
           <div>
             <input
+              data-testid="api-key-input-field"
               type="password"
               placeholder="sk-..."
               value={apiKey}
@@ -49,6 +50,7 @@ export const ApiKeyInput = ({ selectedColor, onApiKeySubmit }: ApiKeyInputProps)
           </div>
 
           <Button
+            data-testid="api-key-continue-button"
             onClick={handleSubmit}
             disabled={!apiKey}
             className={`w-full h-12 rounded-xl ${colorClasses.button} text-white font-medium transition-all duration-200`}

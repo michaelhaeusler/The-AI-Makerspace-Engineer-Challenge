@@ -36,6 +36,7 @@ export const SettingsModal = ({
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
           <button
+            data-testid="settings-modal-close-button"
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
           >
@@ -88,6 +89,7 @@ export const SettingsModal = ({
 
         {/* Close Button */}
         <Button
+          data-testid="settings-modal-done-button"
           onClick={onClose}
           className={`w-full ${colorClasses.button} text-white`}
         >

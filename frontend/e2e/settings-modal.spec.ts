@@ -4,13 +4,13 @@ test.describe('Settings Modal', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app and enter API key
     await page.goto('/');
-    await page.getByPlaceholder('sk-...').fill('sk-test-api-key-for-testing');
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByTestId('api-key-input-field').fill('sk-test-api-key-for-testing');
+    await page.getByTestId('api-key-continue-button').click();
   });
 
   test('should open settings modal when settings button is clicked', async ({ page }) => {
     // Click settings button
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
     // Should see settings modal
     await expect(page.getByText('Settings')).toBeVisible();
@@ -19,7 +19,7 @@ test.describe('Settings Modal', () => {
   });
 
   test('should show available models in settings', async ({ page }) => {
-    await page.getByTitle('Settings').click();
+    await page.getByTestId('header-settings-button').click();
 
     // Should see model options - use more specific selectors
     await expect(page.getByRole('button', { name: 'GPT-4o Mini Fast & efficient' })).toBeVisible();

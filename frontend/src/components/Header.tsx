@@ -25,6 +25,7 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
 
         <div className="flex items-center space-x-3">
           <button
+            data-testid="header-settings-button"
             onClick={onSettingsClick}
             className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
             title="Settings"

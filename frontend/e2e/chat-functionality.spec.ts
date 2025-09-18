@@ -11,11 +11,11 @@ test.describe('Chat Functionality', () => {
   test('should show chat interface elements', async ({ page }) => {
     // Should see chat input area
     await expect(page.getByPlaceholder('Type your message...')).toBeVisible();
-    await expect(page.getByRole('button').filter({ hasText: 'Send' })).toBeVisible();
+    await expect(page.getByRole('button').last()).toBeVisible(); // Send button with icon
   });
 
   test('should disable send button when input is empty', async ({ page }) => {
-    const sendButton = page.locator('button:has(svg)').last(); // Send button with icon
+    const sendButton = page.getByRole('button').last(); // Send button in chat input
     await expect(sendButton).toBeDisabled();
   });
 

@@ -37,7 +37,7 @@ export const FileUploadArea = ({
         ? 'border-neutral-300 bg-neutral-50/50'
         : 'border-neutral-200 bg-white/50'
         } backdrop-blur-sm hover:border-neutral-400 transition-all duration-200`}>
-        <div {...getRootProps()} className="p-6 text-center cursor-pointer">
+        <div {...getRootProps()} data-testid="file-upload-area" className="p-6 text-center cursor-pointer">
           <input {...getInputProps()} />
           {uploadedFile && uploadedFile.status === 'completed' ? (
             <>
@@ -99,6 +99,7 @@ export const FileUploadArea = ({
               📄 {uploadedFile.name}
             </span>
             <button
+              data-testid="file-remove-button"
               onClick={onRemoveDocument}
               className="ml-2 text-neutral-400 hover:text-red-500 transition-colors duration-200 p-1"
               title="Remove document and return to normal chat mode"
