@@ -84,7 +84,7 @@ describe('Theme Utilities', () => {
     })
 
     it('should return gray classes for null color', () => {
-      const result = getColorClasses(null as any)
+      const result = getColorClasses(null as string)
 
       expect(result.userBg).toBe('bg-gray-600')
       expect(result.button).toBe('bg-gray-600 hover:bg-gray-700')
@@ -92,7 +92,7 @@ describe('Theme Utilities', () => {
     })
 
     it('should return gray classes for undefined color', () => {
-      const result = getColorClasses(undefined as any)
+      const result = getColorClasses(undefined as string)
 
       expect(result.userBg).toBe('bg-gray-600')
       expect(result.button).toBe('bg-gray-600 hover:bg-gray-700')

@@ -27,7 +27,7 @@ export const useSettings = () => {
           // Set default color only if no saved color exists
           setSelectedColor(DEFAULT_COLOR)
         }
-      } catch (error) {
+      } catch {
         // Handle localStorage errors gracefully - use defaults
         setSelectedColor(DEFAULT_COLOR)
       }

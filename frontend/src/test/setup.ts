@@ -10,7 +10,7 @@ global.XMLHttpRequest = vi.fn(() => ({
   upload: {
     addEventListener: vi.fn(),
   },
-})) as any
+})) as unknown as typeof XMLHttpRequest
 
 // Mock fetch
 global.fetch = vi.fn()

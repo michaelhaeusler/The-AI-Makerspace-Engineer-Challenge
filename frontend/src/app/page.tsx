@@ -61,11 +61,9 @@ export default function RAGChat() {
     isLoading,
     setIsLoading,
     error: chatError,
-    setError: setChatError,
     messagesEndRef,
     textareaRef,
-    sendMessage,
-    handleKeyPress
+    sendMessage
   } = useChat({ apiKey, selectedModel })
 
   // File upload management (drag & drop, progress, document processing)
@@ -80,8 +78,7 @@ export default function RAGChat() {
     handleReplaceConfirm,
     handleReplaceCancel,
     handleRemoveDocument,
-    error: uploadError,
-    setError: setUploadError
+    error: uploadError
   } = useFileUpload({
     apiKey,
     selectedModel,
@@ -91,10 +88,6 @@ export default function RAGChat() {
 
   // Combine errors from both hooks
   const error = uploadError || chatError
-  const setError = (err: string | null) => {
-    setUploadError(err)
-    setChatError(err)
-  }
 
   // Create wrapper functions that include uploadedFile context
   const sendMessageWithFile = () => sendMessage(uploadedFile)

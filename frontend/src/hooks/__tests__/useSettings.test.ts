@@ -85,7 +85,7 @@ describe('useSettings Hook', () => {
       const { result } = renderHook(() => useSettings())
 
       act(() => {
-        result.current.setSelectedModel('invalid-model' as any)
+        result.current.setSelectedModel('invalid-model' as string)
       })
 
       expect(result.current.selectedModel).toBe('invalid-model')
@@ -190,7 +190,7 @@ describe('useSettings Hook', () => {
       // Mock console.warn to suppress warning output during test
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { })
 
-      mockLocalStorage.getItem.mockReturnValue(undefined as any)
+      mockLocalStorage.getItem.mockReturnValue(undefined)
       mockLocalStorage.setItem.mockImplementation(() => {
         throw new Error('localStorage full')
       })
@@ -216,7 +216,7 @@ describe('useSettings Hook', () => {
       const { result } = renderHook(() => useSettings())
 
       act(() => {
-        result.current.setSelectedModel(longString as any)
+        result.current.setSelectedModel(longString as string)
       })
 
       expect(result.current.selectedModel).toBe(longString)
