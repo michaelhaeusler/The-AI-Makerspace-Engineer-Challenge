@@ -13,17 +13,22 @@ export const useSettings = () => {
   // Load settings from localStorage on component mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedModel = localStorage.getItem(STORAGE_KEYS.MODEL)
-      const savedColor = localStorage.getItem(STORAGE_KEYS.COLOR)
+      try {
+        const savedModel = localStorage.getItem(STORAGE_KEYS.MODEL)
+        const savedColor = localStorage.getItem(STORAGE_KEYS.COLOR)
 
-      if (savedModel && AVAILABLE_MODELS.some(m => m.id === savedModel)) {
-        setSelectedModel(savedModel)
-      }
+        if (savedModel && AVAILABLE_MODELS.some(m => m.id === savedModel)) {
+          setSelectedModel(savedModel)
+        }
 
-      if (savedColor && AVAILABLE_COLORS.some(c => c.id === savedColor)) {
-        setSelectedColor(savedColor)
-      } else {
-        // Set default color only if no saved color exists
+        if (savedColor && AVAILABLE_COLORS.some(c => c.id === savedColor)) {
+          setSelectedColor(savedColor)
+        } else {
+          // Set default color only if no saved color exists
+          setSelectedColor(DEFAULT_COLOR)
+        }
+      } catch (error) {
+        // Handle localStorage errors gracefully - use defaults
         setSelectedColor(DEFAULT_COLOR)
       }
     }
@@ -32,14 +37,24 @@ export const useSettings = () => {
   // Save model to localStorage when it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEYS.MODEL, selectedModel)
+      try {
+        localStorage.setItem(STORAGE_KEYS.MODEL, selectedModel)
+      } catch (error) {
+        // Handle localStorage write errors gracefully
+        console.warn('Failed to save model to localStorage:', error)
+      }
     }
   }, [selectedModel])
 
   // Save color to localStorage when it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEYS.COLOR, selectedColor)
+      try {
+        localStorage.setItem(STORAGE_KEYS.COLOR, selectedColor)
+      } catch (error) {
+        // Handle localStorage write errors gracefully
+        console.warn('Failed to save color to localStorage:', error)
+      }
     }
   }, [selectedColor])
 

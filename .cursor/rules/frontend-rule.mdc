@@ -17,6 +17,8 @@ alwaysApply: false
 - This frontend will ultimately be deployed on Vercel, but it should be possible to test locally
 - Always provide users with a way to run the created UI once you have created it
 - You must use the latest stable packages
+- **MANDATORY: Check official documentation for latest stable versions and configuration formats before setup**
+- **Always verify package compatibility with current Node.js version and project requirements**
 - When using Next.js 15+, place viewport configuration in separate export, not in metadata object
 
 #### Code Quality & Architecture

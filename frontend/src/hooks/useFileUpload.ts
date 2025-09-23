@@ -245,7 +245,13 @@ Based on the content I analyzed, here are specific questions you can ask:
    */
   const onDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
-    if (file && file.type === 'application/pdf') {
+
+    // Handle empty file array
+    if (!file) {
+      return
+    }
+
+    if (file.type === 'application/pdf') {
       // If there's already a file, show replacement confirmation
       if (uploadedFile && uploadedFile.status === 'completed') {
         setPendingFile(file)
