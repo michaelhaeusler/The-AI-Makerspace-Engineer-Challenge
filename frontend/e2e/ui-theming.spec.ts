@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import path from 'path';
 
 test.describe('UI Theming and Visual Elements', () => {
   test.beforeEach(async ({ page }) => {
@@ -58,33 +59,29 @@ test.describe('UI Theming and Visual Elements', () => {
     await page.getByTestId('settings-color-emerald').click();
     await page.getByTestId('settings-modal-done-button').click();
 
-    // Mock file upload to trigger progress bar
-    await page.route('/api/upload-pdf-only', async (route) => {
+    // Mock API responses to avoid real OpenAI calls
+    await page.route('**/api/upload-pdf-only', async (route) => {
       // Delay response to see progress bar
       await new Promise(resolve => setTimeout(resolve, 2000));
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ status: 'success', filename: 'test.pdf' }),
+        body: JSON.stringify({ success: true, message: 'Document processed successfully' }),
       });
     });
 
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'text/plain',
-        body: 'Summary',
+        body: 'Mock document summary for testing',
       });
     });
 
     // Trigger upload
-    const fileContent = Buffer.from('Mock PDF');
+    const testFilePath = path.join(__dirname, 'fixtures', 'test-document.pdf');
     page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles({
-        name: 'test.pdf',
-        mimeType: 'application/pdf',
-        buffer: fileContent,
-      });
+      await fileChooser.setFiles(testFilePath);
     });
 
     await page.getByTestId('file-upload-area').click();
@@ -116,7 +113,7 @@ test.describe('UI Theming and Visual Elements', () => {
     await page.getByTestId('settings-modal-done-button').click();
 
     // Mock delayed chat response
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       await route.fulfill({
         status: 200,

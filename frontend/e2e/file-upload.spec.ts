@@ -30,36 +30,68 @@ test.describe('File Upload Functionality', () => {
   });
 
   test('should show progress bar during upload simulation', async ({ page }) => {
-    // Create a mock PDF file
-    const fileContent = Buffer.from('Mock PDF content for testing');
+    // Mock API responses with delay to see progress UI
+    await page.route('**/api/upload-pdf-only', async (route) => {
+      // Add delay to allow progress UI to show
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, message: 'Document processed successfully' }),
+      });
+    });
+
+    await page.route('**/api/chat', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'text/plain',
+        body: 'Mock document summary for testing',
+      });
+    });
+
+    // Use real PDF file for testing
+    const testFilePath = path.join(__dirname, 'fixtures', 'test-document.pdf');
 
     // Set up file chooser handler
     page.on('filechooser', async (fileChooser) => {
-      // Create a temporary file path
-      const testFilePath = path.join(__dirname, 'test-document.pdf');
-      await fileChooser.setFiles({
-        name: 'test-document.pdf',
-        mimeType: 'application/pdf',
-        buffer: fileContent,
-      });
+      await fileChooser.setFiles(testFilePath);
     });
 
     // Click upload area to trigger file chooser
     await page.getByTestId('file-upload-area').click();
 
-    // Should show progress elements (even if simulated)
-    await expect(page.getByTestId('file-upload-progress')).toBeVisible({ timeout: 10000 });
+    // Should show progress elements (the upload starts immediately after file selection)
+    await expect(page.getByTestId('file-upload-progress')).toBeVisible({ timeout: 3000 });
+
+    // Verify progress bar is actually progressing
+    await expect(page.getByTestId('file-upload-progress-bar')).toBeVisible();
   });
 
   test('should show progress during file selection', async ({ page }) => {
-    // Create mock file
-    const fileContent = Buffer.from('Mock PDF content');
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles({
-        name: 'test-document.pdf',
-        mimeType: 'application/pdf',
-        buffer: fileContent,
+    // Mock API responses to avoid real OpenAI calls
+    await page.route('**/api/upload-pdf-only', async (route) => {
+      // Simulate a delay to test progress UI
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, message: 'Document processed successfully' }),
       });
+    });
+
+    await page.route('**/api/chat', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'text/plain',
+        body: 'Mock document summary for testing',
+      });
+    });
+
+    // Use real PDF file for testing
+    const testFilePath = path.join(__dirname, 'fixtures', 'test-document.pdf');
+
+    page.on('filechooser', async (fileChooser) => {
+      await fileChooser.setFiles(testFilePath);
     });
 
     // Trigger file selection

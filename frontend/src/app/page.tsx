@@ -52,22 +52,6 @@ export default function RAGChat() {
   // Settings management (model, theme with localStorage persistence)
   const { selectedModel, selectedColor, setSelectedModel, setSelectedColor } = useSettings()
 
-  // File upload management (drag & drop, progress, document processing)
-  const {
-    uploadedFile,
-    processingStep,
-    showReplaceDialog,
-    pendingFile,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    handleReplaceConfirm,
-    handleReplaceCancel,
-    handleRemoveDocument,
-    error: uploadError,
-    setError: setUploadError
-  } = useFileUpload({ apiKey, selectedModel })
-
   // Chat functionality (messages, streaming, keyboard shortcuts)
   const {
     messages,
@@ -82,13 +66,44 @@ export default function RAGChat() {
     textareaRef,
     sendMessage,
     handleKeyPress
-  } = useChat({ apiKey, selectedModel, uploadedFile })
+  } = useChat({ apiKey, selectedModel })
+
+  // File upload management (drag & drop, progress, document processing)
+  const {
+    uploadedFile,
+    processingStep,
+    showReplaceDialog,
+    pendingFile,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    handleReplaceConfirm,
+    handleReplaceCancel,
+    handleRemoveDocument,
+    error: uploadError,
+    setError: setUploadError
+  } = useFileUpload({
+    apiKey,
+    selectedModel,
+    setIsLoading,
+    setMessages
+  })
 
   // Combine errors from both hooks
   const error = uploadError || chatError
   const setError = (err: string | null) => {
     setUploadError(err)
     setChatError(err)
+  }
+
+  // Create wrapper functions that include uploadedFile context
+  const sendMessageWithFile = () => sendMessage(uploadedFile)
+
+  const handleKeyPressWithFile = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessage(uploadedFile)
+    }
   }
 
   /**
@@ -153,8 +168,8 @@ export default function RAGChat() {
           uploadedFile={uploadedFile}
           selectedColor={selectedColor}
           textareaRef={textareaRef}
-          onSendMessage={sendMessage}
-          onKeyPress={handleKeyPress}
+          onSendMessage={sendMessageWithFile}
+          onKeyPress={handleKeyPressWithFile}
         />
       </div>
 

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import path from 'path';
 
 test.describe('Chat Functionality', () => {
   test.beforeEach(async ({ page }) => {
@@ -37,7 +38,7 @@ test.describe('Chat Functionality', () => {
 
   test('should send message when send button is clicked', async ({ page }) => {
     // Mock chat API response
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'text/plain',
@@ -61,7 +62,7 @@ test.describe('Chat Functionality', () => {
 
   test('should send message when Enter is pressed', async ({ page }) => {
     // Mock chat API response
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'text/plain',
@@ -82,7 +83,7 @@ test.describe('Chat Functionality', () => {
 
   test('should show loading indicator while waiting for response', async ({ page }) => {
     // Mock delayed response
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       // Delay the response to see loading state
       await new Promise(resolve => setTimeout(resolve, 1000));
       await route.fulfill({
@@ -104,7 +105,7 @@ test.describe('Chat Functionality', () => {
 
   test('should handle API errors gracefully', async ({ page }) => {
     // Mock API error
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 500,
         contentType: 'application/json',
@@ -123,31 +124,27 @@ test.describe('Chat Functionality', () => {
   });
 
   test('should show different placeholder for RAG mode', async ({ page }) => {
-    // Mock file upload to enter RAG mode
-    await page.route('/api/upload-pdf-only', async (route) => {
+    // Mock API responses to avoid real OpenAI calls
+    await page.route('**/api/upload-pdf-only', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ status: 'success', filename: 'test.pdf' }),
+        body: JSON.stringify({ success: true, message: 'Document processed successfully' }),
       });
     });
 
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'text/plain',
-        body: 'Document summary',
+        body: 'Mock document summary for testing',
       });
     });
 
     // Upload a file
-    const fileContent = Buffer.from('Mock PDF');
+    const testFilePath = path.join(__dirname, 'fixtures', 'test-document.pdf');
     page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles({
-        name: 'test.pdf',
-        mimeType: 'application/pdf',
-        buffer: fileContent,
-      });
+      await fileChooser.setFiles(testFilePath);
     });
 
     await page.getByTestId('file-upload-area').click();
@@ -157,7 +154,7 @@ test.describe('Chat Functionality', () => {
   });
 
   test('should clear input after sending message', async ({ page }) => {
-    await page.route('/api/chat', async (route) => {
+    await page.route('**/api/chat', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'text/plain',

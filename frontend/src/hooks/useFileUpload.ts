@@ -10,11 +10,15 @@ import { UploadedFile, Message } from '@/types'
 interface UseFileUploadProps {
   apiKey: string
   selectedModel: string
+  setIsLoading: (loading: boolean) => void
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>
 }
 
 export const useFileUpload = ({
   apiKey,
-  selectedModel
+  selectedModel,
+  setIsLoading,
+  setMessages
 }: UseFileUploadProps) => {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null)
   const [processingStep, setProcessingStep] = useState<string>('')

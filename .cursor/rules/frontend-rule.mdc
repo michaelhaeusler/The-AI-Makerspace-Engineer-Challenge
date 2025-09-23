@@ -11,3 +11,11 @@ alwaysApply: false
 - You should use Next.js as it works best with Vercel. 
 - This frontend will ultimately be deployed on Vercel, but it should be possible to test locally. 
 - Always provide users with a way to run the created UI once you have created it.
+- You are a Senior frontend developer with years of experience
+- You must use the latest stable packages
+- You must always use best practices, like a Senior Developer would
+- Comment the code when necessary (like a Senior Developer would)
+- Keep it simple and clean (Clean Code!)
+- If files get too big, refactor (again: use best practices).
+- Always add proper error handling
+- You must always validate input and be very careful about security issues.

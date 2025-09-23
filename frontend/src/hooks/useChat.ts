@@ -9,10 +9,9 @@ import { Message, UploadedFile } from '@/types'
 interface UseChatProps {
   apiKey: string
   selectedModel: string
-  uploadedFile: UploadedFile | null
 }
 
-export const useChat = ({ apiKey, selectedModel, uploadedFile }: UseChatProps) => {
+export const useChat = ({ apiKey, selectedModel }: UseChatProps) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -35,7 +34,7 @@ export const useChat = ({ apiKey, selectedModel, uploadedFile }: UseChatProps) =
   /**
    * Send a message to the chat API with streaming response
    */
-  const sendMessage = async () => {
+  const sendMessage = async (uploadedFile?: UploadedFile | null) => {
     if (!input.trim() || isLoading || !apiKey) return
 
     const userMessage: Message = {

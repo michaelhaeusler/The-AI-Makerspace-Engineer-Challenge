@@ -1,0 +1,11 @@
+---
+description: When creating e2e tests
+alwaysApply: false
+---
+### Rules for e2e test
+
+- You must make sure that all e2e test run
+- You must use data attributes (example: 'data-testid'='file-upload-button') to get elements 
+- You must use type() instead of fill() to prevent issues with webkit
+- You must stop and only fix that one file when an error occurs before moving on
+- You must create a new e2e test when a new feature was added or when a feature was changeds
