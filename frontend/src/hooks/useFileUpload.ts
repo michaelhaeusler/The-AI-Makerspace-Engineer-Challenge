@@ -49,56 +49,92 @@ export const useFileUpload = ({
       formData.append('file', file)
       formData.append('apiKey', apiKey)
 
-      // Smart progress simulation with step updates
-      let currentProgress = 0
-      const progressInterval = setInterval(() => {
-        setUploadedFile(prev => {
-          if (prev && prev.uploadProgress < 85) {
-            currentProgress += 3
-            if (currentProgress < 30) {
-              setProcessingStep('Reading document...')
-            } else if (currentProgress < 70) {
-              setProcessingStep('Analyzing content...')
-            } else {
-              setProcessingStep('Almost ready...')
-            }
-            return { ...prev, uploadProgress: currentProgress }
-          }
-          return prev
-        })
-      }, 800)
-
       console.log('📤 Uploading and processing document...')
       const uploadStart = Date.now()
 
-      // Upload file and process (this includes embedding creation)
-      const response = await fetch('/api/upload-pdf-only', {
-        method: 'POST',
-        body: formData,
+      // Upload file with real progress tracking using XMLHttpRequest
+      const uploadResponse = await new Promise<Response>((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const uploadProgress = Math.round((event.loaded / event.total) * 70) // Upload is 70% of total process
+            setUploadedFile(prev => prev ? { ...prev, uploadProgress } : null)
+
+            if (uploadProgress < 25) {
+              setProcessingStep('Uploading document...')
+            } else if (uploadProgress < 50) {
+              setProcessingStep('Processing file...')
+            } else {
+              setProcessingStep('Analyzing content...')
+            }
+          }
+        })
+
+        // Handle completion
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const response = new Response(xhr.responseText, {
+              status: xhr.status,
+              statusText: xhr.statusText,
+              headers: new Headers(xhr.getAllResponseHeaders().split('\r\n').reduce((headers, line) => {
+                const [key, value] = line.split(': ')
+                if (key && value) headers[key] = value
+                return headers
+              }, {} as Record<string, string>))
+            })
+            resolve(response)
+          } else {
+            reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`))
+          }
+        })
+
+        xhr.addEventListener('error', () => reject(new Error('Network error')))
+        xhr.addEventListener('timeout', () => reject(new Error('Request timeout')))
+
+        xhr.open('POST', '/api/upload-pdf-only')
+        xhr.send(formData)
       })
 
       const uploadEnd = Date.now()
       console.log(`✅ Document processing completed in ${uploadEnd - uploadStart}ms`)
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json().catch(() => ({}))
         throw new Error(errorData.error || 'Upload failed')
       }
 
-      await response.json() // Process result but don't need to use it
-      clearInterval(progressInterval)
+      await uploadResponse.json() // Process result but don't need to use it
 
-      // Complete the upload progress
+      // Continue from where upload left off (should be around 70%) to 90%
+      setProcessingStep('Server processing...')
+
+      // Animate server processing from 70% to 90%
+      for (let progress = 70; progress <= 90; progress += 2) {
+        setUploadedFile(prev => prev ? { ...prev, uploadProgress: progress } : null)
+        if (progress > 85) {
+          setProcessingStep('Almost ready...')
+        }
+        await new Promise(resolve => setTimeout(resolve, 150))
+      }
+
+      // Final step to 100%
       setUploadedFile({
         name: file.name,
         size: file.size,
         uploadProgress: 100,
-        status: 'completed'
+        status: 'uploading' // Keep as uploading to show progress bar
       })
-      setProcessingStep('Creating summary...')
+      setProcessingStep('Document processed successfully!')
+
+      // Let the user see the 100% completion for a moment
+      await new Promise(resolve => setTimeout(resolve, 1000))
 
       console.log('🤖 Generating document summary...')
       const summaryStart = Date.now()
+
+      setProcessingStep('Creating summary...')
 
       // Stream the summary generation
       const summaryResponse = await fetch('/api/chat', {
@@ -155,8 +191,16 @@ Based on the content I analyzed, here are specific questions you can ask:
         const chunk = new TextDecoder().decode(value)
         summaryContent += chunk
 
-        // Add message and hide loading spinner as soon as first chunk arrives
+        // Add message and hide progress bar as soon as first chunk arrives
         if (isFirstChunk) {
+          // Mark file as completed and hide progress bar
+          setUploadedFile({
+            name: file.name,
+            size: file.size,
+            uploadProgress: 100,
+            status: 'completed'
+          })
+
           const summaryMessage: Message = {
             role: 'assistant',
             content: summaryContent,
@@ -164,6 +208,7 @@ Based on the content I analyzed, here are specific questions you can ask:
           }
           setMessages(prev => [...prev, summaryMessage])
           setIsLoading(false)
+          setProcessingStep('')
           isFirstChunk = false
         } else {
           // Update existing message
