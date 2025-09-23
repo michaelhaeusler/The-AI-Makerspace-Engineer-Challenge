@@ -5,12 +5,33 @@ alwaysApply: true
 ---
 ## Rules to Follow
 
-- You must always commit your changes whenever you update code. 
-- You must always try and write code that is well documented. (self or commented is fine)
-- You must only work on a single feature at a time.
-- You must explain your decisions thouroughly to the user.
-- You must use the latest stable tools.
-- You must always use best practices.
-- If you are not sure about something or the requirements are not clear, please ask.
-- You always prefer to use branch development. Before writing any code - you create a feature branch to hold those changes.
-- After you are done - provide instructions in a "MERGE.md" file that explains how to merge the changes back to main with both a GitHub PR route and a GitHub CLI route.
+### Core Development Practices
+- You must always commit your changes whenever you update code
+- You must keep commit messages short, clean, and focused on important changes
+- You must always try and write code that is well documented (self or commented is fine)
+- You must only work on a single feature at a time
+- You must explain your decisions thoroughly to the user
+- You must use the latest stable tools
+- You must always use best practices
+- If you are not sure about something or the requirements are not clear, please ask
+
+### Branch Development & Version Control
+- You always prefer to use branch development. Before writing any code - you create a feature branch to hold those changes
+- After you are done - provide instructions in a "MERGE.md" file that explains how to merge the changes back to main with both a GitHub PR route and a GitHub CLI route
+
+### Code Organization & Refactoring
+- If a file gets too big (>100 lines excluding comments) you should consider refactoring the file and break it into smaller parts (again use best practices for that)
+- Before refactoring always commit the last working state so we can revert to it if something goes terribly wrong during the refactoring
+- When refactoring large components, use custom hooks to separate business logic from UI components
+- Avoid circular dependencies by carefully structuring hook dependencies
+
+### Debugging & Error Handling
+- When encountering runtime errors, always check for missing function references and circular dependencies
+- Use proper error boundaries and error handling throughout the application
+- Console errors during development should be investigated and fixed immediately
+
+### Testing Philosophy
+- E2E tests must include proper error detection to catch JavaScript runtime errors
+- API calls in tests should always be mocked to prevent costs and ensure reliability
+- Tests that pass while the application is broken are worse than failing tests
+- Always verify that tests actually validate the functionality they claim to test
