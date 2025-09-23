@@ -98,7 +98,7 @@ describe('useChat Hook', () => {
         key: 'Enter',
         shiftKey: false,
         preventDefault: vi.fn(),
-      } as React.KeyboardEvent<HTMLTextAreaElement>
+      } as unknown as React.KeyboardEvent<HTMLTextAreaElement>
 
       await act(async () => {
         result.current.handleKeyPress(mockEvent)
@@ -120,7 +120,7 @@ describe('useChat Hook', () => {
         key: 'Enter',
         shiftKey: true,
         preventDefault: vi.fn(),
-      } as React.KeyboardEvent<HTMLTextAreaElement>
+      } as unknown as React.KeyboardEvent<HTMLTextAreaElement>
 
       act(() => {
         result.current.handleKeyPress(mockEvent)
@@ -138,7 +138,7 @@ describe('useChat Hook', () => {
         key: 'Escape',
         shiftKey: false,
         preventDefault: vi.fn(),
-      } as React.KeyboardEvent<HTMLTextAreaElement>
+      } as unknown as React.KeyboardEvent<HTMLTextAreaElement>
 
       act(() => {
         result.current.handleKeyPress(mockEvent)
