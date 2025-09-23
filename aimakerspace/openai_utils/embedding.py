@@ -29,7 +29,7 @@ class EmbeddingModel:
     """
 
     def __init__(
-        self, embeddings_model_name: str = "text-embedding-3-small", api_key: str = None
+        self, embeddings_model_name: str = "togethercomputer/m2-bert-80M-8k-retrieval", api_key: str = None  # ← Change 5: Default model
     ):
         """
         Initialize the embedding model.
@@ -48,18 +48,18 @@ class EmbeddingModel:
         load_dotenv()  # Load environment variables from .env file
 
         # Use provided API key or fall back to environment variable
-        self.openai_api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.openai_api_key = api_key or os.getenv("TOGETHER_API_KEY")  # ← Change 6: Environment variable
         if self.openai_api_key is None:
             raise ValueError(
-                "OpenAI API key is required. Please provide it as a parameter or set the OPENAI_API_KEY environment variable."
+                "Together API key is required. Please provide it as a parameter or set the TOGETHER_API_KEY environment variable."  # ← Change 7: Error message
             )
 
         self.embeddings_model_name = embeddings_model_name
         self.async_client = AsyncOpenAI(
-            api_key=self.openai_api_key
+            api_key=self.openai_api_key, base_url="https://api.together.xyz/v1"  # ← Change 8: Add base_url
         )  # For async operations (faster when processing many texts)
         self.client = OpenAI(
-            api_key=self.openai_api_key
+            api_key=self.openai_api_key, base_url="https://api.together.xyz/v1"  # ← Change 8: Add base_url
         )  # For synchronous operations (simpler to use)
 
     async def async_get_embeddings(

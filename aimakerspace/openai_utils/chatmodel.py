@@ -27,7 +27,7 @@ class ChatOpenAI:
     and asynchronous interfaces for different use cases.
     """
 
-    def __init__(self, model_name: str = "gpt-4o-mini"):
+    def __init__(self, model_name: str = "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"):  # ← Change 1: Default model
         """
         Initialize the chat model wrapper.
 
@@ -43,12 +43,12 @@ class ChatOpenAI:
         - Error handling: Validates API key is present
         """
         self.model_name = model_name
-        self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        self.openai_api_key = os.getenv("TOGETHER_API_KEY")  # ← Change 2: Environment variable
         if self.openai_api_key is None:
-            raise ValueError("OPENAI_API_KEY is not set")
+            raise ValueError("TOGETHER_API_KEY is not set")  # ← Change 3: Error message
 
-        self._client = OpenAI()  # Synchronous client
-        self._async_client = AsyncOpenAI()  # Asynchronous client
+        self._client = OpenAI(api_key=self.openai_api_key, base_url="https://api.together.xyz/v1")  # ← Change 4: Add base_url
+        self._async_client = AsyncOpenAI(api_key=self.openai_api_key, base_url="https://api.together.xyz/v1")  # ← Change 4: Add base_url
 
     def run(
         self,
