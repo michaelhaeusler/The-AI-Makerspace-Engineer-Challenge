@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { Upload, FileText } from 'lucide-react'
 import { UploadedFile } from '@/types'
 import { getColorClasses, formatFileSize } from '@/utils/theme'
+import { MAX_PDF_MB } from '@/config/constants'
 
 interface FileUploadAreaProps {
   uploadedFile: UploadedFile | null
@@ -63,6 +64,9 @@ export const FileUploadArea = ({
               </p>
               <p className="text-sm text-neutral-500">
                 Drag and drop or click to select a PDF file
+              </p>
+              <p className="text-xs text-neutral-400 mt-2">
+                Maximum size: {MAX_PDF_MB}MB
               </p>
             </>
           )}

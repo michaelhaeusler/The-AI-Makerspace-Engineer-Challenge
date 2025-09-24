@@ -33,3 +33,6 @@ export const STORAGE_KEYS = {
   MODEL: 'ragchat-model',
   COLOR: 'ragchat-color'
 } as const
+
+// Upload limits
+export const MAX_PDF_MB = Number(process.env.NEXT_PUBLIC_MAX_PDF_MB ?? '4.5')

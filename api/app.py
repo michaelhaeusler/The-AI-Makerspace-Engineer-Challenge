@@ -300,6 +300,20 @@ async def upload_pdf(file: UploadFile, api_key: str = Form(None)):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
             # Read and save the uploaded file content
             content = await file.read()
+
+            # Server-side size check (align with client 4.5MB limit)
+            size_bytes = len(content)
+            print(f"📦 Uploaded file size: {size_bytes / (1024 * 1024):.2f} MB")
+            import os
+
+            max_mb = float(os.getenv("MAX_PDF_MB", "4.5"))
+            max_bytes = int(max_mb * 1024 * 1024)
+            if size_bytes > max_bytes:
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"File is too large. Please upload a PDF smaller than {max_mb}MB (got {size_bytes / (1024 * 1024):.2f}MB).",
+                )
+
             temp_file.write(content)
             temp_file_path = temp_file.name
         file_end = time.time()

@@ -6,6 +6,7 @@
 import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { UploadedFile, Message } from '@/types'
+import { MAX_PDF_MB } from '@/config/constants'
 
 interface UseFileUploadProps {
   apiKey: string
@@ -252,10 +253,10 @@ Based on the content I analyzed, here are specific questions you can ask:
     }
 
     if (file.type === 'application/pdf') {
-      // Check file size (Vercel has 4.5MB limit for serverless functions)
-      const maxSize = 4.5 * 1024 * 1024 // 4.5MB in bytes
+      // Check file size using unified constant
+      const maxSize = MAX_PDF_MB * 1024 * 1024
       if (file.size > maxSize) {
-        setError('File is too large. Please upload a PDF smaller than 4.5MB.')
+        setError(`File is too large. Please upload a PDF smaller than ${MAX_PDF_MB}MB.`)
         return
       }
 

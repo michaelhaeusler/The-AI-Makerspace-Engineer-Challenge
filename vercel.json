@@ -34,5 +34,9 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "MAX_PDF_MB": "4.5",
+    "NEXT_PUBLIC_MAX_PDF_MB": "4.5"
+  }
 }
