@@ -279,14 +279,6 @@ async def upload_pdf(file: UploadFile, api_key: str = Form(None)):
     """
     import time
 
-    start_time = time.time()
-    print(f"🚀 Starting PDF processing: {file.filename} ({file.size} bytes)")
-    print(
-        f"🔑 API Key received: {'✅ Present' if api_key else '❌ Missing'} (length: {len(api_key) if api_key else 0})"
-    )
-    if api_key:
-        print(f"🔑 API Key starts with: {api_key[:10]}... (showing first 10 chars)")
-
     # Validate API key
     if not api_key or len(api_key.strip()) == 0:
         raise HTTPException(status_code=400, detail="API key is required")
@@ -296,6 +288,13 @@ async def upload_pdf(file: UploadFile, api_key: str = Form(None)):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
 
     try:
+        start_time = time.time()
+        print(f"🚀 Starting PDF processing: {file.filename}")
+        print(
+            f"🔑 API Key received: {'✅ Present' if api_key else '❌ Missing'} (length: {len(api_key) if api_key else 0})"
+        )
+        if api_key:
+            print(f"🔑 API Key starts with: {api_key[:10]}... (showing first 10 chars)")
         # Create a temporary file to save the uploaded PDF
         file_start = time.time()
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
