@@ -99,6 +99,7 @@ class ChatRequest(BaseModel):
 
 # Define the main chat endpoint that handles POST requests
 @app.post("/api/chat")
+@app.post("/backend/chat")
 async def chat(request: ChatRequest):
     """
     Main chat completion endpoint with streaming support.
@@ -203,6 +204,7 @@ Please answer the user's question based ONLY on the information provided in the 
 
 # Define a health check endpoint to verify API status
 @app.get("/api/health")
+@app.get("/backend/health")
 async def health_check():
     """
     Health check endpoint for monitoring and load balancers.
@@ -229,6 +231,7 @@ async def health_check():
 
 
 @app.post("/api/clear-document")
+@app.post("/backend/clear-document")
 async def clear_document():
     """
     Clear the uploaded document and return to normal chat mode.
@@ -255,6 +258,7 @@ async def clear_document():
 
 
 @app.post("/api/upload-pdf")
+@app.post("/backend/upload-pdf")
 async def upload_pdf(file: UploadFile, api_key: str = Form(None)):
     """
     Process uploaded PDF files for RAG functionality.
@@ -436,6 +440,7 @@ async def upload_pdf(file: UploadFile, api_key: str = Form(None)):
 
 
 @app.post("/api/summarize-document")
+@app.post("/backend/summarize-document")
 async def summarize_document(request: ChatRequest):
     """
     Generate a summary and main topics for the uploaded document.

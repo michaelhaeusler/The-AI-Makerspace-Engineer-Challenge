@@ -15,15 +15,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Forward the request to the backend
-    const backendUrl = process.env.NODE_ENV === 'production'
-      ? '' // Use relative URL in production (same Vercel project)
-      : 'http://127.0.0.1:8000' // Use localhost in development
+    const isProd = process.env.NODE_ENV === 'production'
+    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
 
     // Create new FormData for backend
     const backendFormData = new FormData()
     backendFormData.append('file', file)
 
-    const backendResponse = await fetch(`${backendUrl}/api/upload-pdf?api_key=${encodeURIComponent(apiKey)}`, {
+    const uploadPath = isProd ? '/backend/upload-pdf' : '/api/upload-pdf'
+    const backendResponse = await fetch(`${backendBase}${uploadPath}?api_key=${encodeURIComponent(apiKey)}`, {
       method: 'POST',
       body: backendFormData,
     })
@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
     const uploadResult = await backendResponse.json()
 
     // Now generate the document summary
-    const summaryResponse = await fetch(`${backendUrl}/api/summarize-document`, {
+    const summarizePath = isProd ? '/backend/summarize-document' : '/api/summarize-document'
+    const summaryResponse = await fetch(`${backendBase}${summarizePath}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

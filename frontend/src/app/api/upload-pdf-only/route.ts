@@ -15,16 +15,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Forward the request to the backend
-    const backendUrl = process.env.NODE_ENV === 'production'
-      ? '' // Use relative URL in production (same Vercel project)
-      : 'http://127.0.0.1:8000' // Use localhost in development
+    const isProd = process.env.NODE_ENV === 'production'
+    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
+    const backendPath = isProd ? '/backend/upload-pdf' : '/api/upload-pdf'
 
     // Create new FormData for backend
     const backendFormData = new FormData()
     backendFormData.append('file', file)
     backendFormData.append('api_key', apiKey)
 
-    const backendResponse = await fetch(`${backendUrl}/api/upload-pdf`, {
+    const backendResponse = await fetch(`${backendBase}${backendPath}`, {
       method: 'POST',
       body: backendFormData,
     })

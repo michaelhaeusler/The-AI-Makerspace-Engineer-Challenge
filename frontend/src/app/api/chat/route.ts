@@ -5,11 +5,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     // Forward the request to the backend
-    const backendUrl = process.env.NODE_ENV === 'production'
-      ? '' // Use relative URL in production (same Vercel project)
-      : 'http://127.0.0.1:8000' // Use localhost in development
+    const isProd = process.env.NODE_ENV === 'production'
+    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
+    const backendPath = isProd ? '/backend/chat' : '/api/chat'
 
-    const backendResponse = await fetch(`${backendUrl}/api/chat`, {
+    const backendResponse = await fetch(`${backendBase}${backendPath}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
