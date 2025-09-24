@@ -16,14 +16,16 @@ export async function POST(request: NextRequest) {
 
     // Forward the request to the backend
     const isProd = process.env.NODE_ENV === 'production'
-    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
+    const origin = request.nextUrl.origin
 
     // Create new FormData for backend
     const backendFormData = new FormData()
     backendFormData.append('file', file)
 
-    const uploadPath = isProd ? '/backend/upload-pdf' : '/api/upload-pdf'
-    const backendResponse = await fetch(`${backendBase}${uploadPath}?api_key=${encodeURIComponent(apiKey)}`, {
+    const uploadUrl = isProd
+      ? `${origin}/backend/upload-pdf?api_key=${encodeURIComponent(apiKey)}`
+      : `http://127.0.0.1:8000/api/upload-pdf?api_key=${encodeURIComponent(apiKey)}`
+    const backendResponse = await fetch(uploadUrl, {
       method: 'POST',
       body: backendFormData,
     })
@@ -36,8 +38,10 @@ export async function POST(request: NextRequest) {
     const uploadResult = await backendResponse.json()
 
     // Now generate the document summary
-    const summarizePath = isProd ? '/backend/summarize-document' : '/api/summarize-document'
-    const summaryResponse = await fetch(`${backendBase}${summarizePath}`, {
+    const summarizeUrl = isProd
+      ? `${origin}/backend/summarize-document`
+      : 'http://127.0.0.1:8000/api/summarize-document'
+    const summaryResponse = await fetch(summarizeUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

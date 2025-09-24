@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const isProd = process.env.NODE_ENV === 'production'
-    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
-    const backendPath = isProd ? '/backend/clear-document' : '/api/clear-document'
+    const origin = request.nextUrl.origin
+    const targetUrl = isProd ? `${origin}/backend/clear-document` : 'http://127.0.0.1:8000/api/clear-document'
 
-    const backendResponse = await fetch(`${backendBase}${backendPath}`, {
+    const backendResponse = await fetch(targetUrl, {
       method: 'POST',
     })
 

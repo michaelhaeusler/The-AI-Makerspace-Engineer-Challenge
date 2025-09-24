@@ -6,10 +6,10 @@ export async function POST(request: NextRequest) {
 
     // Forward the request to the backend
     const isProd = process.env.NODE_ENV === 'production'
-    const backendBase = isProd ? '' : 'http://127.0.0.1:8000'
-    const backendPath = isProd ? '/backend/chat' : '/api/chat'
+    const origin = request.nextUrl.origin
+    const targetUrl = isProd ? `${origin}/backend/chat` : 'http://127.0.0.1:8000/api/chat'
 
-    const backendResponse = await fetch(`${backendBase}${backendPath}`, {
+    const backendResponse = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
