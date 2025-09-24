@@ -1,58 +1,69 @@
-# 📄 Document Summarization Feature - Merge Instructions
+# 📦 RAG App Fixes and Deployment Stability - Merge Instructions
 
-## 🚀 Feature Overview
+## 🚀 Overview
 
-This branch adds **intelligent document summarization** to the RAG PDF Chat application. When users upload a PDF, they now receive:
+This branch `feature/rag-app-fixed` stabilizes the RAG app for Vercel deployments and previews.
 
-- ✅ **Automatic document summary** with main topics and key sections
-- ✅ **Suggested questions** to help users understand what they can ask
-- ✅ **Streamed summary display** in the chat interface
-- ✅ **Real progress tracking** during upload and processing
-- ✅ **Enhanced user experience** with better visual feedback
+Highlights:
+- ✅ Route Python backend under `/backend/*` so Next.js can stream via `/api/*`
+- ✅ Use absolute origin in prod for proxying (fixes Invalid URL errors)
+- ✅ Add missing backend deps: `python-dotenv`, `numpy`
+- ✅ Add server-side PDF size limit with a 413 response
+- ✅ Single source of truth for max PDF size via env (`MAX_PDF_MB` / `NEXT_PUBLIC_MAX_PDF_MB`)
+- ✅ UI hint shows max size; client and server validations are in sync
 
-## 🎯 What Was Implemented
+## 🔧 Files Touched
 
-### Backend Changes
-1. **New API Endpoint**: `/api/summarize-document` - Generates comprehensive document summaries
-2. **Enhanced PDF Processing**: Updated `/api/upload-pdf` to work with provided API keys
-3. **Improved EmbeddingModel**: Now accepts API key as parameter instead of requiring environment variable
-4. **Fixed VectorDatabase Integration**: Proper initialization with embedding model
+ - `vercel.json`: rewrite `/backend/(.*)` → Python backend; set `MAX_PDF_MB` envs
+ - `api/app.py`: backend aliases under `/backend/*`, server-side size check using env
+ - `api/requirements.txt`: add `python-dotenv`, `numpy`
+ - `frontend/src/app/api/*/route.ts`: proxies use absolute origin in prod and `/backend/*`
+ - `frontend/src/hooks/useFileUpload.ts`: client-side size check reads from `MAX_PDF_MB`
+ - `frontend/src/components/FileUploadArea.tsx`: shows max size hint
+ - `frontend/src/config/constants.ts`: exports `MAX_PDF_MB` from `NEXT_PUBLIC_MAX_PDF_MB`
 
-### Frontend Changes
-1. **Streamed Document Summary**: Summary now appears as a chat message with real-time streaming
-2. **Improved Progress Bar**: Shows actual upload and processing progress
-3. **New Upload API Route**: `/api/upload-pdf-only` for clean separation of concerns
-4. **Better UX**: Removed separate summary box to give more space to chat interface
-5. **Enhanced Error Handling**: Better error messages and user feedback
+## 🧪 Testing Checklist (Preview & Production)
 
-### Files Modified
-- `api/app.py` - Added summarization endpoint and improved PDF processing
-- `aimakerspace/openai_utils/embedding.py` - Enhanced to accept API key parameter
-- `frontend/src/app/page.tsx` - Major UI improvements and streaming implementation
-- `frontend/src/app/api/upload-pdf-only/route.ts` - New upload endpoint (created)
+- [ ] Upload < MAX_PDF_MB PDF → processes, embeddings created, summary streams in chat
+- [ ] Upload > MAX_PDF_MB PDF → client blocks OR server returns 413 with clear message
+- [ ] Clear document → returns app to normal chat
+- [ ] No real OpenAI calls in E2E (tests mock APIs)
+- [ ] Preview deploy works (same-origin `/backend/*` routing)
+
+## 🔀 Merge Strategy
+
+Recommended path if you have an existing `feature/rag-app` branch:
+1) Create PR: `feature/rag-app-fixed` → `feature/rag-app`
+   - Resolve any conflicts (likely files: `vercel.json`, Next API routes, `api/app.py`)
+   - Verify Vercel preview for the PR
+2) After validation, create PR: `feature/rag-app` → `main`
+
+If `feature/rag-app` is no longer active, you can PR directly to `main`:
+- Create PR: `feature/rag-app-fixed` → `main` and validate the preview
 
 ## 🔄 How to Merge
 
 ### Option 1: GitHub Pull Request (Recommended)
 
 ```bash
-# Push the feature branch to GitHub
-git push origin feature/document-summarization
-
-# Then create a Pull Request on GitHub:
+# Create a Pull Request on GitHub:
 # 1. Go to your repository on GitHub
-# 2. Click "Compare & pull request" 
-# 3. Add title: "Add Document Summarization Feature"
-# 4. Add description with the feature overview above
-# 5. Request review if needed
-# 6. Merge when approved
+# 2. Click "Compare & pull request"
+# 3. Base: feature/rag-app (or main) ← Compare: feature/rag-app-fixed
+# 4. Title: "Stabilize RAG app for Vercel: backend routing, deps, size limit"
+# 5. Paste the Overview + Files Touched sections
+# 6. Ensure preview deploy passes manual checks, then merge
 ```
 
 ### Option 2: GitHub CLI
 
 ```bash
 # Create and merge pull request using GitHub CLI
-gh pr create --title "Add Document Summarization Feature" --body "Adds intelligent document summarization with streaming display and improved progress tracking"
+gh pr create \
+  --base feature/rag-app \
+  --head feature/rag-app-fixed \
+  --title "Stabilize RAG app for Vercel: backend routing, deps, size limit" \
+  --body "Routes backend under /backend, fixes prod proxy, adds deps, unified MAX_PDF_MB, server-side 413."
 gh pr merge --merge  # or --squash or --rebase based on your preference
 ```
 
@@ -63,54 +74,40 @@ gh pr merge --merge  # or --squash or --rebase based on your preference
 git checkout main
 
 # Merge the feature branch
-git merge feature/document-summarization
+git merge feature/rag-app-fixed
 
 # Push to main
 git push origin main
 
 # Clean up feature branch
-git branch -d feature/document-summarization
-git push origin --delete feature/document-summarization
+git branch -d feature/rag-app-fixed
+git push origin --delete feature/rag-app-fixed
 ```
-
-## 🧪 Testing Checklist
-
-Before merging, ensure these features work correctly:
-
-- [ ] **PDF Upload**: Files upload successfully with progress indication
-- [ ] **Document Processing**: Embeddings are created without verbose logging
-- [ ] **Summary Generation**: Document summary appears as streamed chat message
-- [ ] **Summary Content**: Contains overview, main topics, key sections, and suggested questions
-- [ ] **Chat Integration**: Summary appears in chat history and doesn't break UI
-- [ ] **Error Handling**: Proper error messages for upload/processing failures
-- [ ] **API Key Handling**: Works with user-provided API keys (no environment variables required)
-- [ ] **Responsive Design**: UI looks good on different screen sizes
 
 ## 🎉 User Experience Improvements
 
 ### Before
-- ❌ Users had to guess what questions to ask
-- ❌ No indication of document content or structure
-- ❌ Progress bar only showed fake upload progress
-- ❌ Separate summary box took up screen space
+- ❌ `/api/*` routed to Python → broke streaming in prod
+- ❌ Relative backend URLs in prod → Invalid URL errors
+- ❌ Missing deps caused 500s on Vercel
+- ❌ Size limits duplicated and inconsistent
 
 ### After
-- ✅ **Intelligent Summary**: Users immediately understand document content
-- ✅ **Suggested Questions**: Clear guidance on what to ask
-- ✅ **Real Progress**: Progress bar reflects actual processing time
-- ✅ **Streamed Display**: Summary appears naturally in chat flow
-- ✅ **Better Space Usage**: Full chat area available for conversation
+- ✅ Next.js streams via `/api/*`; Python served under `/backend/*`
+- ✅ Absolute origin used in prod proxies
+- ✅ Deps declared in `api/requirements.txt`
+- ✅ One env-driven `MAX_PDF_MB` reflected in UI, client, and server
 
 ## 🔧 Technical Details
 
 ### Architecture
 - **Frontend**: Next.js with TypeScript, streaming responses
 - **Backend**: FastAPI with async processing
-- **AI Integration**: OpenAI GPT-4o-mini for summaries, text-embedding-3-small for vectors
+- **AI Integration**: OpenAI APIs
 - **Vector Storage**: In-memory numpy-based vector database
 
 ### Performance
-- **Streaming**: Real-time summary generation and display
+- **Streaming**: Real-time summary generation and display via Next proxy
 - **Progress Tracking**: Visual feedback during long operations
 - **Efficient Processing**: Optimized chunk sampling for summary generation
 
@@ -118,6 +115,4 @@ Before merging, ensure these features work correctly:
 
 ## 🎯 Ready to Merge!
 
-This feature significantly enhances the user experience by providing intelligent document insights immediately after upload. The implementation follows best practices with proper error handling, streaming responses, and clean separation of concerns.
-
-**Recommendation**: Use GitHub Pull Request for proper code review and documentation.
+This update makes the app robust on Vercel (including previews), preserves streaming via Next.js, and centralizes configuration so changes are low-friction.
