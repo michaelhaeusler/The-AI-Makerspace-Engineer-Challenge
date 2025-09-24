@@ -2,7 +2,7 @@
 
 ## 🚀 Overview
 
-This branch `feature/rag-app-fixed` stabilizes the RAG app for Vercel deployments and previews.
+This branch `feature/rag-app` stabilizes the RAG app for Vercel deployments and previews.
 
 Highlights:
 - ✅ Route Python backend under `/backend/*` so Next.js can stream via `/api/*`
@@ -32,14 +32,7 @@ Highlights:
 
 ## 🔀 Merge Strategy
 
-Recommended path if you have an existing `feature/rag-app` branch:
-1) Create PR: `feature/rag-app-fixed` → `feature/rag-app`
-   - Resolve any conflicts (likely files: `vercel.json`, Next API routes, `api/app.py`)
-   - Verify Vercel preview for the PR
-2) After validation, create PR: `feature/rag-app` → `main`
-
-If `feature/rag-app` is no longer active, you can PR directly to `main`:
-- Create PR: `feature/rag-app-fixed` → `main` and validate the preview
+When you’re ready to ship, open a PR from `feature/rag-app` → `main`, validate the preview, then merge.
 
 ## 🔄 How to Merge
 
@@ -49,7 +42,7 @@ If `feature/rag-app` is no longer active, you can PR directly to `main`:
 # Create a Pull Request on GitHub:
 # 1. Go to your repository on GitHub
 # 2. Click "Compare & pull request"
-# 3. Base: feature/rag-app (or main) ← Compare: feature/rag-app-fixed
+# 3. Base: main ← Compare: feature/rag-app
 # 4. Title: "Stabilize RAG app for Vercel: backend routing, deps, size limit"
 # 5. Paste the Overview + Files Touched sections
 # 6. Ensure preview deploy passes manual checks, then merge
@@ -60,8 +53,8 @@ If `feature/rag-app` is no longer active, you can PR directly to `main`:
 ```bash
 # Create and merge pull request using GitHub CLI
 gh pr create \
-  --base feature/rag-app \
-  --head feature/rag-app-fixed \
+  --base main \
+  --head feature/rag-app \
   --title "Stabilize RAG app for Vercel: backend routing, deps, size limit" \
   --body "Routes backend under /backend, fixes prod proxy, adds deps, unified MAX_PDF_MB, server-side 413."
 gh pr merge --merge  # or --squash or --rebase based on your preference
@@ -74,14 +67,13 @@ gh pr merge --merge  # or --squash or --rebase based on your preference
 git checkout main
 
 # Merge the feature branch
-git merge feature/rag-app-fixed
+git merge feature/rag-app
 
 # Push to main
 git push origin main
 
-# Clean up feature branch
-git branch -d feature/rag-app-fixed
-git push origin --delete feature/rag-app-fixed
+# Clean up feature branch (optional)
+git branch -d feature/rag-app
 ```
 
 ## 🎉 User Experience Improvements
